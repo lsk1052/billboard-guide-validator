@@ -142,18 +142,3 @@ if uploaded_file:
         st.image(preview_img, caption="빌보드 UI 시뮬레이션 결과 (750x1000)", width=750)
         
     st.success("💡 팁: 사이드바에서 텍스트를 수정하면 미리보기에 즉시 반영됩니다.")
-
----
-
-### ⚠️ 중요한 설정 (Streamlit 배포 시)
-
-1.  **`requirements.txt`**: 반드시 `opencv-python-headless`로 설정하세요.
-    ```text
-    streamlit
-    Pillow
-    opencv-python-headless
-    numpy
-    2.  **`header.png`**: 투명도가 포함된 헤더 파일을 리포지토리에 꼭 넣어주세요.
-3.  **한글 폰트**: 서버 환경에는 한글 폰트가 없을 수 있으므로, `Pretendard-Bold.otf` 같은 폰트 파일을 리포지토리에 같이 올리고 코드에서 해당 경로를 지정하는 것이 가장 안전합니다.
-
-요청하신 대로 미리보기 화면을 가장 크고 아름답게 배치했으니, 이제 바로 GitHub에 업데이트해 보세요! 💎
