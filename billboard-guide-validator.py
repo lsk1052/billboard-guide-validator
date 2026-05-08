@@ -89,15 +89,15 @@ st.caption("750x1000 표준 규격 및 UI 간섭 실시간 검수 도구")
 
 with st.sidebar:
     st.header("🖼️ 소재 편집")
-    input_main = st.text_area("메인 카피 입력", value="안녕하세요?\n디자인 시뮬레이션입니다.", help="줄바꿈을 사용하여 행간을 확인할 수 있습니다.")
-    input_sub = st.text_input("서브 카피 입력", value="스토어 쿠폰 + 카드할인 혜택")
-    
-    # [요청사항] 팁 위치 이동
+
     st.info("💡 **팁:** 여기서 텍스트를 수정하면 우측 미리보기에 즉시 반영됩니다.")
+    
+    input_main = st.text_area("메인 카피 입력", value="여기서 텍스트를 수정하면\n우측 미리보기에 즉시 반영됩니다", help="반영될 텍스트를 입력해보세요")
+    input_sub = st.text_input("서브 카피 입력", value="스토어 쿠폰 + 카드할인 혜택")
     
     st.divider()
     st.markdown("### 📋 검수 가이드라인")
-    st.caption("- 규격: 750x1000px\n- 용량: 500KB 이하\n- 필수: 하단 AD 마크 시인성 확보")
+    st.caption("- 규격: 750x1000px\n- 용량: 400KB 이하\n- 필수: 헤더 영역에 모델 얼굴 혹은 주요 제품이 겹치지 않게 해주세요.")
 
 uploaded_file = st.file_uploader("검수할 빌보드 이미지를 업로드하세요", type=["png", "jpg", "jpeg"])
 
@@ -125,7 +125,7 @@ if uploaded_file is not None:
         if file_size_kb <= 500:
             st.success(f"✅ 용량 적정\n현재: {file_size_kb:.1f} KB")
         else:
-            st.error(f"🚨 용량 초과\n현재: {file_size_kb:.1f} KB (제한: 500KB)")
+            st.error(f"🚨 용량 초과\n현재: {file_size_kb:.1f} KB (제한: 400KB)")
             
     with v_col3:
         # 간단한 화질 점수 계산 (예시)
@@ -142,11 +142,9 @@ if uploaded_file is not None:
     with p_col1:
         st.markdown("#### 🏠 홈 헤더 버전")
         preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
-        st.image(preview_home, width=350, caption="Home Header 적용 결과")
+        st.image(preview_home, width=750, caption="Home Header 적용 결과")
         
     with p_col2:
         st.markdown("#### 📱 버티컬 헤더 버전")
         preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
-        st.image(preview_vertical, width=350, caption="Vertical Header 적용 결과")
-
-    st.info("💡 사이드바의 '소재 편집'에서 텍스트를 수정하면 실시간으로 반영됩니다.")
+        st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과")
