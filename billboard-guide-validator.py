@@ -35,9 +35,9 @@ def evaluate_quality(pil_image):
     clarity_score = max(0, min(100, lap_var / 8)) 
     return (purity_score * 0.7) + (clarity_score * 0.3)
 
-# 4. 빌보드 가이드 레이어 합성 함수 (750x1000 및 이미지 UI 최적화)
+# 4. 빌보드 가이드 레이어 합성 함수
 def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
-    # 규격 통일 (750x1000)
+    # 750x1000 정사이즈 리사이즈 (LANCZOS로 선명도 유지)
     base_image = base_image.resize((750, 1000), Image.Resampling.LANCZOS)
     width, height = base_image.size
     
@@ -45,18 +45,15 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
     overlay = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
     
-    # A. 지정된 헤더 이미지 로드 (header-home.png 또는 header-vertical.png)
-    header_path = header_filename
-    if os.path.exists(header_path):
-        header_img = Image.open(header_path).convert("RGBA")
+    # A. 헤더 로드
+    if os.path.exists(header_filename):
+        header_img = Image.open(header_filename).convert("RGBA")
         h_ratio = width / header_img.width
         new_h_size = (width, int(header_img.height * h_ratio))
         header_resized = header_img.resize(new_h_size, Image.Resampling.LANCZOS)
         canvas.paste(header_resized, (0, 0), header_resized)
-    else:
-        st.warning(f"⚠️ {header_filename} 파일을 찾을 수 없습니다.")
-
-    # B. 폰트 설정 (이전과 동일)
+    
+    # B. 폰트 설정
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         font_main = ImageFont.truetype(os.path.join(current_dir, "Pretendard-SemiBold.otf"), 44)
@@ -64,18 +61,23 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
     except:
         font_main = font_sub = ImageFont.load_default()
 
-    # --- 레이아웃 설정 변수 (요청하신 수치 유지) ---
-    margin_x = 48
-    main_y_start = 732
-    line_height_main = 55
-    gap_main_sub = 8
+    # --- 레이아웃 설정 변수 (요청하신 수치 정확히 반영) ---
+    margin_x = 48         
+    main_y_start = 732    
+    line_height_main = 55 
+    gap_main_sub = 30     # [요청] 메인-서브 간격 30px 반영
+    # -----------------------------------------------
 
     # D. 가변 텍스트 그리기
     current_y = main_y_start
-    for line in main_txt.split('\n'):
+    lines = main_txt.split('\n')
+    for line in lines:
         draw.text((margin_x, current_y), line, font=font_main, fill=(255, 255, 255, 255))
-        current_y += line_height_main
+        current_y += line_height_main 
     
+    # 서브 카피 위치 (수치 계산 보정)
+    # current_y는 마지막 줄을 그린 후 행간이 한 번 더해진 상태입니다.
+    # 폰트의 실제 높이(약 44px)를 고려하여 30px 간격이 보이도록 조정했습니다.
     sub_y = current_y - line_height_main + gap_main_sub + 40
     draw.text((margin_x, sub_y), sub_txt, font=font_sub, fill=(255, 255, 255, 230))
     
@@ -106,20 +108,21 @@ if uploaded_file is not None:
     st.divider()
     st.subheader("🖼️ 가이드라인 적용 미리보기 (홈 vs 버티컬)")
     
-    # [요청사항] 좌우 2컬럼 배치
+    # 좌우 2컬럼 배치
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("#### 🏠 홈 헤더 버전")
-        # 홈 헤더 적용 (header-home.png)
+        # [해결] 4번째 인자로 "header-home.png" 전달
         preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
-        st.image(preview_home, use_container_width=True, caption="Home Header 적용 결과")
+        # width=350을 설정하여 화면에 적절한 크기로 선명하게 출력
+        st.image(preview_home, width=350, caption="Home Header (750x1000)")
         
     with col2:
         st.markdown("#### 📱 버티컬 헤더 버전")
-        # 버티컬 헤더 적용 (header-vertical.png)
+        # [해결] 4번째 인자로 "header-vertical.png" 전달
         preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
-        st.image(preview_vertical, use_container_width=True, caption="Vertical Header 적용 결과")
+        st.image(preview_vertical, width=350, caption="Vertical Header (750x1000)")
 
     st.divider()
     
