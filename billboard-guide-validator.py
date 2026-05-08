@@ -98,40 +98,40 @@ st.title("Billboard Guide Validator")
 st.caption("750x1000 표준 규격 및 UI 간섭 실시간 검수 도구")
 
 with st.sidebar:
-    st.header("📝 소재 편집")
-    input_main = st.text_area("메인 카피 (Main)", "아워코모스\n일상 속에 스며드는 디테일")
-    input_sub = st.text_input("서브 카피 (Sub)", "스토어 쿠폰 + 카드할인 혜택")
+    st.header("🖼️ 소재 편집")
+    input_main = st.text_area("메인 카피 입력", value="안녕하세요?\n디자인 시뮬레이션입니다.", help="줄바꿈을 사용하여 행간을 확인할 수 있습니다.")
+    input_sub = st.text_input("서브 카피 입력", value="스토어 쿠폰 + 카드할인 혜택")
+    
+    # [요청사항] 팁 위치 이동
+    st.info("💡 **팁:** 여기서 텍스트를 수정하면 우측 미리보기에 즉시 반영됩니다.")
     
     st.divider()
-    st.markdown("### 📏 검수 가이드라인")
-    st.info("- **규격**: 750x1000px\n- **용량**: 500KB 이하\n- **필수**: 하단 AD 마크 시인성 확보")
+    st.markdown("### 📋 검수 가이드라인")
+    st.caption("- 규격: 750x1000px\n- 용량: 500KB 이하\n- 필수: 하단 AD 마크 시인성 확보")
 
 uploaded_file = st.file_uploader("검수할 빌보드 이미지를 업로드하세요", type=["png", "jpg", "jpeg"])
 
-if uploaded_file:
-    # 이미지 로드
-    raw_image = Image.open(uploaded_file).convert("RGB")
-    actual_w, actual_h = raw_image.size
-    file_kb = uploaded_file.size / 1024
+# --- 메인 화면 미리보기 영역 ---
+if uploaded_file is not None:
+    raw_image = Image.open(uploaded_file)
     
-    # 품질 분석
-    with st.spinner("이미지 품질 분석 중..."):
-        q_score = evaluate_quality(raw_image)
+    st.divider()
+    st.subheader("🖼️ 가이드라인 적용 미리보기 (홈 vs 버티컬)")
     
-    # 상단 결과 요약 대시보드
-    cols = st.columns(3)
-    with cols[0]:
-        status = "check-pass" if (actual_w, actual_h) == (750, 1000) else "check-fail"
-        st.markdown(f'<div class="{status}">{"✅ 규격 통과" if status == "check-pass" else "❌ 규격 오류"}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="status-text">현재: {actual_w}x{actual_h}px</div>', unsafe_allow_html=True)
-    with cols[1]:
-        status = "check-pass" if file_kb <= 500 else "check-fail"
-        st.markdown(f'<div class="{status}">{"✅ 용량 적정" if status == "check-pass" else "❌ 용량 초과"}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="status-text">{file_kb:.1f} KB</div>', unsafe_allow_html=True)
-    with cols[2]:
-        status = "check-pass" if q_score >= 60 else "check-fail"
-        st.markdown(f'<div class="{status}">{"✅ 화질 양호" if status == "check-pass" else "⚠️ 화질 저하"}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="status-text">품질 지수: {q_score:.0f}점</div>', unsafe_allow_html=True)
+    # [요청사항] 좌우 2컬럼 배치
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("#### 🏠 홈 헤더 버전")
+        # 홈 헤더 적용 (header-home.png)
+        preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
+        st.image(preview_home, use_container_width=True, caption="Home Header 적용 결과")
+        
+    with col2:
+        st.markdown("#### 📱 버티컬 헤더 버전")
+        # 버티컬 헤더 적용 (header-vertical.png)
+        preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
+        st.image(preview_vertical, use_container_width=True, caption="Vertical Header 적용 결과")
 
     st.divider()
     
