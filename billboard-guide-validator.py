@@ -56,22 +56,20 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt):
     
     # B. 폰트 설정 (저장소에 올린 Pretendard 파일명과 대소문자까지 일치해야 함)
     try:
-        # 메인 카피용 SemiBold
-        font_main = ImageFont.truetype("Pretendard-SemiBold.otf", 44) 
-        # 서브 카피 및 UI용 Regular
-        font_sub = ImageFont.truetype("Pretendard-Regular.otf", 28)
-        font_fixed = ImageFont.truetype("Pretendard-Regular.otf", 20)
+        # 현재 실행 중인 파일의 폴더 경로를 가져옵니다.
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # os.path.join을 사용하여 경로와 파일명을 안전하게 합칩니다.
+        # 아래 파일명을 1단계에서 확인한 이름과 똑같이 수정하세요!
+        main_font_path = os.path.join(current_dir, "Pretendard-SemiBold.otf")
+        sub_font_path = os.path.join(current_dir, "Pretendard-Medium.otf")
+        
+        font_main = ImageFont.truetype(main_font_path, 44) 
+        font_sub = ImageFont.truetype(sub_font_path, 28)
+        
     except Exception as e:
         st.error(f"폰트 로드 실패: {e}")
         font_main = font_sub = font_fixed = ImageFont.load_default()
-
-    # C. 하단 그라데이션 (가독성 확보를 위한 어두운 딤 처리)
-    dim = Image.new("RGBA", (width, 300), (0, 0, 0, 0))
-    dim_draw = ImageDraw.Draw(dim)
-    for i in range(300):
-        alpha = int((i / 300) * 120)
-        dim_draw.line([(0, i), (width, i)], fill=(0, 0, 0, alpha))
-    canvas.paste(dim.transpose(Image.FLIP_TOP_BOTTOM), (0, 700), dim.transpose(Image.FLIP_TOP_BOTTOM))
 
     # D. 가변 텍스트 그리기
     # 메인 카피 (줄바꿈 대응)
@@ -82,10 +80,6 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt):
     
     # 서브 카피
     draw.text((40, 890), sub_txt, font=font_sub, fill=(255, 255, 255, 230))
-    
-    # E. 고정 UI (AD / 페이지네이션)
-    draw.text((40, 940), "AD", font=font_fixed, fill=(255, 255, 255, 120))
-    draw.text((width - 120, 940), "1 / 15 +", font=font_fixed, fill=(255, 255, 255, 200))
     
     return Image.alpha_composite(canvas, overlay).convert("RGB")
 
