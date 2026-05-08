@@ -115,24 +115,13 @@ if uploaded_file is not None:
         st.markdown("#### 🏠 홈 헤더 버전")
         # [해결] 4번째 인자로 "header-home.png" 전달
         preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
-        # width=350을 설정하여 화면에 적절한 크기로 선명하게 출력
-        st.image(preview_home, width=350, caption="Home Header (750x1000)")
+        # width=750을 설정하여 화면에 적절한 크기로 선명하게 출력
+        st.image(preview_home, width=750, caption="Home Header (750x1000)")
         
     with col2:
         st.markdown("#### 📱 버티컬 헤더 버전")
         # [해결] 4번째 인자로 "header-vertical.png" 전달
         preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
-        st.image(preview_vertical, width=350, caption="Vertical Header (750x1000)")
+        st.image(preview_vertical, width=750, caption="Vertical Header (750x1000)")
 
     st.divider()
-    
-    # [핵심] 실시간 미리보기 화면
-    st.subheader("🖼️ 가이드라인 적용 미리보기")
-    with st.spinner("UI 레이어를 합성하는 중입니다..."):
-        # UI 합성
-        preview_img = apply_billboard_overlay(raw_image, input_main, input_sub)
-        
-        # 화면에 출력
-        st.image(preview_img, caption="빌보드 UI 시뮬레이션 결과 (750x1000)", width=750)
-        
-    st.success("💡 팁: 사이드바에서 텍스트를 수정하면 미리보기에 즉시 반영됩니다.")
