@@ -37,7 +37,7 @@ def evaluate_quality(pil_image):
 
 # 4. 빌보드 가이드 레이어 합성 함수 (750x1000 최적화)
 def apply_billboard_overlay(base_image, main_txt, sub_txt):
-    # 강제로 750x1000으로 리사이즈 (검수 편의성)
+    # 강제로 750x1000으로 리사이즈하여 검수 규격 통일
     base_image = base_image.resize((750, 1000), Image.Resampling.LANCZOS)
     width, height = base_image.size
     
@@ -45,7 +45,7 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt):
     overlay = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
     
-    # A. 상단 헤더 이미지 로드
+    # A. 상단 헤더 이미지 로드 (header-home.png)
     header_path = "header-home.png"
     if os.path.exists(header_path):
         header_img = Image.open(header_path).convert("RGBA")
@@ -54,26 +54,27 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt):
         header_resized = header_img.resize(new_h_size, Image.Resampling.LANCZOS)
         canvas.paste(header_resized, (0, 0), header_resized)
     
-    # B. 폰트 설정
+    # B. 폰트 설정 (저장소에 올린 Pretendard 파일명과 대소문자까지 일치해야 함)
     try:
-        # 시스템에 설치된 폰트나 업로드된 폰트 사용 (NanumSquare 등 추천)
-        font_main = ImageFont.truetype("Pretendard-Bold.otf", 44)
+        # 메인 카피용 SemiBold
+        font_main = ImageFont.truetype("Pretendard-SemiBold.otf", 44) 
+        # 서브 카피 및 UI용 Regular
         font_sub = ImageFont.truetype("Pretendard-Regular.otf", 28)
-        font_fixed = ImageFont.truetype("Pretendard-Medium.otf", 20)
-    except:
+        font_fixed = ImageFont.truetype("Pretendard-Regular.otf", 20)
+    except Exception as e:
+        st.error(f"폰트 로드 실패: {e}")
         font_main = font_sub = font_fixed = ImageFont.load_default()
 
-    # C. 하단 그라데이션 (가독성용 - 선택사항)
-    # 가독성을 위해 하단에 살짝 어두운 딤을 깔아줍니다.
+    # C. 하단 그라데이션 (가독성 확보를 위한 어두운 딤 처리)
     dim = Image.new("RGBA", (width, 300), (0, 0, 0, 0))
     dim_draw = ImageDraw.Draw(dim)
     for i in range(300):
-        alpha = int((i / 300) * 100)
+        alpha = int((i / 300) * 120)
         dim_draw.line([(0, i), (width, i)], fill=(0, 0, 0, alpha))
     canvas.paste(dim.transpose(Image.FLIP_TOP_BOTTOM), (0, 700), dim.transpose(Image.FLIP_TOP_BOTTOM))
 
-    # D. 가변 텍스트 (Main/Sub) - 롯데 ON 스타일 배치
-    # 메인 카피 (행간 처리를 위해 split)
+    # D. 가변 텍스트 그리기
+    # 메인 카피 (줄바꿈 대응)
     y_pos = 780
     for line in main_txt.split('\n'):
         draw.text((40, y_pos), line, font=font_main, fill=(255, 255, 255, 255))
@@ -82,10 +83,8 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt):
     # 서브 카피
     draw.text((40, 890), sub_txt, font=font_sub, fill=(255, 255, 255, 230))
     
-    # E. 고정 UI (AD / Pagination)
-    # AD 마크 (좌측 최하단)
+    # E. 고정 UI (AD / 페이지네이션)
     draw.text((40, 940), "AD", font=font_fixed, fill=(255, 255, 255, 120))
-    # 페이지네이션 (우측 최하단)
     draw.text((width - 120, 940), "1 / 15 +", font=font_fixed, fill=(255, 255, 255, 200))
     
     return Image.alpha_composite(canvas, overlay).convert("RGB")
