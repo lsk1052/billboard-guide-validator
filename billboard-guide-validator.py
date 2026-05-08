@@ -90,9 +90,9 @@ st.caption("750x1000 표준 규격 및 UI 간섭 실시간 검수 도구")
 with st.sidebar:
     st.header("🖼️ 소재 편집")
 
-    st.info("💡 **팁:** 여기서 텍스트를 수정하면 우측 미리보기에 즉시 반영됩니다.")
+    st.info("💡 **팁:** 여기서 텍스트를 수정하면 미리보기에 즉시 반영됩니다.")
     
-    input_main = st.text_area("메인 카피 입력", value="여기서 텍스트를 수정하면\n우측 미리보기에 즉시 반영됩니다", help="반영될 텍스트를 입력해보세요")
+    input_main = st.text_area("메인 카피 입력", value="평범한 오늘을 특별하게\n만드는 브랜드")
     input_sub = st.text_input("서브 카피 입력", value="스토어 쿠폰 + 카드할인 혜택")
     
     st.divider()
