@@ -135,7 +135,7 @@ if uploaded_file is not None:
     st.divider()
 
     # --- [미리보기] 홈 vs 버티컬 좌우 배치 ---
-    st.subheader("🖼️ 가이드라인 적용 미리보기 (홈 vs 버티컬)")
+    st.subheader("가이드라인 적용 미리보기 (홈 / 버티컬)")
     
     p_col1, p_col2 = st.columns(2)
     
