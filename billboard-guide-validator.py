@@ -36,8 +36,8 @@ def evaluate_quality(pil_image):
     return (purity_score * 0.7) + (clarity_score * 0.3)
 
 # 4. 빌보드 가이드 레이어 합성 함수 (750x1000 및 이미지 UI 최적화)
-def apply_billboard_overlay(base_image, main_txt, sub_txt):
-    # 강제로 750x1000으로 리사이즈하여 검수 규격 통일
+def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
+    # 규격 통일 (750x1000)
     base_image = base_image.resize((750, 1000), Image.Resampling.LANCZOS)
     width, height = base_image.size
     
@@ -45,51 +45,39 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt):
     overlay = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
     
-    # A. 상단 헤더 이미지 로드 (이곳에 하단 UI 이미지 로직도 추후 추가 가능)
-    header_path = "header-home.png"
+    # A. 지정된 헤더 이미지 로드 (header-home.png 또는 header-vertical.png)
+    header_path = header_filename
     if os.path.exists(header_path):
         header_img = Image.open(header_path).convert("RGBA")
         h_ratio = width / header_img.width
         new_h_size = (width, int(header_img.height * h_ratio))
         header_resized = header_img.resize(new_h_size, Image.Resampling.LANCZOS)
         canvas.paste(header_resized, (0, 0), header_resized)
-    
-    # B. 폰트 설정
+    else:
+        st.warning(f"⚠️ {header_filename} 파일을 찾을 수 없습니다.")
+
+    # B. 폰트 설정 (이전과 동일)
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        main_font_path = os.path.join(current_dir, "Pretendard-SemiBold.otf")
-        sub_font_path = os.path.join(current_dir, "Pretendard-Medium.otf")
-        
-        font_main = ImageFont.truetype(main_font_path, 44) 
-        font_sub = ImageFont.truetype(sub_font_path, 28)
-        # font_fixed는 이미지 UI로 대체하므로 삭제했습니다.
-        
-    except Exception as e:
-        st.error(f"폰트 로드 실패: {e}")
+        font_main = ImageFont.truetype(os.path.join(current_dir, "Pretendard-SemiBold.otf"), 44)
+        font_sub = ImageFont.truetype(os.path.join(current_dir, "Pretendard-Medium.otf"), 28)
+    except:
         font_main = font_sub = ImageFont.load_default()
 
-    # --- [수치 반영] 레이아웃 설정 변수 ---
-    margin_x = 48         # 좌측 여백 (요청하신 48 반영)
-    main_y_start = 732    # 메인 카피 시작 높이 (요청하신 732 반영)
-    line_height_main = 55 # 메인 카피 행간 (Figma 125% 반영)
-    gap_main_sub = 30      # 메인/서브 간격 (요청하신 8 반영)
-    # ----------------------------------
+    # --- 레이아웃 설정 변수 (요청하신 수치 유지) ---
+    margin_x = 48
+    main_y_start = 732
+    line_height_main = 55
+    gap_main_sub = 8
 
     # D. 가변 텍스트 그리기
     current_y = main_y_start
-    lines = main_txt.split('\n')
-    for line in lines:
+    for line in main_txt.split('\n'):
         draw.text((margin_x, current_y), line, font=font_main, fill=(255, 255, 255, 255))
-        current_y += line_height_main 
+        current_y += line_height_main
     
-    # 서브 카피 위치 계산
-    # 보정값 40은 폰트의 상승 값(Ascent)을 고려한 수치입니다.
-    sub_y = current_y - line_height_main + gap_main_sub + 40 
+    sub_y = current_y - line_height_main + gap_main_sub + 40
     draw.text((margin_x, sub_y), sub_txt, font=font_sub, fill=(255, 255, 255, 230))
-    
-    # E. 하단 UI 영역 (텍스트 로직 삭제됨)
-    # 이미 이미지로 처리하시기로 했으므로, header-home.png처럼 
-    # 별도의 footer 이미지를 제작해 paste 하시면 더욱 완벽해집니다.
     
     return Image.alpha_composite(canvas, overlay).convert("RGB")
 
