@@ -72,7 +72,7 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt):
     margin_x = 48         # 좌측 여백 (요청하신 48 반영)
     main_y_start = 732    # 메인 카피 시작 높이 (요청하신 732 반영)
     line_height_main = 55 # 메인 카피 행간 (Figma 125% 반영)
-    gap_main_sub = 8      # 메인/서브 간격 (요청하신 8 반영)
+    gap_main_sub = 16      # 메인/서브 간격 (요청하신 8 반영)
     # ----------------------------------
 
     # D. 가변 텍스트 그리기
