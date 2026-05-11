@@ -45,35 +45,36 @@ st.markdown("""
         box-shadow: none !important;
     }
     
-    /* [3] 모든 입력창 테두리 두께 및 컬러 완전 통일 */
+    /* [3] 모든 입력창 테두리 색상 및 두께 '강제' 고정 */
 
-    /* 1. 기본 상태: 메인/서브 카피의 모든 테두리를 1px로 강제 고정 */
+    /* 1. 메인 카피(TextArea) 전용 저격 코드 */
+    [data-testid="stTextArea"] [data-baseweb="textarea"],
+    [data-testid="stTextArea"] [data-baseweb="textarea"] > div {
+        border: 1px solid #334155 !important;
+        background-color: #1E1E1E !important;
+        box-shadow: none !important;
+    }
+
+    /* 2. 서브 카피(TextInput) 전용 저격 코드 */
+    [data-testid="stTextInput"] [data-baseweb="input"],
+    [data-testid="stTextInput"] [data-baseweb="input"] > div {
+        border: 1px solid #334155 !important;
+        background-color: #1E1E1E !important;
+        box-shadow: none !important;
+    }
+
+    /* 3. 공통: 클릭(Focus) 시에만 빨간색으로 변경 */
+    [data-testid="stTextArea"] [data-baseweb="textarea"]:focus-within,
+    [data-testid="stTextInput"] [data-baseweb="input"]:focus-within {
+        border-color: #FF4B4B !important;
+        box-shadow: 0 0 0 1px #FF4B4B !important;
+    }
+
+    /* 4. 기존에 잔상처럼 남을 수 있는 껍데기 테두리 제거 */
     .stTextArea > div > div, 
     .stTextInput > div > div {
-        background-color: #1E1E1E !important;
-        /* 아주 얇고 선명한 1px 실선으로 고정 */
-        border: 1px solid #334155 !important; 
-        border-radius: 8px !important;
-        /* 선을 두꺼워 보이게 만드는 주범인 그림자를 완전히 제거 */
-        box-shadow: none !important; 
-        transition: all 0.2s ease-in-out;
-    }
-
-    /* 2. 내부 입력 영역 배경색 및 글자색 고정 (중복 제거) */
-    .stTextArea textarea, .stTextInput input {
-        background-color: transparent !important;
-        color: #FFFFFF !important;
         border: none !important;
-        box-shadow: none !important;
-        padding: 10px !important;
-    }
-
-    /* 3. 클릭(Focus) 시 상태: 두께 변화 없이 색상만 빨간색으로 변경 */
-    /* 선이 두꺼워지지 않게 1px을 유지하는 것이 포인트입니다. */
-    .stTextArea:focus-within > div > div, 
-    .stTextInput:focus-within > div > div {
-        border: 1px solid #FF4B4B !important; 
-        box-shadow: none !important; /* 클릭 시 생기는 파란색/하얀색 광채 제거 */
+        background-color: transparent !important;
     }
 
     /* 안내문구(Placeholder) 컬러 */
