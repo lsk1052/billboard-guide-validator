@@ -9,50 +9,38 @@ st.set_page_config(
     page_title="Billboard Check Mate",
     page_icon="✅",
     layout="wide",
-    initial_sidebar_state="expanded",
 )
 
-# 2. 다크모드 테마 및 스타일링 (안내 문구 복구 버전)
+# 2. 다크모드 테마 및 스타일링
 st.markdown("""
     <style>
-    /* ... 기존 설정 유지 ... */
+    .stApp { background-color: #111111; color: #F8FAFC; }
+    .check-pass { font-size: 1.2rem; font-weight: 800; color: #10B981; }
+    .check-fail { font-size: 1.2rem; font-weight: 800; color: #EF4444; }
+    .status-text { font-size: 0.85rem; color: #94A3B8; }
+    .stImage { border-radius: 12px; border: 1px solid #1E293B; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
+
+    /* --- 기존 작성하신 코드 --- */
+    .stApp { background-color: #111111; color: #F2F2F2; }
+    h1, h2, h3, h4 { color: #FFFFFF !important; } 
     
-    .stApp { background-color: #111111 !important; color: #F8FAFC !important; }
-    [data-testid="stSidebar"] { background-color: #1A1A1A !important; }
+    /* ... (생략된 기존 클래스들: .check-pass, .guide-container 등) ... */
 
-    /* 1. 사이드바 라벨 및 일반 텍스트 색상 */
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] li {
-        color: #FFFFFF !important;
-    }
-
-    /* 2. 텍스트 박스 레이어 및 배경 고정 */
-    .stTextInput > div > div, .stTextArea > div > div,
-    div[data-baseweb="input"] > div, div[data-baseweb="textarea"] > div {
-        background-color: #262626 !important;
-        border: 1px solid #444444 !important;
-    }
-
-    /* 3. [추가] 박스 하단 안내 문구 (Cmd+Enter, Enter 등) 시인성 확보 */
-    /* Streamlit 위젯의 특수한 안내 문구 클래스를 타겟팅합니다 */
-    [data-testid="stWidgetInstructions"] {
-        color: #94A3B8 !important; /* 가독성 좋은 밝은 회색 */
-        font-size: 0.75rem !important;
-    }
-
-    /* 4. 입력 텍스트 및 커서 색상 */
-    input, textarea {
-        color: #FFFFFF !important;
-        background-color: transparent !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-    }
-
-    /* 5. 파일 업로드 영역 및 기타 고정 (기존 유지) */
-    [data-testid="stFileUploader"] section { background-color: #1E1E1E !important; }
-    [data-testid="stFileUploader"] p, [data-testid="stFileUploader"] small { color: #CBD5E1 !important; }
+    /* --- [추가] 다크모드 고정 및 테마 변경 UI 제거 --- */
     
-    #MainMenu, header, footer { visibility: hidden; }
-    [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
-    [data-testid="stSidebar"] { min-width: 300px !important; max-width: 300px !important; }
+    /* 1. 우측 상단 햄버거 메뉴(설정) 전체 숨기기 */
+    #MainMenu {visibility: hidden;}
+    
+    /* 2. 헤더 영역 제거 (테마 변경 옵션 방지) */
+    header {visibility: hidden;}
+    
+    /* 3. 푸터(Made with Streamlit) 제거 */
+    footer {visibility: hidden;}
+
+    /* 4. 사이드바 내의 불필요한 여백 최적화 (기존 코드 유지) */
+    [data-testid="stSidebar"] .stMarkdown { margin-bottom: 0px !important; }
+    
+    /* (이하 생략) */
     </style>
     """, unsafe_allow_html=True)
 
