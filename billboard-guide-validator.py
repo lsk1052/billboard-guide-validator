@@ -148,26 +148,29 @@ st.markdown("""
         max-width: 750px !important;
     }
 
-    /* [1] 메인과 사이드바의 최상단 여백을 아예 제거 */
+    /* [1] 메인 화면은 기본적으로 보기 편한 위치에 둡니다. */
     .block-container {
-        padding-top: 1rem !important; /* 메인 영역 천장 */
+        padding-top: 4rem !important; /* 상단 여백을 적당히 줍니다 (너무 붙지 않게) */
     }
 
+    /* [2] 사이드바 컨테이너의 기본 여백을 제거 */
     [data-testid="stSidebarUserContent"] {
-        padding-top: 1rem !important; /* 사이드바 영역 천장 */
+        padding-top: 0rem !important;
     }
 
-    /* [2] 첫 번째 제목들이 가진 고유의 마진을 0으로 박멸 */
-    /* h1(메인타이틀), h2(사이드바소제목) 둘 다 타겟팅 */
-    .stApp h1, .stApp h2, .stApp h3 {
-        margin-top: 0 !important;
+    /* [3] ★핵심★ 사이드바의 첫 번째 제목(미리보기 설정)만 위로 끌어올림 */
+    /* 마이너스 마진을 사용해 '미리보기 설정' 글자만 위로 배달합니다. */
+    [data-testid="stSidebarContent"] h2:first-of-type {
+        margin-top: -2.2rem !important; /* 이 수치를 조절해서 메인 타이틀과 눈높이를 맞추세요 */
         padding-top: 0 !important;
-        margin-bottom: 0.5rem !important; /* 제목 아래 간격만 살짝 유지 */
     }
 
-    /* [3] 사이드바 내부 컨텐츠의 위치를 더 위로 끌어올림 */
-    [data-testid="stSidebarContent"] {
-        padding-top: 0 !important;
+    /* [4] 사이드바 구분선 컬러 (다시 한번 선명하게 고정) */
+    [data-testid="stSidebar"] hr {
+        border-color: #475569 !important;
+        margin-top: 1.2rem !important;
+        margin-bottom: 1.2rem !important;
+        opacity: 1 !important;
     }
 
     /* [4] 사이드바 구분선 컬러 재강조 (시인성) */
