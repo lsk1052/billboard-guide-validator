@@ -99,7 +99,7 @@ st.markdown("""
     div[role="alert"] {
         /* 시크릿 모드처럼 밝고 선명한 딥 그린으로 고정 */
         background-color: #064E3B !important; 
-        border: 1px solid #10B981 !important;
+        border: 0.5px solid #10B981 !important;
         border-radius: 8px !important;
         /* 배경이 너무 어둡게 죽는 걸 방지하기 위해 밝기 필터 추가 */
         filter: brightness(1.2); 
@@ -111,7 +111,7 @@ st.markdown("""
     div[role="alert"] * {
         color: #FFFFFF !important;
         fill: #FFFFFF !important;
-        font-weight: 600 !important;
+        font-weight: 400 !important;
     }
 
     /* 3. 일반 모드 크롬에서 배경이 투명하게 비치는 현상 방지 */
