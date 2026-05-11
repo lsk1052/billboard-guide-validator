@@ -13,57 +13,80 @@ st.set_page_config(
 )
 
 # 2. 다크모드 테마 및 스타일링
+이미지를 보니 Streamlit의 기본 Light 테마 요소들이 강하게 남아 있어, 어두운 배경에서 글자가 묻히거나 입력창만 하얗게 뜨는 현상이 발생하고 있네요.
+
+디자이너의 안목으로 완벽한 다크 모드를 구현하기 위해, 각 요소를 정밀하게 타격하는 CSS 수정본을 준비했습니다. 기존 <style> 태그 안의 내용을 아래 코드로 완전히 교체해 주세요.
+
+🎨 시인성 개선을 위한 정밀 다크 스타일링
+Python
 st.markdown("""
     <style>
-    /* 전체 배경 및 기본 글자색 */
+    /* 1. 전체 배경 및 기본 글자색 강제 설정 */
     .stApp { 
         background-color: #111111 !important; 
         color: #F8FAFC !important; 
     }
 
-    /* 1. 사이드바 전체 배경 및 테두리 복구 */
+    /* 2. 사이드바 및 내부 텍스트 복구 */
     [data-testid="stSidebar"] {
         background-color: #1A1A1A !important;
-        border-right: 1px solid #2D2D2D !important;
     }
-    
-    /* 사이드바 내부의 모든 컨텐츠 배경 고정 */
-    [data-testid="stSidebarContent"] {
-        background-color: #1A1A1A !important;
-    }
-
-    /* 2. 입력창(Text Area, Input) 배경 및 글자색 고정 */
-    div[data-baseweb="textarea"], div[data-baseweb="input"] {
-        background-color: #262626 !important;
-        border: 1px solid #3D3D3D !important;
-    }
-    
-    textarea, input {
+    /* 사이드바 내 모든 텍스트(라벨, 마크다운, 불렛포인트)를 밝게 */
+    [data-testid="stSidebar"] .stMarkdown, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] li {
         color: #F8FAFC !important;
     }
 
-    /* 3. 파일 업로드 영역(File Uploader) 배경 및 테두리 수정 */
+    /* 3. 텍스트 입력창 (Text Area & Input) 어둡게 수정 */
+    /* 입력창 배경색과 글자색 */
+    div[data-baseweb="textarea"] {
+        background-color: #262626 !important;
+    }
+    div[data-baseweb="input"] {
+        background-color: #262626 !important;
+    }
+    
+    /* 실제 타이핑되는 글자와 입력창 내부 스타일 */
+    textarea, input {
+        color: #F8FAFC !important;
+        -webkit-text-fill-color: #F8FAFC !important;
+    }
+
+    /* 4. 파일 업로드 섹션 스타일 전면 수정 */
+    /* 업로드 박스 전체 */
     [data-testid="stFileUploader"] section {
         background-color: #1E1E1E !important;
         border: 1px dashed #444444 !important;
-        color: #F8FAFC !important;
     }
     
-    /* 업로드 영역 내부의 작은 글씨들 색상 */
-    [data-testid="stFileUploader"] label, 
+    /* 업로드 버튼 (Upload 버튼) */
+    [data-testid="stFileUploader"] button {
+        background-color: #333333 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #555555 !important;
+    }
+
+    /* 업로드 버튼 우측 문구 (200MB per file... 등) */
+    [data-testid="stFileUploader"] {
+        color: #94A3B8 !important;
+    }
+    [data-testid="stFileUploader"] div[data-testid="stMarkdownContainer"] p {
+        color: #94A3B8 !important;
+    }
+    /* "Browse files" 텍스트와 하단 작은 글씨들 */
     [data-testid="stFileUploader"] small {
         color: #94A3B8 !important;
     }
 
-    /* 4. UI 요소 숨기기 (기존 유지) */
+    /* 5. UI 고정 및 불필요 요소 제거 (기존 유지) */
     #MainMenu { visibility: hidden; }
     header { visibility: hidden; }
     footer { visibility: hidden; }
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] {
         display: none !important;
     }
-
-    /* 5. 사이드바 너비 고정 */
     [data-testid="stSidebar"] {
         min-width: 300px !important;
         max-width: 300px !important;
