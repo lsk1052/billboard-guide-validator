@@ -205,6 +205,21 @@ st.caption("광고 빌보드 배너 디자인 품질 및 규격 검수 프로그
 
 with st.sidebar:
     st.header("🖼️ 소재 편집")
+    # ... (기존 카피 입력창들) ...
+    
+    st.divider()
+    st.header("📍 미리보기 설정")
+    # 라디오 버튼 추가
+    view_mode = st.radio(
+        "확인할 빌보드 유형을 선택하세요",
+        ["홈 빌보드", "버티컬 빌보드"]
+    )
+    
+    st.divider()
+    st.markdown("### 📋 검수 가이드라인")
+    # ...
+    
+    st.header("🖼️ 소재 편집")
 
     st.info("💡 아래 입력창의 텍스트를 수정하면 미리보기에 즉시 반영됩니다.")
     
@@ -250,43 +265,39 @@ if uploaded_file is not None:
 
     st.divider()
     
-    # --- [미리보기] 홈 vs 버티컬 좌우 배치 ---
-    st.subheader("가이드라인 적용 미리보기 (홈 / 버티컬)")
-    
-    p_col1, p_col2 = st.columns(2)
-    
-    with p_col1:
+    # --- [미리보기] 선택한 모드에 따라 하나씩 크게 보여주기 ---
+    st.subheader(f"🔍 {view_mode} 미리보기")
+
+    if view_mode == "홈 빌보드":
         st.markdown("#### 🏠 홈 헤더 버전")
         preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
         st.image(preview_home, use_container_width=True, caption="Home Header 적용 결과")
         
-        # --- [다운로드 버튼 추가] ---
+        # 다운로드 버튼 (홈 버전)
         buf = io.BytesIO()
         preview_home.save(buf, format="PNG")
         byte_im = buf.getvalue()
-        
         st.download_button(
             label="🏠 홈 버전 다운로드",
             data=byte_im,
             file_name="billboard_home_preview.png",
             mime="image/png",
-            use_container_width=True # 버튼 길이를 컬럼 너비에 맞춤
+            use_container_width=True
         )
-        
-    with p_col2:
+
+    else:  # "버티컬 빌보드" 선택 시
         st.markdown("#### 📱 버티컬 헤더 버전")
         preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
         st.image(preview_vertical, use_container_width=True, caption="Vertical Header 적용 결과")
         
-        # --- [다운로드 버튼 추가] ---
+        # 다운로드 버튼 (버티컬 버전)
         buf_v = io.BytesIO()
         preview_vertical.save(buf_v, format="PNG")
         byte_im_v = buf_v.getvalue()
-        
         st.download_button(
             label="📱 버티컬 버전 다운로드",
             data=byte_im_v,
             file_name="billboard_vertical_preview.png",
             mime="image/png",
-            use_container_width=True # 버튼 길이를 컬럼 너비에 맞춤
+            use_container_width=True
         )
