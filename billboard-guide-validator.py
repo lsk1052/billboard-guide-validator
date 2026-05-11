@@ -90,6 +90,30 @@ st.markdown("""
         color: #FFFFFF !important;
         border: 1px solid #475569 !important;
     }
+
+    /* --- [완성] 규격 통과/용량 적정 등 상단 st.success 상태 박스 컬러 고정 --- */
+
+    /* 1. 메인 화면의 'st.success' 박스 - 배경색과 테두리색 (가장 중요한 부분) */
+    [data-testid="stAppViewContainer"] [data-testid="stAlert"].stSuccess {
+        /* 사용자님이 원하는 "밝은 녹색" 배경으로 강제 고정 (시크릿 모드 느낌) */
+        background-color: #125528 !important; /* ← 여기에 원하는 밝은 녹색 배경 코드를 넣으세요 */
+        
+        /* 박스 외곽 테두리 (에메랄드색 포인트) */
+        border: 1px solid #10B981 !important; 
+        
+        /* 내부 텍스트와 아이콘은 무조건 흰색으로 고정 */
+        color: #FFFFFF !important; 
+    }
+
+    /* 2. 메인 화면의 'st.success' 박스 - 내부 텍스트와 아이콘 */
+    [data-testid="stAppViewContainer"] [data-testid="stAlert"].stSuccess div,
+    [data-testid="stAppViewContainer"] [data-testid="stAlert"].stSuccess p {
+        color: #FFFFFF !important;
+    }
+    [data-testid="stAppViewContainer"] [data-testid="stAlert"].stSuccess svg {
+        fill: #FFFFFF !important;
+        color: #FFFFFF !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
