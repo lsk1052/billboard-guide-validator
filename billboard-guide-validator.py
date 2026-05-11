@@ -15,54 +15,58 @@ st.set_page_config(
 # 2. 다크모드 테마 및 스타일링
 st.markdown("""
     <style>
-    .stApp { background-color: #111111; color: #F8FAFC; }
-    .check-pass { font-size: 1.2rem; font-weight: 800; color: #10B981; }
-    .check-fail { font-size: 1.2rem; font-weight: 800; color: #EF4444; }
-    .status-text { font-size: 0.85rem; color: #94A3B8; }
-    .stImage { border-radius: 12px; border: 1px solid #1E293B; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
+    /* 전체 배경 및 기본 글자색 */
+    .stApp { 
+        background-color: #111111 !important; 
+        color: #F8FAFC !important; 
+    }
 
-    /* --- 기존 작성하신 코드 --- */
-    .stApp { background-color: #111111; color: #F2F2F2; }
-    h1, h2, h3, h4 { color: #FFFFFF !important; } 
+    /* 1. 사이드바 전체 배경 및 테두리 복구 */
+    [data-testid="stSidebar"] {
+        background-color: #1A1A1A !important;
+        border-right: 1px solid #2D2D2D !important;
+    }
     
-    /* ... (생략된 기존 클래스들: .check-pass, .guide-container 등) ... */
+    /* 사이드바 내부의 모든 컨텐츠 배경 고정 */
+    [data-testid="stSidebarContent"] {
+        background-color: #1A1A1A !important;
+    }
 
-    /* --- [추가] 다크모드 고정 및 테마 변경 UI 제거 --- */
+    /* 2. 입력창(Text Area, Input) 배경 및 글자색 고정 */
+    div[data-baseweb="textarea"], div[data-baseweb="input"] {
+        background-color: #262626 !important;
+        border: 1px solid #3D3D3D !important;
+    }
     
-    /* 1. 우측 상단 햄버거 메뉴(설정) 전체 숨기기 */
-    #MainMenu {visibility: hidden;}
-    
-    /* 2. 헤더 영역 제거 (테마 변경 옵션 방지) */
-    header {visibility: hidden;}
-    
-    /* 3. 푸터(Made with Streamlit) 제거 */
-    footer {visibility: hidden;}
+    textarea, input {
+        color: #F8FAFC !important;
+    }
 
-    /* 4. 사이드바 내의 불필요한 여백 최적화 (기존 코드 유지) */
-    [data-testid="stSidebar"] .stMarkdown { margin-bottom: 0px !important; }
+    /* 3. 파일 업로드 영역(File Uploader) 배경 및 테두리 수정 */
+    [data-testid="stFileUploader"] section {
+        background-color: #1E1E1E !important;
+        border: 1px dashed #444444 !important;
+        color: #F8FAFC !important;
+    }
     
-    /* 1. 사이드바 내부의 접기 버튼(<<) 및 외부 펼치기 버튼(>) 모두 제거 */
-    [data-testid="stSidebarCollapseButton"], 
-    [data-testid="collapsedControl"] {
+    /* 업로드 영역 내부의 작은 글씨들 색상 */
+    [data-testid="stFileUploader"] label, 
+    [data-testid="stFileUploader"] small {
+        color: #94A3B8 !important;
+    }
+
+    /* 4. UI 요소 숨기기 (기존 유지) */
+    #MainMenu { visibility: hidden; }
+    header { visibility: hidden; }
+    footer { visibility: hidden; }
+    [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] {
         display: none !important;
     }
 
-    /* 2. 사이드바 상단 여백 조절 (버튼이 사라진 자리가 비어 보일 수 있음) */
-    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        padding-top: 1rem !important;
-    }
-
-    /* 3. 사이드바 너비 고정 (기존 유지) */
+    /* 5. 사이드바 너비 고정 */
     [data-testid="stSidebar"] {
         min-width: 300px !important;
         max-width: 300px !important;
-    }
-
-    /* 사이드바 안의 텍스트가 안 보일 경우를 대비해 색상 강제 지정 */
-    [data-testid="stSidebar"] .stMarkdown, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] .stText {
-        color: #F8FAFC !important;
     }
     </style>
     """, unsafe_allow_html=True)
