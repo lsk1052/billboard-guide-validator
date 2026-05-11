@@ -11,67 +11,67 @@ st.set_page_config(
     layout="wide",
 )
 
-# 2. 다크모드 테마 및 스타일링 (메인 화면 강제 다크화 버전)
+# 2. 색상 완전 고정 (시스템 테마 무시 버전)
 st.markdown("""
     <style>
-    /* --- [1] 전체 앱 컨테이너 배경 (우측 하얀 화면 해결) --- */
-    [data-testid="stAppViewContainer"] {
+    /* [1] 전역 배경 및 텍스트 색상 강제 고정 */
+    /* 라이트 모드여도 무조건 배경은 검게, 글자는 하얗게 만듭니다. */
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
         background-color: #111111 !important;
-    }
-    
-    /* 상단 헤더 영역 배경색 고정 */
-    [data-testid="stHeader"] {
-        background-color: rgba(0,0,0,0) !important;
+        color: #FFFFFF !important;
     }
 
-    /* --- [2] 사이드바 배경색 고정 --- */
-    [data-testid="stSidebar"] {
+    /* 모든 텍스트 요소를 흰색으로 고정 */
+    h1, h2, h3, h4, h5, h6, p, label, span, li, small {
+        color: #FFFFFF !important;
+    }
+
+    /* [2] 사이드바 고정 컬러 */
+    [data-testid="stSidebar"], [data-testid="stSidebar"] > div {
         background-color: #161616 !important;
         border-right: 1px solid #1E293B;
     }
 
-    /* --- [3] 모든 텍스트 컬러 강제 흰색 (메인+사이드바 공통) --- */
-    h1, h2, h3, h4, h5, h6, p, label, span, li {
+    /* [3] 입력창 (메인/서브 카피) 스타일 고정 */
+    /* .stTextArea와 .stTextInput 내부의 모든 배경/테두리를 하나로 묶어 처리 */
+    .stTextArea textarea, .stTextInput input, 
+    div[data-baseweb="base-input"], div[data-baseweb="input"] {
+        background-color: #1E1E1E !important;
         color: #FFFFFF !important;
-    }
-    .stApp .stCaption {
-        color: #CBD5E1 !important; /* 캡션은 살짝 흐린 회색 */
+        -webkit-text-fill-color: #FFFFFF !important;
+        border: none !important;
     }
 
-    /* --- [4] 입력창 스타일 통일 (라인 컬러 & 안내문구) --- */
-    /* 메인 카피 창 & 서브 카피 창 공통 */
-    .stTextInput > div > div, 
-    .stTextArea > div > div {
+    /* 입력창 바깥 테두리 라인 */
+    .stTextArea > div > div, .stTextInput > div > div {
         background-color: #1E1E1E !important;
-        border: 1px solid #334155 !important; /* 라인 컬러 */
+        border: 1px solid #334155 !important; /* ← 여기서 테두리 컬러 수정 */
         border-radius: 8px !important;
     }
 
-    /* 입력창 내부 실제 글자색 & 안내문구(Placeholder) */
-    input, textarea {
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-    }
+    /* 안내문구(Placeholder) 컬러 */
     input::placeholder, textarea::placeholder {
-        color: #64748B !important; /* 안내문구 컬러 */
+        color: #64748B !important; /* ← 여기서 안내문구 컬러 수정 */
         opacity: 1 !important;
     }
 
-    /* 클릭 시(Focus) 라인 컬러 */
-    .stTextInput:focus-within > div > div, 
-    .stTextArea:focus-within > div > div {
-        border-color: #10B981 !important;
-        box-shadow: 0 0 0 1px #10B981 !important;
-    }
-
-    /* --- [5] 파일 업로더 디자인 --- */
+    /* [4] 파일 업로더 및 파일 정보 카드 고정 */
+    /* 업로드 영역 */
     [data-testid="stFileUploader"] section {
         background-color: #1A1A1A !important;
         border: 1px dashed #475569 !important;
-        color: #FFFFFF !important;
     }
 
-    /* --- [6] TIP 박스(st.info) 스타일 --- */
+    /* 업로드된 파일 카드 (문제의 하얀 박스 완벽 차단) */
+    [data-testid="stFileUploaderFileData"], 
+    [data-testid="stFileUploaderFileData"] *,
+    [data-testid="stFileUploaderFileData"] div {
+        background-color: #1E1E1E !important;
+        color: #FFFFFF !important;
+        border-color: #334155 !important;
+    }
+
+    /* [5] 사이드바 TIP 박스 (st.info) 고정 */
     [data-testid="stSidebar"] [data-testid="stAlert"] {
         background-color: #1E293B !important;
         border: 1px solid #334155 !important;
@@ -80,100 +80,15 @@ st.markdown("""
         color: #FFFFFF !important;
     }
 
-    /* --- [핵심] 파일 업로더 내 버튼 스타일 강제 고정 --- */
-[data-testid="stFileUploader"] button {
-    background-color: #262730 !important; /* 시크릿 모드 느낌의 어두운 배경 */
-    color: #FFFFFF !important;           /* 글자색 흰색 */
-    border: 1px solid #475569 !important; /* 테두리 라인 */
-    transition: all 0.2s ease;
-}
-
-    /* 버튼 위에 마우스 올렸을 때(Hover) */
-    [data-testid="stFileUploader"] button:hover {
-        border-color: #10B981 !important;    /* 에메랄드 포인트 컬러 */
-        background-color: #1E1E1E !important;
-    }
-    
-    /* 버튼 내부의 아이콘 컬러 */
-    [data-testid="stFileUploader"] button svg {
-        fill: #FFFFFF !important;
-    }
-    
-    /* 업로드 창 전체 배경 (하얀 박스 방지) */
-    [data-testid="stFileUploader"] section {
-        background-color: #1A1A1A !important;
-        border: 1px dashed #334155 !important;
-        border-radius: 8px !important;
-    }
-    
-    /* 업로드 안내 텍스트 (200MB per file 등) */
-    [data-testid="stFileUploader"] section div div {
-        color: #CBD5E1 !important;
-    }
-
-    /* --- [7] 불필요한 UI 제거 --- */
+    /* [6] UI 정리 (불필요한 버튼 및 메뉴 숨기기) */
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
     #MainMenu, header, footer { visibility: hidden; }
 
-/* --- [진짜 최종 완성] 업로드된 파일 정보 카드 스타일 통일 --- */
-
-    /* 1. 파일 카드 전체 컨테이너와 그 내부의 모든 div 배경을 강제로 어둡게 */
-    [data-testid="stFileUploaderFileData"], 
-    [data-testid="stFileUploaderFileData"] div,
-    [data-testid="stFileUploaderFileData"] > div > div {
-        background-color: #1E1E1E !important;
-        background-image: none !important; /* 혹시 모를 배경 이미지 제거 */
-    }
-
-    /* 2. 카드 외곽 테두리 및 라운드 설정 */
-    [data-testid="stFileUploaderFileData"] {
-        border: 1px solid #334155 !important;
-        border-radius: 8px !important;
-    }
-
-    /* 3. 파일명, 용량 텍스트를 흰색으로 강제 고정 */
-    [data-testid="stFileUploaderFileData"] span,
-    [data-testid="stFileUploaderFileData"] div,
-    [data-testid="stFileUploaderFileData"] p {
+    /* [7] 버튼 스타일 고정 */
+    button[kind="secondary"] {
+        background-color: #262730 !important;
         color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-    }
-
-    /* 4. 파일 아이콘 및 삭제(X) 버튼 컬러 */
-    [data-testid="stFileUploaderFileData"] svg {
-        fill: #FFFFFF !important;
-        color: #FFFFFF !important;
-    }
-
-    /* 5. 삭제 버튼 배경 투명화 및 호버 효과 */
-    [data-testid="stFileUploaderFileData"] button {
-        background-color: transparent !important;
-    }
-    [data-testid="stFileUploaderFileData"] button:hover svg {
-        fill: #EF4444 !important; /* 삭제 버튼 마우스 올리면 빨간색 */
-    }
-
-    /* --- [일반 모드 고집 꺾기용] 파일 정보 카드 최종 --- */
-    
-    [data-testid="stFileUploaderFileData"] {
-        background-color: #1E1E1E !important;
-        border: 1px solid #334155 !important;
-        box-shadow: none !important; /* 하얀 테두리처럼 보이는 그림자 제거 */
-    }
-
-    /* 내부의 모든 배경색을 투명하게 해서 박스색(#1E1E1E)이 투과되게 함 */
-    [data-testid="stFileUploaderFileData"] div, 
-    [data-testid="stFileUploaderFileData"] div div,
-    [data-testid="stFileUploaderFileData"] section {
-        background-color: transparent !important;
-        background-image: none !important;
-        border: none !important;
-    }
-
-    /* 텍스트와 아이콘은 무조건 흰색 */
-    [data-testid="stFileUploaderFileData"] * {
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
+        border: 1px solid #475569 !important;
     }
     </style>
     """, unsafe_allow_html=True)
