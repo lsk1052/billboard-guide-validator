@@ -151,13 +151,33 @@ st.markdown("""
     /* --- [1] 상단 여백(Main & Sidebar) 대폭 축소 --- */
     /* 메인 화면 상단 여백 조절 */
     .block-container {
-        padding-top: 2.5rem !important; /* 기본 약 6rem에서 축소 */
-        padding-bottom: 2rem !important;
+        padding-top: 3.5rem !important;
     }
 
     /* 사이드바 상단 여백 조절 */
     [data-testid="stSidebarUserContent"] {
-        padding-top: 2rem !important;
+        padding-top: 3.5rem !important;
+    }
+
+    /* [2] 각 영역 첫 번째 제목의 마진을 제거하여 물리적 높이 일치 */
+    .block-container h1, 
+    [data-testid="stSidebarContent"] h2 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        line-height: 1.2 !important;
+    }
+
+    /* [3] 사이드바 구분선(Divider) 시인성 강화 */
+    [data-testid="stSidebar"] hr {
+        border-color: #475569 !important; /* 명확히 보이는 그레이-블루 */
+        margin-top: 1.2rem !important;
+        margin-bottom: 1.2rem !important;
+        opacity: 1 !important;
+    }
+
+    /* [4] 사이드바 위젯들 사이의 간격 미세 조정 (선택사항) */
+    [data-testid="stSidebarContent"] .stVerticalBlock {
+        gap: 0.8rem !important;
     }
 
     /* --- [2] 사이드바 구분선(hr) 컬러 명확하게 변경 --- */
