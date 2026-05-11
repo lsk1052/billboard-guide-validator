@@ -152,6 +152,29 @@ st.markdown("""
     [data-testid="stFileUploaderFileData"] button:hover svg {
         fill: #EF4444 !important; /* 삭제 버튼 마우스 올리면 빨간색 */
     }
+
+    /* --- [일반 모드 고집 꺾기용] 파일 정보 카드 최종 --- */
+    
+    [data-testid="stFileUploaderFileData"] {
+        background-color: #1E1E1E !important;
+        border: 1px solid #334155 !important;
+        box-shadow: none !important; /* 하얀 테두리처럼 보이는 그림자 제거 */
+    }
+
+    /* 내부의 모든 배경색을 투명하게 해서 박스색(#1E1E1E)이 투과되게 함 */
+    [data-testid="stFileUploaderFileData"] div, 
+    [data-testid="stFileUploaderFileData"] div div,
+    [data-testid="stFileUploaderFileData"] section {
+        background-color: transparent !important;
+        background-image: none !important;
+        border: none !important;
+    }
+
+    /* 텍스트와 아이콘은 무조건 흰색 */
+    [data-testid="stFileUploaderFileData"] * {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
