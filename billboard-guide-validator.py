@@ -286,7 +286,6 @@ if uploaded_file is not None:
         st.subheader(f"🔍 {view_mode} 미리보기")
         
         if view_mode == "홈 빌보드":
-            st.markdown("#### 🏠 홈 헤더 버전")
             preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
             
             # width=750 유지 (CSS가 이를 중앙으로 밀어줍니다)
@@ -305,7 +304,6 @@ if uploaded_file is not None:
             )
 
         else:  # "버티컬 빌보드" 선택 시
-            st.markdown("#### 📱 버티컬 헤더 버전")
             preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
             
             st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
