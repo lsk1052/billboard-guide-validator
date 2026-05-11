@@ -12,56 +12,47 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# 2. 다크모드 테마 및 스타일링 (최종 해결 버전)
+# 2. 다크모드 테마 및 스타일링 (안내 문구 복구 버전)
 st.markdown("""
     <style>
-    /* 1. 전체 배경 및 사이드바 기본 설정 */
+    /* ... 기존 설정 유지 ... */
+    
     .stApp { background-color: #111111 !important; color: #F8FAFC !important; }
     [data-testid="stSidebar"] { background-color: #1A1A1A !important; }
 
-    /* 2. 사이드바 내 모든 텍스트 및 라벨(제목) 흰색 고정 */
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, [data-testid="stSidebar"] li {
+    /* 1. 사이드바 라벨 및 일반 텍스트 색상 */
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] li {
         color: #FFFFFF !important;
     }
 
-    /* 3. [완전 해결] 텍스트 인풋 및 에어리어 박스 배경색 강제 지정 */
-    /* 박스의 여러 겹 레이어를 모두 타겟팅하여 배경을 어둡게 고정합니다 */
+    /* 2. 텍스트 박스 레이어 및 배경 고정 */
     .stTextInput > div > div, .stTextArea > div > div,
     div[data-baseweb="input"] > div, div[data-baseweb="textarea"] > div {
         background-color: #262626 !important;
         border: 1px solid #444444 !important;
     }
 
-    /* 실제 글자가 타이핑되는 영역의 색상 고정 */
+    /* 3. [추가] 박스 하단 안내 문구 (Cmd+Enter, Enter 등) 시인성 확보 */
+    /* Streamlit 위젯의 특수한 안내 문구 클래스를 타겟팅합니다 */
+    [data-testid="stWidgetInstructions"] {
+        color: #94A3B8 !important; /* 가독성 좋은 밝은 회색 */
+        font-size: 0.75rem !important;
+    }
+
+    /* 4. 입력 텍스트 및 커서 색상 */
     input, textarea {
         color: #FFFFFF !important;
         background-color: transparent !important;
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
-    /* 4. 파일 업로드 영역 (하얗게 변하는 것 방지) */
-    [data-testid="stFileUploader"] section {
-        background-color: #1E1E1E !important;
-        border: 1px dashed #444444 !important;
-    }
-    [data-testid="stFileUploader"] p, [data-testid="stFileUploader"] small, [data-testid="stFileUploader"] span {
-        color: #CBD5E1 !important;
-    }
-    [data-testid="stFileUploader"] button {
-        background-color: #333333 !important;
-        color: #FFFFFF !important;
-    }
-
-    /* 5. 사이드바 고정 및 불필요 요소 제거 (기존 유지) */
+    /* 5. 파일 업로드 영역 및 기타 고정 (기존 유지) */
+    [data-testid="stFileUploader"] section { background-color: #1E1E1E !important; }
+    [data-testid="stFileUploader"] p, [data-testid="stFileUploader"] small { color: #CBD5E1 !important; }
+    
     #MainMenu, header, footer { visibility: hidden; }
-    [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] {
-        display: none !important;
-    }
-    [data-testid="stSidebar"] {
-        min-width: 300px !important;
-        max-width: 300px !important;
-    }
+    [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
+    [data-testid="stSidebar"] { min-width: 300px !important; max-width: 300px !important; }
     </style>
     """, unsafe_allow_html=True)
 
