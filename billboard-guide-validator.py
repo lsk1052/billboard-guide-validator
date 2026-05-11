@@ -11,47 +11,78 @@ st.set_page_config(
     layout="wide",
 )
 
+# 2. 다크모드 테마 및 스타일링 (메인 화면 강제 다크화 버전)
 st.markdown("""
     <style>
-    /* 1. 사이드바 배경색 고정 (일반/시크릿 모드 통일) */
+    /* --- [1] 전체 앱 컨테이너 배경 (우측 하얀 화면 해결) --- */
+    [data-testid="stAppViewContainer"] {
+        background-color: #111111 !important;
+    }
+    
+    /* 상단 헤더 영역 배경색 고정 */
+    [data-testid="stHeader"] {
+        background-color: rgba(0,0,0,0) !important;
+    }
+
+    /* --- [2] 사이드바 배경색 고정 --- */
     [data-testid="stSidebar"] {
         background-color: #161616 !important;
         border-right: 1px solid #1E293B;
     }
 
-    /* 2. 메인 카피 창 (st.text_area) */
+    /* --- [3] 모든 텍스트 컬러 강제 흰색 (메인+사이드바 공통) --- */
+    h1, h2, h3, h4, h5, h6, p, label, span, li {
+        color: #FFFFFF !important;
+    }
+    .stApp .stCaption {
+        color: #CBD5E1 !important; /* 캡션은 살짝 흐린 회색 */
+    }
+
+    /* --- [4] 입력창 스타일 통일 (라인 컬러 & 안내문구) --- */
+    /* 메인 카피 창 & 서브 카피 창 공통 */
+    .stTextInput > div > div, 
     .stTextArea > div > div {
-        border: 1px solid #334155 !important; /* 테두리 컬러 직접 수정 */
         background-color: #1E1E1E !important;
-    }
-    .stTextArea textarea::placeholder {
-        color: #94A3B8 !important; /* 안내문구 컬러 직접 수정 */
-    }
-
-    /* 3. 서브 카피 창 (st.text_input) */
-    .stTextInput > div > div {
-        border: 1px solid #334155 !important; /* 테두리 컬러 직접 수정 */
-        background-color: #1E1E1E !important;
-    }
-    .stTextInput input::placeholder {
-        color: #94A3B8 !important; /* 안내문구 컬러 직접 수정 */
+        border: 1px solid #334155 !important; /* 라인 컬러 */
+        border-radius: 8px !important;
     }
 
-    /* 4. 가이드라인 텍스트 가시성 강제 확보 (왼쪽 화면처럼 안 보이게 되는 현상 방지) */
-    [data-testid="stSidebar"] .stMarkdown p, 
-    [data-testid="stSidebar"] .stMarkdown li {
-        color: #CBD5E1 !important; /* 밝은 그레이로 고정 */
+    /* 입력창 내부 실제 글자색 & 안내문구(Placeholder) */
+    input, textarea {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
     }
-    
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {
-        color: #FFFFFF !important; /* 제목은 완전 흰색 */
+    input::placeholder, textarea::placeholder {
+        color: #64748B !important; /* 안내문구 컬러 */
+        opacity: 1 !important;
     }
 
-    /* 5. TIP 박스(st.info) 내부 텍스트 */
+    /* 클릭 시(Focus) 라인 컬러 */
+    .stTextInput:focus-within > div > div, 
+    .stTextArea:focus-within > div > div {
+        border-color: #10B981 !important;
+        box-shadow: 0 0 0 1px #10B981 !important;
+    }
+
+    /* --- [5] 파일 업로더 디자인 --- */
+    [data-testid="stFileUploader"] section {
+        background-color: #1A1A1A !important;
+        border: 1px dashed #475569 !important;
+        color: #FFFFFF !important;
+    }
+
+    /* --- [6] TIP 박스(st.info) 스타일 --- */
+    [data-testid="stSidebar"] [data-testid="stAlert"] {
+        background-color: #1E293B !important;
+        border: 1px solid #334155 !important;
+    }
     [data-testid="stSidebar"] [data-testid="stAlert"] * {
         color: #FFFFFF !important;
     }
+
+    /* --- [7] 불필요한 UI 제거 --- */
+    [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
+    #MainMenu, header, footer { visibility: hidden; }
     </style>
     """, unsafe_allow_html=True)
 
