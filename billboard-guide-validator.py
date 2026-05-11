@@ -14,15 +14,25 @@ st.set_page_config(
 # 2. 다크모드 테마 및 스타일링
 st.markdown("""
     <style>
-    .stApp { background-color: #111111; color: #F8FAFC; }
+    .stApp { background-color: #111111; }
     .check-pass { font-size: 1.2rem; font-weight: 800; color: #10B981; }
     .check-fail { font-size: 1.2rem; font-weight: 800; color: #EF4444; }
     .status-text { font-size: 0.85rem; color: #94A3B8; }
     .stImage { border-radius: 12px; border: 1px solid #1E293B; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
 
+    /* 1. 사이드바 내부의 접기 버튼(<<) 및 외부 펼치기 버튼(>) 모두 제거 */
+    [data-testid="stSidebarCollapseButton"], 
+    [data-testid="collapsedControl"] {
+        display: none !important;
+    }
+
+    /* --- 전체 배경 및 기본 텍스트 --- */
+    .stApp { background-color: #111111; }
+    h1, h2, h3, h4 { color: #FFFFFF !important; }
+
     /* --- 기존 작성하신 코드 --- */
     .stApp { background-color: #111111; color: #F2F2F2; }
-    h1, h2, h3, h4 { color: #FFFFFF !important; } 
+    h1, h2, h3, h4 { color: #FFFFFF !important; }
     
     /* ... (생략된 기존 클래스들: .check-pass, .guide-container 등) ... */
 
