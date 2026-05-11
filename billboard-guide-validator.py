@@ -11,60 +11,72 @@ st.set_page_config(
     layout="wide",
 )
 
-# 2. 다크모드 테마 및 스타일링 (시인성 개선 버전)
+# 2. 다크모드 테마 및 스타일링 (일체감 강화 버전)
 st.markdown("""
     <style>
-    /* --- 전체 배경 --- */
+    /* --- 전체 배경 및 사이드바 --- */
     .stApp { background-color: #111111; }
-    
-    /* --- [수정] 사이드바 배경 및 텍스트 --- */
     [data-testid="stSidebar"] {
         background-color: #161616 !important;
         border-right: 1px solid #1E293B;
     }
 
-    /* 사이드바 내 모든 라벨(메인/서브 카피 입력 등) 글자색 화이트로 고정 */
-    [data-testid="stSidebar"] label p {
+    /* --- [핵심] 입력창(Input & Textarea) 커스텀 --- */
+    /* 입력창 배경을 어둡게, 테두리는 최소화 */
+    .stTextInput div[data-baseweb="input"], 
+    .stTextArea div[data-baseweb="base-input"],
+    .stFileUploader section {
+        background-color: #1E1E1E !important;
+        border: 1px solid #334155 !important;
+        border-radius: 8px !important;
+    }
+
+    /* 입력창 내부 텍스트 컬러 */
+    .stTextInput input, .stTextArea textarea {
         color: #FFFFFF !important;
-        font-weight: 600 !important;
     }
 
-    /* 사이드바 st.info 텍스트 색상 조정 */
-    [data-testid="stSidebar"] .stAlert p {
-        color: #1E293B !important; /* 안내창 내부 글씨는 가독성을 위해 어둡게 */
+    /* 입력창에 포커스(클릭) 되었을 때 포인트 컬러(에메랄드) */
+    .stTextInput div[data-baseweb="input"]:focus-within, 
+    .stTextArea div[data-baseweb="base-input"]:focus-within {
+        border-color: #10B981 !important;
+        box-shadow: 0 0 0 1px #10B981 !important;
     }
 
-    /* --- [수정] 메인 화면 텍스트 시인성 --- */
-    
-    /* 1. 메인 타이틀 (Check Mate : 빌보드 가이드 체크) */
-    .stApp h1 {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
+    /* --- 파일 업로더(Dropzone) 스타일 --- */
+    [data-testid="stFileUploader"] section {
+        background-color: #1A1A1A !important;
+        border: 1px dashed #475569 !important;
+        padding: 20px !important;
     }
-
-    /* 2. 메인 캡션 및 일반 텍스트 (광고 빌보드 배너... 등) */
-    .stApp .stCaption, .stApp p {
-        color: #CBD5E1 !important; /* 밝은 그레이로 가독성 확보 */
-    }
-
-    /* 3. 이미지 업로더 라벨 (검수할 빌보드 이미지를 업로드하세요) */
     [data-testid="stFileUploader"] label p {
         color: #FFFFFF !important;
-        font-size: 1.1rem !important;
         font-weight: 600 !important;
     }
 
-    /* --- 기존 스타일 유지 --- */
+    /* --- 텍스트 시인성 확보 --- */
+    .stApp h1, .stApp h2, .stApp h3 { color: #FFFFFF !important; }
+    .stApp .stCaption, .stApp p { color: #CBD5E1 !important; }
+    
+    /* 사이드바 라벨 강조 */
+    [data-testid="stSidebar"] label p {
+        color: #F8FAFC !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 8px;
+    }
+
+    /* 구분선(Divider) 색상 조정 */
+    hr { border-color: #334155 !important; }
+
+    /* --- 기존 UI 요소 제거 --- */
+    [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
+    #MainMenu, header, footer { visibility: hidden; }
+    
+    /* 기존 클래스 유지 */
     .check-pass { font-size: 1.2rem; font-weight: 800; color: #10B981; }
     .check-fail { font-size: 1.2rem; font-weight: 800; color: #EF4444; }
-    .status-text { font-size: 0.85rem; color: #94A3B8; }
-    .stImage { border-radius: 12px; border: 1px solid #1E293B; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
-
-    [data-testid="stSidebarCollapseButton"], 
-    [data-testid="collapsedControl"] { display: none !important; }
-    #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
+    .stImage { border-radius: 12px; border: 1px solid #1E293B; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
     </style>
     """, unsafe_allow_html=True)
 
