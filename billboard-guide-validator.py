@@ -1,3 +1,4 @@
+import io
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import cv2
@@ -252,14 +253,43 @@ if uploaded_file is not None:
     # --- [미리보기] 홈 vs 버티컬 좌우 배치 ---
     st.subheader("가이드라인 적용 미리보기 (홈 / 버티컬)")
     
+    # --- [미리보기] 홈 vs 버티컬 좌우 배치 ---
+    st.subheader("가이드라인 적용 미리보기 (홈 / 버티컬)")
+    
     p_col1, p_col2 = st.columns(2)
     
     with p_col1:
         st.markdown("#### 🏠 홈 헤더 버전")
         preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
-        st.image(preview_home, width=750, caption="Home Header 적용 결과")
+        st.image(preview_home, use_container_width=True, caption="Home Header 적용 결과")
+        
+        # --- [다운로드 버튼 추가] ---
+        buf = io.BytesIO()
+        preview_home.save(buf, format="PNG")
+        byte_im = buf.getvalue()
+        
+        st.download_button(
+            label="🏠 홈 버전 다운로드",
+            data=byte_im,
+            file_name="billboard_home_preview.png",
+            mime="image/png",
+            use_container_width=True # 버튼 길이를 컬럼 너비에 맞춤
+        )
         
     with p_col2:
         st.markdown("#### 📱 버티컬 헤더 버전")
         preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
-        st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과")
+        st.image(preview_vertical, use_container_width=True, caption="Vertical Header 적용 결과")
+        
+        # --- [다운로드 버튼 추가] ---
+        buf_v = io.BytesIO()
+        preview_vertical.save(buf_v, format="PNG")
+        byte_im_v = buf_v.getvalue()
+        
+        st.download_button(
+            label="📱 버티컬 버전 다운로드",
+            data=byte_im_v,
+            file_name="billboard_vertical_preview.png",
+            mime="image/png",
+            use_container_width=True # 버튼 길이를 컬럼 너비에 맞춤
+        )
