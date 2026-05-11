@@ -12,50 +12,67 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# 2. 다크모드 테마 및 스타일링
+# 2. 다크모드 테마 및 스타일링 (강력한 강제 적용 버전)
 st.markdown("""
     <style>
-    /* 전체 배경 및 기본 글자색 */
+    /* 1. 전체 앱 및 사이드바 배경 고정 */
     .stApp { 
         background-color: #111111 !important; 
         color: #F8FAFC !important; 
     }
-
-    /* 1. 사이드바 전체 배경 및 제목(소재 편집) 색상 */
     [data-testid="stSidebar"] {
         background-color: #1A1A1A !important;
     }
+
+    /* 2. 사이드바 내 모든 텍스트 및 라벨 흰색 고정 */
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, 
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] li {
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] li,
+    [data-testid="stSidebar"] .stMarkdownContainer p {
         color: #FFFFFF !important;
     }
 
-    /* 2. 입력창(Text Area, Input) 배경 다크하게 + 글자색 흰색 고정 */
-    div[data-baseweb="textarea"], div[data-baseweb="input"] {
+    /* 3. [핵심] 텍스트 인풋 및 텍스트 에어리어 박스 배경색 강제 수정 */
+    /* 박스 테두리와 배경을 어둡게 고정합니다 */
+    div[data-baseweb="input"], div[data-baseweb="textarea"] {
         background-color: #262626 !important;
         border: 1px solid #444444 !important;
     }
-    textarea, input {
+    
+    /* 박스 내부의 실제 입력 텍스트와 커서 색상을 흰색으로 고정 */
+    input, textarea {
         color: #FFFFFF !important;
+        background-color: transparent !important;
         -webkit-text-fill-color: #FFFFFF !important;
     }
 
-    /* 3. 파일 업로드 안내 문구 (200MB per file...) 색상 밝게 */
-    [data-testid="stFileUploader"] p,
+    /* 4. [핵심] 파일 업로드 영역 배경색 강제 수정 */
+    /* 하얗게 변했던 업로드 박스 전체를 어둡게 만듭니다 */
+    [data-testid="stFileUploader"] section {
+        background-color: #1E1E1E !important;
+        border: 1px dashed #444444 !important;
+        color: #FFFFFF !important;
+    }
+    
+    /* 업로드 영역 내부 문구 (Browse files 등) 시인성 확보 */
+    [data-testid="stFileUploader"] p, 
     [data-testid="stFileUploader"] small,
-    [data-testid="stFileUploader"] div[data-testid="stMarkdownContainer"] p {
+    [data-testid="stFileUploader"] span {
         color: #CBD5E1 !important;
     }
+    
+    /* 업로드 버튼 자체 색상 */
+    [data-testid="stFileUploader"] button {
+        background-color: #333333 !important;
+        color: #FFFFFF !important;
+    }
 
-    /* 4. 사이드바 고정 기능 (접기 버튼 숨기기) */
+    /* 5. 사이드바 고정 및 UI 정리 (기존 유지) */
     #MainMenu { visibility: hidden; }
     header { visibility: hidden; }
     footer { visibility: hidden; }
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] {
         display: none !important;
     }
-
-    /* 5. 사이드바 너비 고정 */
     [data-testid="stSidebar"] {
         min-width: 300px !important;
         max-width: 300px !important;
