@@ -12,21 +12,29 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-<style>
-    /* 1. 사이드바 헤더 및 라벨 색상 (소재 편집 등 제목) */
+# 2. 다크모드 테마 및 스타일링
+st.markdown("""
+    <style>
+    /* 전체 배경 및 기본 글자색 */
+    .stApp { 
+        background-color: #111111 !important; 
+        color: #F8FAFC !important; 
+    }
+
+    /* 1. 사이드바 전체 배경 및 제목(소재 편집) 색상 */
+    [data-testid="stSidebar"] {
+        background-color: #1A1A1A !important;
+    }
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, 
-    [data-testid="stSidebar"] label {
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] p, [data-testid="stSidebar"] li {
         color: #FFFFFF !important;
     }
 
     /* 2. 입력창(Text Area, Input) 배경 다크하게 + 글자색 흰색 고정 */
-    /* 입력창 박스 자체의 배경 */
     div[data-baseweb="textarea"], div[data-baseweb="input"] {
         background-color: #262626 !important;
         border: 1px solid #444444 !important;
     }
-    
-    /* 입력창 내부 텍스트 및 커서 색상 */
     textarea, input {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
@@ -36,18 +44,24 @@ st.set_page_config(
     [data-testid="stFileUploader"] p,
     [data-testid="stFileUploader"] small,
     [data-testid="stFileUploader"] div[data-testid="stMarkdownContainer"] p {
-        color: #CBD5E1 !important; /* 밝은 회색으로 변경하여 시인성 확보 */
+        color: #CBD5E1 !important;
     }
 
-    /* 4. 기타 UI 고정 및 다크 배경 유지 */
-    .stApp { background-color: #111111; color: #F8FAFC; }
-    [data-testid="stSidebar"] { background-color: #1A1A1A !important; }
-    
-    #MainMenu, header, footer { visibility: hidden; }
+    /* 4. 사이드바 고정 기능 (접기 버튼 숨기기) */
+    #MainMenu { visibility: hidden; }
+    header { visibility: hidden; }
+    footer { visibility: hidden; }
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] {
         display: none !important;
     }
+
+    /* 5. 사이드바 너비 고정 */
+    [data-testid="stSidebar"] {
+        min-width: 300px !important;
+        max-width: 300px !important;
+    }
     </style>
+    """, unsafe_allow_html=True)
 
 # 3. 품질 분석 함수
 def evaluate_quality(pil_image):
