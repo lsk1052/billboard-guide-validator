@@ -43,11 +43,20 @@ st.markdown("""
         border: none !important;
     }
 
-    /* 입력창 바깥 테두리 라인 */
-    .stTextArea > div > div, .stTextInput > div > div {
-        background-color: #1E1E1E !important;
-        border: 1px solid #334155 !important; /* ← 여기서 테두리 컬러 수정 */
-        border-radius: 8px !important;
+    /* --- [최종] 모든 입력창 클릭 시 포커스 효과 (빨간색) --- */
+
+    /* 1. 메인 카피(Text Area)와 서브 카피(Text Input) 공통 적용 */
+    .stTextArea:focus-within > div > div, 
+    .stTextInput:focus-within > div > div {
+        border-color: #FF4B4B !important; /* 강조하고 싶은 빨간색 */
+        box-shadow: 0 0 0 1px #FF4B4B !important; /* 미세한 광채 효과 */
+    }
+
+    /* 2. 혹시 모를 내부 요소의 테두리 중첩 방지 */
+    .stTextArea:focus-within div[data-baseweb="textarea"],
+    .stTextInput:focus-within div[data-baseweb="input"] {
+        border-color: transparent !important;
+        box-shadow: none !important;
     }
 
     /* 안내문구(Placeholder) 컬러 */
