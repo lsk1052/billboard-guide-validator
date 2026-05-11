@@ -21,15 +21,36 @@ st.markdown("""
         border-right: 1px solid #1E293B;
     }
 
-    /* --- [2] 입력창 테두리 및 라인 컬러 완벽 통일 --- */
-    /* 모든 입력창의 부모 컨테이너 테두리 고정 */
-    .stTextInput > div > div, 
-    .stTextArea > div > div {
-        background-color: #1E1E1E !important;
-        border: 1px solid #334155 !important; /* 동일한 라인 컬러 */
-        border-radius: 8px !important;
-        transition: border-color 0.2s ease;
-    }
+    /* 1. 입력창 테두리(Border) 라인 컬러 */
+.stTextInput > div > div, 
+.stTextArea > div > div {
+    /* 여기의 #334155를 원하는 테두리 색상으로 바꾸세요 */
+    border: 1px solid #375E95 !important; 
+    background-color: #1E1E1E !important; /* 창 배경색 */
+}
+
+/* 2. 창 안의 안내문구(Placeholder / "enter" 등) 컬러 */
+input::placeholder, 
+textarea::placeholder {
+    /* 여기의 #94A3B8을 원하는 글자 색상으로 바꾸세요 */
+    color: #94A3B8 !important;
+    opacity: 1 !important; /* 투명도 무시 */
+}
+
+/* 3. 창을 클릭했을 때(Focus) 변하는 라인 컬러 */
+.stTextInput:focus-within > div > div, 
+.stTextArea:focus-within > div > div {
+    /* 여기의 #10B981을 클릭 시 강조될 색상으로 바꾸세요 */
+    border-color: #10B981 !important;
+    box-shadow: 0 0 0 1px #10B981 !important;
+}
+
+/* 4. 입력창에 실제로 써지는 글자 컬러 */
+input, textarea {
+    /* 글씨가 안 보인다면 여기를 #FFFFFF(흰색) 등으로 설정하세요 */
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
 
     /* 개별 입력 요소(BaseWeb)의 중복 테두리 제거 */
     div[data-baseweb="input"], 
