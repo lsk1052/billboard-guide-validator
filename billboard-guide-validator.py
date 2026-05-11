@@ -115,37 +115,42 @@ st.markdown("""
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
     #MainMenu, header, footer { visibility: hidden; }
 
-    /* --- [완성] 업로드된 파일 정보 카드 스타일 통일 --- */
+/* --- [진짜 최종 완성] 업로드된 파일 정보 카드 스타일 통일 --- */
 
-    /* 1. 파일 정보 카드 전체 (배경 및 테두리) */
+    /* 1. 파일 카드 전체 컨테이너와 그 내부의 모든 div 배경을 강제로 어둡게 */
+    [data-testid="stFileUploaderFileData"], 
+    [data-testid="stFileUploaderFileData"] div,
+    [data-testid="stFileUploaderFileData"] > div > div {
+        background-color: #1E1E1E !important;
+        background-image: none !important; /* 혹시 모를 배경 이미지 제거 */
+    }
+
+    /* 2. 카드 외곽 테두리 및 라운드 설정 */
     [data-testid="stFileUploaderFileData"] {
-        background-color: #1E1E1E !important; /* 어두운 배경 */
-        border: 1px solid #334155 !important; /* 테두리 라인 컬러 */
+        border: 1px solid #334155 !important;
         border-radius: 8px !important;
     }
-    
-    /* 2. 파일명 및 용량 텍스트 컬러 */
+
+    /* 3. 파일명, 용량 텍스트를 흰색으로 강제 고정 */
     [data-testid="stFileUploaderFileData"] span,
-    [data-testid="stFileUploaderFileData"] div {
+    [data-testid="stFileUploaderFileData"] div,
+    [data-testid="stFileUploaderFileData"] p {
         color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
     }
-    
-    /* 3. 왼쪽 파일 아이콘 영역 */
-    [data-testid="stFileUploaderFileData"] i,
+
+    /* 4. 파일 아이콘 및 삭제(X) 버튼 컬러 */
     [data-testid="stFileUploaderFileData"] svg {
-        color: #FFFFFF !important;
         fill: #FFFFFF !important;
+        color: #FFFFFF !important;
     }
-    
-    /* 4. 오른쪽 삭제(X) 버튼 */
+
+    /* 5. 삭제 버튼 배경 투명화 및 호버 효과 */
     [data-testid="stFileUploaderFileData"] button {
         background-color: transparent !important;
-        color: #FFFFFF !important;
     }
-    
-    /* 삭제 버튼 위에 마우스 올렸을 때 */
-    [data-testid="stFileUploaderFileData"] button:hover {
-        color: #EF4444 !important; /* 삭제 버튼은 살짝 붉은색으로 강조 */
+    [data-testid="stFileUploaderFileData"] button:hover svg {
+        fill: #EF4444 !important; /* 삭제 버튼 마우스 올리면 빨간색 */
     }
     </style>
     """, unsafe_allow_html=True)
