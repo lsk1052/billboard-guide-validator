@@ -9,6 +9,7 @@ st.set_page_config(
     page_title="Billboard Check Mate",
     page_icon="✅",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 # 2. 다크모드 테마 및 스타일링
@@ -55,6 +56,13 @@ st.markdown("""
     [data-testid="stSidebar"] {
         min-width: 300px !important;
         max-width: 300px !important;
+    }
+
+    /* 사이드바 안의 텍스트가 안 보일 경우를 대비해 색상 강제 지정 */
+    [data-testid="stSidebar"] .stMarkdown, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] .stText {
+        color: #F8FAFC !important;
     }
     </style>
     """, unsafe_allow_html=True)
