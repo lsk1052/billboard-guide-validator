@@ -155,7 +155,7 @@ st.markdown("""
 
     /* [2] 사이드바 컨테이너의 기본 여백을 제거 */
     [data-testid="stSidebarUserContent"] {
-        padding-top: 4rem !important;
+        padding-top: 0rem !important;
     }
 
     /* [4] 사이드바 구분선 컬러 (다시 한번 선명하게 고정) */
