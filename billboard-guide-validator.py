@@ -204,8 +204,6 @@ st.title("Check Mate : 빌보드 가이드 체크")
 st.caption("광고 빌보드 배너 디자인 품질 및 규격 검수 프로그램")
 
 with st.sidebar:
-    st.header("🖼️ 소재 편집")
-    # ... (기존 카피 입력창들) ...
     
     st.divider()
     st.header("📍 미리보기 설정")
@@ -216,7 +214,6 @@ with st.sidebar:
     )
     
     st.divider()
-    st.markdown("### 📋 검수 가이드라인")
     # ...
     
     st.header("🖼️ 소재 편집")
@@ -233,7 +230,6 @@ with st.sidebar:
 uploaded_file = st.file_uploader("검수할 빌보드 이미지를 업로드하세요", type=["png", "jpg", "jpeg"])
 
 # --- 메인 화면 미리보기 영역 ---
-#
 if uploaded_file is not None:
     # 1. 파일 데이터 로드 및 기본 검수
     file_bytes = uploaded_file.getvalue()
@@ -243,7 +239,7 @@ if uploaded_file is not None:
 
     st.divider()
     
-    # --- [검수 기능 복구] 상단 상태 박스 ---
+    # --- [검수 기능] 상단 상태 박스 (이건 넓게 유지) ---
     v_col1, v_col2, v_col3 = st.columns(3)
     
     with v_col1:
@@ -256,48 +252,57 @@ if uploaded_file is not None:
         if file_size_kb <= 500:
             st.success(f"✅ 용량 적정\n현재: {file_size_kb:.1f} KB")
         else:
-            st.error(f"🚨 용량 초과\n현재: {file_size_kb:.1f} KB (제한: 400KB)")
+            st.error(f"🚨 용량 초과\n현재: {file_size_kb:.1f} KB (제한: 500KB)")
             
     with v_col3:
-        # 간단한 화질 점수 계산 (예시)
-        quality_score = 85 # 실제 구현 시에는 이미지 분석 로직이 들어갈 수 있습니다.
+        quality_score = 85 
         st.success(f"✅ 화질 양호\n품질 지수: {quality_score}점")
 
     st.divider()
     
-    # --- [미리보기] 선택한 모드에 따라 하나씩 크게 보여주기 ---
-    st.subheader(f"🔍 {view_mode} 미리보기")
+    # --- [미리보기] 선택한 모드에 따라 중앙에 750px로 고정 배치 ---
+    # 양옆에 빈 컬럼(1)을 두고 가운데(4)에 배치하여 중앙 정렬 효과를 줍니다.
+    m_col1, m_col2, m_col3 = st.columns([1, 4, 1])
 
-    if view_mode == "홈 빌보드":
-        st.markdown("#### 🏠 홈 헤더 버전")
-        preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
-        st.image(preview_home, use_container_width=True, caption="Home Header 적용 결과")
+    with m_col2:
+        st.subheader(f"🔍 {view_mode} 미리보기")
         
-        # 다운로드 버튼 (홈 버전)
-        buf = io.BytesIO()
-        preview_home.save(buf, format="PNG")
-        byte_im = buf.getvalue()
-        st.download_button(
-            label="🏠 홈 버전 다운로드",
-            data=byte_im,
-            file_name="billboard_home_preview.png",
-            mime="image/png",
-            use_container_width=True
-        )
+        if view_mode == "홈 빌보드":
+            st.markdown("#### 🏠 홈 헤더 버전")
+            preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
+            
+            # width=750으로 고정하여 거대해지는 것을 방지
+            st.image(preview_home, width=750, caption="Home Header 적용 결과 (750x1000)")
+            
+            # 다운로드 버튼 준비
+            buf = io.BytesIO()
+            preview_home.save(buf, format="PNG")
+            byte_im = buf.getvalue()
+            
+            st.download_button(
+                label="🏠 홈 버전 다운로드",
+                data=byte_im,
+                file_name="billboard_home_preview.png",
+                mime="image/png",
+                use_container_width=True # 가운데 컬럼 너비에 맞춰 버튼 배치
+            )
 
-    else:  # "버티컬 빌보드" 선택 시
-        st.markdown("#### 📱 버티컬 헤더 버전")
-        preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
-        st.image(preview_vertical, use_container_width=True, caption="Vertical Header 적용 결과")
-        
-        # 다운로드 버튼 (버티컬 버전)
-        buf_v = io.BytesIO()
-        preview_vertical.save(buf_v, format="PNG")
-        byte_im_v = buf_v.getvalue()
-        st.download_button(
-            label="📱 버티컬 버전 다운로드",
-            data=byte_im_v,
-            file_name="billboard_vertical_preview.png",
-            mime="image/png",
-            use_container_width=True
-        )
+        else:  # "버티컬 빌보드" 선택 시
+            st.markdown("#### 📱 버티컬 헤더 버전")
+            preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
+            
+            # width=750으로 고정
+            st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
+            
+            # 다운로드 버튼 준비
+            buf_v = io.BytesIO()
+            preview_vertical.save(buf_v, format="PNG")
+            byte_im_v = buf_v.getvalue()
+            
+            st.download_button(
+                label="📱 버티컬 버전 다운로드",
+                data=byte_im_v,
+                file_name="billboard_vertical_preview.png",
+                mime="image/png",
+                use_container_width=True
+            )
