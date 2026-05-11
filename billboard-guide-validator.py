@@ -249,9 +249,6 @@ if uploaded_file is not None:
         st.success(f"✅ 화질 양호\n품질 지수: {quality_score}점")
 
     st.divider()
-
-    # --- [미리보기] 홈 vs 버티컬 좌우 배치 ---
-    st.subheader("가이드라인 적용 미리보기 (홈 / 버티컬)")
     
     # --- [미리보기] 홈 vs 버티컬 좌우 배치 ---
     st.subheader("가이드라인 적용 미리보기 (홈 / 버티컬)")
