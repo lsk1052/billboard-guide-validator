@@ -155,14 +155,7 @@ st.markdown("""
 
     /* [2] 사이드바 컨테이너의 기본 여백을 제거 */
     [data-testid="stSidebarUserContent"] {
-        padding-top: 0rem !important;
-    }
-
-    /* [3] ★핵심★ 사이드바의 첫 번째 제목(미리보기 설정)만 위로 끌어올림 */
-    /* 마이너스 마진을 사용해 '미리보기 설정' 글자만 위로 배달합니다. */
-    [data-testid="stSidebarContent"] h2:first-of-type {
-        margin-top: -2.2rem !important; /* 이 수치를 조절해서 메인 타이틀과 눈높이를 맞추세요 */
-        padding-top: 0 !important;
+        padding-top: 4rem !important;
     }
 
     /* [4] 사이드바 구분선 컬러 (다시 한번 선명하게 고정) */
