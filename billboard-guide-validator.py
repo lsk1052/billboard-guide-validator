@@ -249,7 +249,6 @@ st.caption("광고 빌보드 배너 디자인 품질 및 규격 검수 프로그
 
 with st.sidebar:
     
-    st.divider()
     st.header("📍 미리보기 설정")
     # 라디오 버튼 추가
     view_mode = st.radio(
