@@ -129,6 +129,24 @@ st.markdown("""
     div[data-testid="stAlertContainer"] {
         background-color: transparent !important;
     }
+
+    /* --- [추가] 이미지 및 버튼 정중앙 정렬 및 너비 고정 --- */
+
+    /* 1. 이미지 컨테이너를 정중앙으로 */
+    .stImage {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* 2. 다운로드 버튼을 750px로 고정하고 중앙 정렬 */
+    div.stDownloadButton {
+        display: flex;
+        justify-content: center;
+    }
+    div.stDownloadButton > button {
+        width: 750px !important; /* 이미지와 동일하게 750px로 고정 */
+        max-width: 750px !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -260,9 +278,9 @@ if uploaded_file is not None:
 
     st.divider()
     
-    # --- [미리보기] 선택한 모드에 따라 중앙에 750px로 고정 배치 ---
-    # 양옆에 빈 컬럼(1)을 두고 가운데(4)에 배치하여 중앙 정렬 효과를 줍니다.
-    m_col1, m_col2, m_col3 = st.columns([1, 4, 1])
+    # --- [미리보기] 선택한 모드에 따라 중앙 배치 ---
+    # 비율을 [1.2, 3, 1.2] 정도로 조정하면 750px 이미지가 중앙에 더 안정적으로 배치됩니다.
+    m_col1, m_col2, m_col3 = st.columns([1.2, 3, 1.2])
 
     with m_col2:
         st.subheader(f"🔍 {view_mode} 미리보기")
@@ -271,10 +289,9 @@ if uploaded_file is not None:
             st.markdown("#### 🏠 홈 헤더 버전")
             preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
             
-            # width=750으로 고정하여 거대해지는 것을 방지
+            # width=750 유지 (CSS가 이를 중앙으로 밀어줍니다)
             st.image(preview_home, width=750, caption="Home Header 적용 결과 (750x1000)")
             
-            # 다운로드 버튼 준비
             buf = io.BytesIO()
             preview_home.save(buf, format="PNG")
             byte_im = buf.getvalue()
@@ -283,18 +300,16 @@ if uploaded_file is not None:
                 label="🏠 홈 버전 다운로드",
                 data=byte_im,
                 file_name="billboard_home_preview.png",
-                mime="image/png",
-                use_container_width=True # 가운데 컬럼 너비에 맞춰 버튼 배치
+                mime="image/png"
+                # use_container_width=True는 지워도 됩니다. CSS에서 750px을 강제합니다.
             )
 
         else:  # "버티컬 빌보드" 선택 시
             st.markdown("#### 📱 버티컬 헤더 버전")
             preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
             
-            # width=750으로 고정
             st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
             
-            # 다운로드 버튼 준비
             buf_v = io.BytesIO()
             preview_vertical.save(buf_v, format="PNG")
             byte_im_v = buf_v.getvalue()
@@ -303,6 +318,5 @@ if uploaded_file is not None:
                 label="📱 버티컬 버전 다운로드",
                 data=byte_im_v,
                 file_name="billboard_vertical_preview.png",
-                mime="image/png",
-                use_container_width=True
+                mime="image/png"
             )
