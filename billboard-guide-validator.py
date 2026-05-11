@@ -11,46 +11,41 @@ st.set_page_config(
     layout="wide",
 )
 
-# 2. 다크모드 테마 및 스타일링
+# 2. 다크모드 테마 및 스타일링 수정
 st.markdown("""
     <style>
+    /* --- 전체 배경 및 기본 설정 --- */
     .stApp { background-color: #111111; }
+    
+    /* --- [수정] 사이드바 배경색 및 스타일 --- */
+    [data-testid="stSidebar"] {
+        background-color: #161616 !important; /* 더 어두운 그레이로 변경 */
+        border-right: 1px solid #1E293B;      /* 메인 화면과의 구분을 위한 경계선 */
+    }
+
+    /* 사이드바 내부 텍스트 컬러 최적화 */
+    [data-testid="stSidebar"] .stMarkdown, 
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3 {
+        color: #E2E8F0 !important;
+    }
+
+    /* --- 기존 스타일 유지 --- */
     .check-pass { font-size: 1.2rem; font-weight: 800; color: #10B981; }
     .check-fail { font-size: 1.2rem; font-weight: 800; color: #EF4444; }
     .status-text { font-size: 0.85rem; color: #94A3B8; }
     .stImage { border-radius: 12px; border: 1px solid #1E293B; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
 
-    /* 1. 사이드바 내부의 접기 버튼(<<) 및 외부 펼치기 버튼(>) 모두 제거 */
+    /* 사이드바 접기/펼치기 버튼 숨기기 */
     [data-testid="stSidebarCollapseButton"], 
     [data-testid="collapsedControl"] {
         display: none !important;
     }
 
-    /* --- 전체 배경 및 기본 텍스트 --- */
-    .stApp { background-color: #111111; }
-    h1, h2, h3, h4 { color: #FFFFFF !important; }
-
-    /* --- 기존 작성하신 코드 --- */
-    .stApp { background-color: #111111; color: #F2F2F2; }
-    h1, h2, h3, h4 { color: #FFFFFF !important; }
-    
-    /* ... (생략된 기존 클래스들: .check-pass, .guide-container 등) ... */
-
-    /* --- [추가] 다크모드 고정 및 테마 변경 UI 제거 --- */
-    
-    /* 1. 우측 상단 햄버거 메뉴(설정) 전체 숨기기 */
     #MainMenu {visibility: hidden;}
-    
-    /* 2. 헤더 영역 제거 (테마 변경 옵션 방지) */
     header {visibility: hidden;}
-    
-    /* 3. 푸터(Made with Streamlit) 제거 */
     footer {visibility: hidden;}
-
-    /* 4. 사이드바 내의 불필요한 여백 최적화 (기존 코드 유지) */
-    [data-testid="stSidebar"] .stMarkdown { margin-bottom: 0px !important; }
-    
-    /* (이하 생략) */
     </style>
     """, unsafe_allow_html=True)
 
