@@ -91,27 +91,37 @@ st.markdown("""
         border: 1px solid #475569 !important;
     }
 
-    /* --- [진짜 최종] 상태 박스(st.success) 가독성 해결 --- */
-
-    /* 1. 상태 박스 배경과 테두리를 한꺼번에 강제 고정 */
+    /* --- [수정] 상태 박스(st.success) 테두리 다이어트 --- */
+    
+    /* 1. 상태 박스 배경과 테두리 설정 */
     div[data-testid="stNotification"], 
     div[data-testid="stAlert"], 
     div[role="alert"] {
-        /* 시크릿 모드처럼 밝고 선명한 딥 그린으로 고정 */
         background-color: #064E3B !important; 
-        border: 0.5px solid #10B981 !important;
+        
+        /* 0.5px 두께는 유지하되, 색상 농도를 40%로 낮춰서 가늘어 보이게 만듭니다 */
+        border: 0.5px solid rgba(16, 185, 129, 0.4) !important; 
+        
         border-radius: 8px !important;
-        /* 배경이 너무 어둡게 죽는 걸 방지하기 위해 밝기 필터 추가 */
-        filter: brightness(1.2); 
+        
+        /* [중요] 테두리를 두꺼워 보이게 만드는 필터와 그림자를 제거합니다 */
+        filter: none !important; 
+        box-shadow: none !important; 
     }
-
-    /* 2. 박스 내부의 모든 텍스트와 아이콘 흰색 고정 */
+    
+    /* 2. 박스 내부 텍스트 및 아이콘 (기존 유지하되 두께 조절) */
     div[data-testid="stNotification"] *, 
     div[data-testid="stAlert"] *, 
     div[role="alert"] * {
         color: #FFFFFF !important;
         fill: #FFFFFF !important;
-        font-weight: 400 !important;
+        font-weight: 300 !important; /* 텍스트 두께도 살짝 줄이면 전체적으로 더 샤프해 보입니다 */
+    }
+    
+    /* 3. 컨테이너 중첩 제거 (혹시 모를 이중 테두리 방지) */
+    div[data-testid="stAlertContainer"] {
+        background-color: transparent !important;
+        border: none !important;
     }
 
     /* 3. 일반 모드 크롬에서 배경이 투명하게 비치는 현상 방지 */
