@@ -44,33 +44,36 @@ st.markdown("""
         border: none !important;
         box-shadow: none !important;
     }
-
-    /* [평상시] 모든 입력창 테두리 강제 통일 (남색/어두운 회색) */
     
-    /* 메인 카피(TextArea)와 서브 카피(TextInput)의 겉박스를 동시에 강제 고정 */
+    /* [3] 모든 입력창 테두리 두께 및 컬러 완전 통일 */
+
+    /* 1. 기본 상태: 메인/서브 카피의 모든 테두리를 1px로 강제 고정 */
     .stTextArea > div > div, 
-    .stTextInput > div > div,
-    div[data-baseweb="base-input"],
-    div[data-baseweb="textarea"] {
+    .stTextInput > div > div {
         background-color: #1E1E1E !important;
-        /* 여기서 보더 컬러를 남색 계열(#334155)로 확실하게 박아버립니다. */
+        /* 아주 얇고 선명한 1px 실선으로 고정 */
         border: 1px solid #334155 !important; 
         border-radius: 8px !important;
-        box-shadow: none !important; /* 혹시 모를 하얀 그림자 제거 */
+        /* 선을 두꺼워 보이게 만드는 주범인 그림자를 완전히 제거 */
+        box-shadow: none !important; 
         transition: all 0.2s ease-in-out;
     }
 
-    /* 일반 모드 크롬에서 마음대로 덧씌우는 기본 보더 무력화 */
-    .stTextArea > div > div:hover, 
-    .stTextInput > div > div:hover {
-        border-color: #475569 !important; /* 마우스를 올렸을 때만 살짝 밝아짐 */
+    /* 2. 내부 입력 영역 배경색 및 글자색 고정 (중복 제거) */
+    .stTextArea textarea, .stTextInput input {
+        background-color: transparent !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 10px !important;
     }
 
-    /* 3. 클릭(Focus) 시 빨간색으로 변경 (메인/서브 공통) */
+    /* 3. 클릭(Focus) 시 상태: 두께 변화 없이 색상만 빨간색으로 변경 */
+    /* 선이 두꺼워지지 않게 1px을 유지하는 것이 포인트입니다. */
     .stTextArea:focus-within > div > div, 
     .stTextInput:focus-within > div > div {
-        border-color: #FF4B4B !important; /* 강렬한 빨간색 */
-        box-shadow: 0 0 0 1px #FF4B4B !important; /* 미세한 광채 추가 */
+        border: 1px solid #FF4B4B !important; 
+        box-shadow: none !important; /* 클릭 시 생기는 파란색/하얀색 광채 제거 */
     }
 
     /* 안내문구(Placeholder) 컬러 */
