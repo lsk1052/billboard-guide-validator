@@ -33,30 +33,32 @@ st.markdown("""
         border-right: 1px solid #1E293B;
     }
 
-    /* [3] 입력창 (메인/서브 카피) 스타일 고정 */
-    /* .stTextArea와 .stTextInput 내부의 모든 배경/테두리를 하나로 묶어 처리 */
+    /* [3] 입력창 (메인/서브 카피) 스타일 및 클릭 효과 통합 */
+
+    /* 1. 입력창 내부 요소 (글자색, 배경색, 기본 테두리 제거) */
     .stTextArea textarea, .stTextInput input, 
     div[data-baseweb="base-input"], div[data-baseweb="input"] {
         background-color: #1E1E1E !important;
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
         border: none !important;
+        box-shadow: none !important;
     }
 
-    /* --- [최종] 모든 입력창 클릭 시 포커스 효과 (빨간색) --- */
+    /* 2. 평상시 바깥 테두리 (이 코드가 있어야 빨간색이 보입니다!) */
+    .stTextArea > div > div, 
+    .stTextInput > div > div {
+        background-color: #1E1E1E !important;
+        border: 1px solid #334155 !important; /* 평소에는 어두운 회색 */
+        border-radius: 8px !important;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
 
-    /* 1. 메인 카피(Text Area)와 서브 카피(Text Input) 공통 적용 */
+    /* 3. 클릭(Focus) 시 빨간색으로 변경 (메인/서브 공통) */
     .stTextArea:focus-within > div > div, 
     .stTextInput:focus-within > div > div {
-        border-color: #FF4B4B !important; /* 강조하고 싶은 빨간색 */
-        box-shadow: 0 0 0 1px #FF4B4B !important; /* 미세한 광채 효과 */
-    }
-
-    /* 2. 혹시 모를 내부 요소의 테두리 중첩 방지 */
-    .stTextArea:focus-within div[data-baseweb="textarea"],
-    .stTextInput:focus-within div[data-baseweb="input"] {
-        border-color: transparent !important;
-        box-shadow: none !important;
+        border-color: #FF4B4B !important; /* 강렬한 빨간색 */
+        box-shadow: 0 0 0 1px #FF4B4B !important; /* 미세한 광채 추가 */
     }
 
     /* 안내문구(Placeholder) 컬러 */
