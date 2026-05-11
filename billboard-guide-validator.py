@@ -11,24 +11,47 @@ st.set_page_config(
     layout="wide",
 )
 
-# 2. 다크모드 테마 및 스타일링 수정
+# 2. 다크모드 테마 및 스타일링 (시인성 개선 버전)
 st.markdown("""
     <style>
-    /* --- 전체 배경 및 기본 설정 --- */
+    /* --- 전체 배경 --- */
     .stApp { background-color: #111111; }
     
-    /* --- [수정] 사이드바 배경색 및 스타일 --- */
+    /* --- [수정] 사이드바 배경 및 텍스트 --- */
     [data-testid="stSidebar"] {
-        background-color: #161616 !important; /* 더 어두운 그레이로 변경 */
-        border-right: 1px solid #1E293B;      /* 메인 화면과의 구분을 위한 경계선 */
+        background-color: #161616 !important;
+        border-right: 1px solid #1E293B;
     }
 
-    /* 사이드바 내부 텍스트 컬러 최적화 */
-    [data-testid="stSidebar"] .stMarkdown, 
-    [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {
-        color: #E2E8F0 !important;
+    /* 사이드바 내 모든 라벨(메인/서브 카피 입력 등) 글자색 화이트로 고정 */
+    [data-testid="stSidebar"] label p {
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
+    }
+
+    /* 사이드바 st.info 텍스트 색상 조정 */
+    [data-testid="stSidebar"] .stAlert p {
+        color: #1E293B !important; /* 안내창 내부 글씨는 가독성을 위해 어둡게 */
+    }
+
+    /* --- [수정] 메인 화면 텍스트 시인성 --- */
+    
+    /* 1. 메인 타이틀 (Check Mate : 빌보드 가이드 체크) */
+    .stApp h1 {
+        color: #FFFFFF !important;
+        font-weight: 800 !important;
+    }
+
+    /* 2. 메인 캡션 및 일반 텍스트 (광고 빌보드 배너... 등) */
+    .stApp .stCaption, .stApp p {
+        color: #CBD5E1 !important; /* 밝은 그레이로 가독성 확보 */
+    }
+
+    /* 3. 이미지 업로더 라벨 (검수할 빌보드 이미지를 업로드하세요) */
+    [data-testid="stFileUploader"] label p {
+        color: #FFFFFF !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
     }
 
     /* --- 기존 스타일 유지 --- */
@@ -37,12 +60,8 @@ st.markdown("""
     .status-text { font-size: 0.85rem; color: #94A3B8; }
     .stImage { border-radius: 12px; border: 1px solid #1E293B; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
 
-    /* 사이드바 접기/펼치기 버튼 숨기기 */
     [data-testid="stSidebarCollapseButton"], 
-    [data-testid="collapsedControl"] {
-        display: none !important;
-    }
-
+    [data-testid="collapsedControl"] { display: none !important; }
     #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
     footer {visibility: hidden;}
