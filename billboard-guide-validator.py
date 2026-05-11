@@ -45,13 +45,25 @@ st.markdown("""
         box-shadow: none !important;
     }
 
-    /* 2. 평상시 바깥 테두리 (이 코드가 있어야 빨간색이 보입니다!) */
+    /* [평상시] 모든 입력창 테두리 강제 통일 (남색/어두운 회색) */
+    
+    /* 메인 카피(TextArea)와 서브 카피(TextInput)의 겉박스를 동시에 강제 고정 */
     .stTextArea > div > div, 
-    .stTextInput > div > div {
+    .stTextInput > div > div,
+    div[data-baseweb="base-input"],
+    div[data-baseweb="textarea"] {
         background-color: #1E1E1E !important;
-        border: 1px solid #334155 !important; /* 평소에는 어두운 회색 */
+        /* 여기서 보더 컬러를 남색 계열(#334155)로 확실하게 박아버립니다. */
+        border: 1px solid #334155 !important; 
         border-radius: 8px !important;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        box-shadow: none !important; /* 혹시 모를 하얀 그림자 제거 */
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* 일반 모드 크롬에서 마음대로 덧씌우는 기본 보더 무력화 */
+    .stTextArea > div > div:hover, 
+    .stTextInput > div > div:hover {
+        border-color: #475569 !important; /* 마우스를 올렸을 때만 살짝 밝아짐 */
     }
 
     /* 3. 클릭(Focus) 시 빨간색으로 변경 (메인/서브 공통) */
