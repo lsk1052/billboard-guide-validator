@@ -91,28 +91,32 @@ st.markdown("""
         border: 1px solid #475569 !important;
     }
 
-    /* --- [완성] 규격 통과/용량 적정 등 상단 st.success 상태 박스 컬러 고정 --- */
+    /* --- [진짜 최종] 상태 박스(st.success) 가독성 해결 --- */
 
-    /* 1. 메인 화면의 'st.success' 박스 - 배경색과 테두리색 (가장 중요한 부분) */
-    [data-testid="stAppViewContainer"] [data-testid="stAlert"].stSuccess {
-        /* 사용자님이 원하는 "밝은 녹색" 배경으로 강제 고정 (시크릿 모드 느낌) */
-        background-color: #125528 !important; /* ← 여기에 원하는 밝은 녹색 배경 코드를 넣으세요 */
-        
-        /* 박스 외곽 테두리 (에메랄드색 포인트) */
-        border: 1px solid #10B981 !important; 
-        
-        /* 내부 텍스트와 아이콘은 무조건 흰색으로 고정 */
-        color: #FFFFFF !important; 
+    /* 1. 상태 박스 배경과 테두리를 한꺼번에 강제 고정 */
+    div[data-testid="stNotification"], 
+    div[data-testid="stAlert"], 
+    div[role="alert"] {
+        /* 시크릿 모드처럼 밝고 선명한 딥 그린으로 고정 */
+        background-color: #064E3B !important; 
+        border: 1px solid #10B981 !important;
+        border-radius: 8px !important;
+        /* 배경이 너무 어둡게 죽는 걸 방지하기 위해 밝기 필터 추가 */
+        filter: brightness(1.2); 
     }
 
-    /* 2. 메인 화면의 'st.success' 박스 - 내부 텍스트와 아이콘 */
-    [data-testid="stAppViewContainer"] [data-testid="stAlert"].stSuccess div,
-    [data-testid="stAppViewContainer"] [data-testid="stAlert"].stSuccess p {
+    /* 2. 박스 내부의 모든 텍스트와 아이콘 흰색 고정 */
+    div[data-testid="stNotification"] *, 
+    div[data-testid="stAlert"] *, 
+    div[role="alert"] * {
         color: #FFFFFF !important;
-    }
-    [data-testid="stAppViewContainer"] [data-testid="stAlert"].stSuccess svg {
         fill: #FFFFFF !important;
-        color: #FFFFFF !important;
+        font-weight: 600 !important;
+    }
+
+    /* 3. 일반 모드 크롬에서 배경이 투명하게 비치는 현상 방지 */
+    div[data-testid="stAlertContainer"] {
+        background-color: transparent !important;
     }
     </style>
     """, unsafe_allow_html=True)
