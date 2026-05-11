@@ -147,6 +147,32 @@ st.markdown("""
         width: 750px !important; /* 이미지와 동일하게 750px로 고정 */
         max-width: 750px !important;
     }
+
+    /* --- [1] 상단 여백(Main & Sidebar) 대폭 축소 --- */
+    /* 메인 화면 상단 여백 조절 */
+    .block-container {
+        padding-top: 2.5rem !important; /* 기본 약 6rem에서 축소 */
+        padding-bottom: 2rem !important;
+    }
+
+    /* 사이드바 상단 여백 조절 */
+    [data-testid="stSidebarUserContent"] {
+        padding-top: 2rem !important;
+    }
+
+    /* --- [2] 사이드바 구분선(hr) 컬러 명확하게 변경 --- */
+    /* 사이드바 내의 모든 구분선(st.divider) 색상 및 두께 조절 */
+    [data-testid="stSidebar"] hr {
+        border-color: #475569 !important; /* 훨씬 잘 보이는 밝은 그레이-블루 */
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+        opacity: 0.8 !important; /* 투명도를 높여 선명하게 */
+    }
+
+    /* --- [참고] 타이틀 위쪽 간격 미세 조정 --- */
+    h1 {
+        margin-top: -1rem !important; /* 타이틀을 위로 살짝 더 끌어올림 */
+    }
     </style>
     """, unsafe_allow_html=True)
 
