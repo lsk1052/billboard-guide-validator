@@ -114,6 +114,39 @@ st.markdown("""
     /* --- [7] 불필요한 UI 제거 --- */
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
     #MainMenu, header, footer { visibility: hidden; }
+
+    /* --- [완성] 업로드된 파일 정보 카드 스타일 통일 --- */
+
+    /* 1. 파일 정보 카드 전체 (배경 및 테두리) */
+    [data-testid="stFileUploaderFileData"] {
+        background-color: #1E1E1E !important; /* 어두운 배경 */
+        border: 1px solid #334155 !important; /* 테두리 라인 컬러 */
+        border-radius: 8px !important;
+    }
+    
+    /* 2. 파일명 및 용량 텍스트 컬러 */
+    [data-testid="stFileUploaderFileData"] span,
+    [data-testid="stFileUploaderFileData"] div {
+        color: #FFFFFF !important;
+    }
+    
+    /* 3. 왼쪽 파일 아이콘 영역 */
+    [data-testid="stFileUploaderFileData"] i,
+    [data-testid="stFileUploaderFileData"] svg {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+    }
+    
+    /* 4. 오른쪽 삭제(X) 버튼 */
+    [data-testid="stFileUploaderFileData"] button {
+        background-color: transparent !important;
+        color: #FFFFFF !important;
+    }
+    
+    /* 삭제 버튼 위에 마우스 올렸을 때 */
+    [data-testid="stFileUploaderFileData"] button:hover {
+        color: #EF4444 !important; /* 삭제 버튼은 살짝 붉은색으로 강조 */
+    }
     </style>
     """, unsafe_allow_html=True)
 
