@@ -167,19 +167,6 @@ st.markdown("""
         line-height: 1.2 !important;
     }
 
-    /* [3] 사이드바 구분선(Divider) 시인성 강화 */
-    [data-testid="stSidebar"] hr {
-        border-color: #475569 !important; /* 명확히 보이는 그레이-블루 */
-        margin-top: 1.2rem !important;
-        margin-bottom: 1.2rem !important;
-        opacity: 1 !important;
-    }
-
-    /* [4] 사이드바 위젯들 사이의 간격 미세 조정 (선택사항) */
-    [data-testid="stSidebarContent"] .stVerticalBlock {
-        gap: 0.8rem !important;
-    }
-
     /* --- [2] 사이드바 구분선(hr) 컬러 명확하게 변경 --- */
     /* 사이드바 내의 모든 구분선(st.divider) 색상 및 두께 조절 */
     [data-testid="stSidebar"] hr {
