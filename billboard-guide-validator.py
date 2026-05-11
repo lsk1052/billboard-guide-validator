@@ -80,6 +80,37 @@ st.markdown("""
         color: #FFFFFF !important;
     }
 
+    /* --- [핵심] 파일 업로더 내 버튼 스타일 강제 고정 --- */
+[data-testid="stFileUploader"] button {
+    background-color: #262730 !important; /* 시크릿 모드 느낌의 어두운 배경 */
+    color: #FFFFFF !important;           /* 글자색 흰색 */
+    border: 1px solid #475569 !important; /* 테두리 라인 */
+    transition: all 0.2s ease;
+}
+
+    /* 버튼 위에 마우스 올렸을 때(Hover) */
+    [data-testid="stFileUploader"] button:hover {
+        border-color: #10B981 !important;    /* 에메랄드 포인트 컬러 */
+        background-color: #1E1E1E !important;
+    }
+    
+    /* 버튼 내부의 아이콘 컬러 */
+    [data-testid="stFileUploader"] button svg {
+        fill: #FFFFFF !important;
+    }
+    
+    /* 업로드 창 전체 배경 (하얀 박스 방지) */
+    [data-testid="stFileUploader"] section {
+        background-color: #1A1A1A !important;
+        border: 1px dashed #334155 !important;
+        border-radius: 8px !important;
+    }
+    
+    /* 업로드 안내 텍스트 (200MB per file 등) */
+    [data-testid="stFileUploader"] section div div {
+        color: #CBD5E1 !important;
+    }
+
     /* --- [7] 불필요한 UI 제거 --- */
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
     #MainMenu, header, footer { visibility: hidden; }
