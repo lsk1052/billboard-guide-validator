@@ -33,50 +33,44 @@ st.markdown("""
         border-right: 1px solid #1E293B;
     }
 
-    /* [3] 입력창 (메인/서브 카피) 스타일 및 클릭 효과 통합 */
+    /* [3] 입력창 스타일 통합 및 테두리 두께 교정 (상단 번짐 해결) */
 
-    /* 1. 입력창 내부 요소 (글자색, 배경색, 기본 테두리 제거) */
-    .stTextArea textarea, .stTextInput input, 
-    div[data-baseweb="base-input"], div[data-baseweb="input"] {
-        background-color: #1E1E1E !important;
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-        border: none !important;
-        box-shadow: none !important;
-    }
-    
-    /* [3] 모든 입력창 테두리 색상 및 두께 '강제' 고정 */
-
-    /* 1. 메인 카피(TextArea) 전용 저격 코드 */
-    [data-testid="stTextArea"] [data-baseweb="textarea"],
-    [data-testid="stTextArea"] [data-baseweb="textarea"] > div {
-        border: 1px solid #334155 !important;
-        background-color: #1E1E1E !important;
-        box-shadow: none !important;
-    }
-
-    /* 2. 서브 카피(TextInput) 전용 저격 코드 */
-    [data-testid="stTextInput"] [data-baseweb="input"],
-    [data-testid="stTextInput"] [data-baseweb="input"] > div {
-        border: 1px solid #334155 !important;
-        background-color: #1E1E1E !important;
-        box-shadow: none !important;
-    }
-
-    /* 3. 공통: 클릭(Focus) 시에만 빨간색으로 변경 */
-    [data-testid="stTextArea"] [data-baseweb="textarea"]:focus-within,
-    [data-testid="stTextInput"] [data-baseweb="input"]:focus-within {
-        border-color: #FF4B4B !important;
-        box-shadow: 0 0 0 1px #FF4B4B !important;
-    }
-
-    /* 4. 기존에 잔상처럼 남을 수 있는 껍데기 테두리 제거 */
+    /* 1. 모든 기본 껍데기 테두리와 그림자 제거 (겹침 방지) */
     .stTextArea > div > div, 
-    .stTextInput > div > div {
+    .stTextInput > div > div,
+    [data-baseweb="base-input"],
+    [data-baseweb="textarea"] > div {
         border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
         background-color: transparent !important;
     }
 
+    /* 2. 실제 박스(BaseWeb) 하나에만 1px 테두리 고정 */
+    [data-baseweb="textarea"], 
+    [data-baseweb="input"] {
+        background-color: #1E1E1E !important;
+        border: 1px solid #334155 !important; /* 기본 남색 */
+        border-radius: 8px !important;
+        box-shadow: none !important;
+        transition: all 0.2s ease;
+    }
+
+    /* 3. 클릭(Focus) 시: 두께 변화 없이 '색상'만 빨간색으로 변경 */
+    /* box-shadow를 제거해야 윗부분이 두껍게 보이는 잔상이 사라집니다. */
+    [data-baseweb="textarea"]:focus-within, 
+    [data-baseweb="input"]:focus-within {
+        border: 1px solid #FF4B4B !important; 
+        box-shadow: none !important; 
+        outline: none !important;
+    }
+
+    /* 4. 내부 텍스트 영역 설정 */
+    .stTextArea textarea, .stTextInput input {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        padding: 8px 12px !important;
+    }
     /* 안내문구(Placeholder) 컬러 */
     input::placeholder, textarea::placeholder {
         color: #64748B !important; /* ← 여기서 안내문구 컬러 수정 */
