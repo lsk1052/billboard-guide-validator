@@ -148,23 +148,33 @@ st.markdown("""
         max-width: 750px !important;
     }
 
-    /* --- [1] 상단 여백(Main & Sidebar) 대폭 축소 --- */
-    /* 메인 화면 상단 여백 조절 */
+    /* [1] 메인과 사이드바의 최상단 여백을 아예 제거 */
     .block-container {
-        padding-top: 3.5rem !important;
+        padding-top: 1rem !important; /* 메인 영역 천장 */
     }
 
-    /* 사이드바 상단 여백 조절 */
     [data-testid="stSidebarUserContent"] {
-        padding-top: 3.5rem !important;
+        padding-top: 1rem !important; /* 사이드바 영역 천장 */
     }
 
-    /* [2] 각 영역 첫 번째 제목의 마진을 제거하여 물리적 높이 일치 */
-    .block-container h1, 
-    [data-testid="stSidebarContent"] h2 {
+    /* [2] 첫 번째 제목들이 가진 고유의 마진을 0으로 박멸 */
+    /* h1(메인타이틀), h2(사이드바소제목) 둘 다 타겟팅 */
+    .stApp h1, .stApp h2, .stApp h3 {
         margin-top: 0 !important;
         padding-top: 0 !important;
-        line-height: 1.2 !important;
+        margin-bottom: 0.5rem !important; /* 제목 아래 간격만 살짝 유지 */
+    }
+
+    /* [3] 사이드바 내부 컨텐츠의 위치를 더 위로 끌어올림 */
+    [data-testid="stSidebarContent"] {
+        padding-top: 0 !important;
+    }
+
+    /* [4] 사이드바 구분선 컬러 재강조 (시인성) */
+    [data-testid="stSidebar"] hr {
+        border-color: #475569 !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
     }
 
     /* --- [2] 사이드바 구분선(hr) 컬러 명확하게 변경 --- */
