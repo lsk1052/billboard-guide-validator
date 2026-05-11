@@ -11,80 +11,79 @@ st.set_page_config(
     layout="wide",
 )
 
-# 2. 다크모드 테마 및 스타일링 (완전 통일 버전)
+# 2. 다크모드 테마 및 스타일링 (최종 교정 버전)
 st.markdown("""
     <style>
-    /* --- [1] 전체 배경 및 사이드바 --- */
+    /* --- [1] 기본 배경 설정 --- */
     .stApp { background-color: #111111; }
     [data-testid="stSidebar"] {
         background-color: #161616 !important;
         border-right: 1px solid #1E293B;
     }
 
-    /* --- [2] 입력창 일체화 (Main/Sub 구분 없이 전부) --- */
-    /* 모든 종류의 input과 textarea 배경을 어둡게 강제 고정 */
-    div[data-baseweb="input"], 
-    div[data-baseweb="base-input"], 
-    input, 
-    textarea {
-        background-color: #1E1E1E !important;
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-        border: none !important;
-    }
-
-    /* 입력창 테두리 감싸는 영역 스타일 */
+    /* --- [2] 입력창 테두리 및 라인 컬러 완벽 통일 --- */
+    /* 모든 입력창의 부모 컨테이너 테두리 고정 */
     .stTextInput > div > div, 
     .stTextArea > div > div {
         background-color: #1E1E1E !important;
-        border: 1px solid #334155 !important;
+        border: 1px solid #334155 !important; /* 동일한 라인 컬러 */
         border-radius: 8px !important;
+        transition: border-color 0.2s ease;
     }
 
-    /* 안내 문구(Placeholder) 색상 */
-    input::placeholder, textarea::placeholder {
+    /* 개별 입력 요소(BaseWeb)의 중복 테두리 제거 */
+    div[data-baseweb="input"], 
+    div[data-baseweb="base-input"] {
+        background-color: transparent !important;
+        border: none !important;
+    }
+
+    /* --- [3] 입력창 내부 텍스트 및 안내 문구(enter 등) 시인성 --- */
+    input, textarea {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        background-color: transparent !important;
+    }
+
+    /* 안내 문구 (Placeholder) 색상 - 드디어 보일 겁니다! */
+    input::placeholder, 
+    textarea::placeholder {
         color: #94A3B8 !important;
+        opacity: 1 !important;
     }
 
-    /* 포커스(클릭) 시 하이라이트 */
-    .stTextInput div[data-baseweb="input"]:focus-within, 
-    .stTextArea div[data-baseweb="base-input"]:focus-within {
+    /* 포커스 시 테두리 색상 통일 (에메랄드) */
+    .stTextInput:focus-within > div > div, 
+    .stTextArea:focus-within > div > div {
         border-color: #10B981 !important;
         box-shadow: 0 0 0 1px #10B981 !important;
     }
 
-    /* --- [3] 텍스트 가시성 해결 --- */
-    /* 사이드바 제목 (소재 편집) */
+    /* --- [4] 사이드바 텍스트 및 안내창 완전 해결 --- */
     [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {
-        color: #FFFFFF !important;
-    }
-
-    /* 입력창 라벨 (메인 카피 입력 / 서브 카피 입력) */
+    [data-testid="stSidebar"] h3 { color: #FFFFFF !important; }
+    
     [data-testid="stSidebar"] label p {
         color: #F8FAFC !important;
         font-weight: 700 !important;
     }
 
-    /* TIP/안내 박스 (st.info) */
+    /* TIP/안내 박스 내부 글자색 강제 흰색 */
     [data-testid="stSidebar"] [data-testid="stAlert"] {
         background-color: #1E293B !important;
         border: 1px solid #334155 !important;
     }
-    [data-testid="stSidebar"] [data-testid="stAlert"] div, 
-    [data-testid="stSidebar"] [data-testid="stAlert"] p {
+    [data-testid="stSidebar"] [data-testid="stAlert"] * {
         color: #FFFFFF !important;
     }
 
-    /* --- [4] 메인 화면 텍스트 --- */
+    /* --- [5] 메인 화면 및 기타 정리 --- */
     .stApp h1 { color: #FFFFFF !important; }
     .stApp .stCaption, .stApp p { color: #CBD5E1 !important; }
     [data-testid="stFileUploader"] label p { color: #FFFFFF !important; }
 
-    /* --- [5] UI 정리 --- */
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
     #MainMenu, header, footer { visibility: hidden; }
-    .stImage { border-radius: 12px; border: 1px solid #1E293B; }
     </style>
     """, unsafe_allow_html=True)
 
