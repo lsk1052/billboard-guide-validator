@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide",
 )
 
-# 2. 다크모드 테마 및 스타일링 (일체감 강화 버전)
+# 2. 다크모드 테마 및 스타일링 (최종 완성본)
 st.markdown("""
     <style>
     /* --- 전체 배경 및 사이드바 --- */
@@ -21,62 +21,59 @@ st.markdown("""
         border-right: 1px solid #1E293B;
     }
 
-    /* --- [핵심] 입력창(Input & Textarea) 커스텀 --- */
-    /* 입력창 배경을 어둡게, 테두리는 최소화 */
+    /* --- [핵심] 모든 입력창(Main/Sub 둘 다) 스타일 일치화 --- */
+    /* 1. 배경색 및 테두리 (Main & Sub 공통) */
     .stTextInput div[data-baseweb="input"], 
-    .stTextArea div[data-baseweb="base-input"],
-    .stFileUploader section {
+    .stTextArea div[data-baseweb="base-input"] {
         background-color: #1E1E1E !important;
         border: 1px solid #334155 !important;
         border-radius: 8px !important;
     }
 
-    /* 입력창 내부 텍스트 컬러 */
-    .stTextInput input, .stTextArea textarea {
+    /* 2. 실제 입력하는 글자색 (Main & Sub 공통) */
+    .stTextInput input, 
+    .stTextArea textarea {
         color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important; /* 브라우저 최적화 */
     }
 
-    /* 입력창에 포커스(클릭) 되었을 때 포인트 컬러(에메랄드) */
+    /* 3. 입력창 안의 안내 문구(Placeholder) 색상 - 안 보였던 부분 해결! */
+    .stTextInput input::placeholder, 
+    .stTextArea textarea::placeholder {
+        color: #64748B !important; /* 차분한 그레이로 표시 */
+        opacity: 1; 
+    }
+
+    /* 4. 포커스 시 테두리 하이라이트 */
     .stTextInput div[data-baseweb="input"]:focus-within, 
     .stTextArea div[data-baseweb="base-input"]:focus-within {
         border-color: #10B981 !important;
         box-shadow: 0 0 0 1px #10B981 !important;
     }
 
-    /* --- 파일 업로더(Dropzone) 스타일 --- */
+    /* --- 텍스트 시인성 보강 --- */
+    /* 메인 타이틀 및 텍스트 */
+    .stApp h1 { color: #FFFFFF !important; font-weight: 800 !important; }
+    .stApp .stCaption, .stApp p { color: #CBD5E1 !important; }
+    
+    /* 사이드바 내부 텍스트 및 안내창 */
+    [data-testid="stSidebar"] label p { color: #F8FAFC !important; font-weight: 700 !important; }
+    [data-testid="stSidebar"] .stAlert p { color: #1E293B !important; } /* info 박스 내부 글씨 */
+
+    /* 파일 업로더 스타일 */
     [data-testid="stFileUploader"] section {
         background-color: #1A1A1A !important;
         border: 1px dashed #475569 !important;
-        padding: 20px !important;
-    }
-    [data-testid="stFileUploader"] label p {
-        color: #FFFFFF !important;
-        font-weight: 600 !important;
     }
 
-    /* --- 텍스트 시인성 확보 --- */
-    .stApp h1, .stApp h2, .stApp h3 { color: #FFFFFF !important; }
-    .stApp .stCaption, .stApp p { color: #CBD5E1 !important; }
-    
-    /* 사이드바 라벨 강조 */
-    [data-testid="stSidebar"] label p {
-        color: #F8FAFC !important;
-        font-size: 0.95rem !important;
-        font-weight: 700 !important;
-        margin-bottom: 8px;
-    }
-
-    /* 구분선(Divider) 색상 조정 */
-    hr { border-color: #334155 !important; }
-
-    /* --- 기존 UI 요소 제거 --- */
+    /* --- 불필요한 UI 제거 --- */
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
     #MainMenu, header, footer { visibility: hidden; }
-    
-    /* 기존 클래스 유지 */
+
+    /* 이미지 및 가이드 텍스트 */
     .check-pass { font-size: 1.2rem; font-weight: 800; color: #10B981; }
     .check-fail { font-size: 1.2rem; font-weight: 800; color: #EF4444; }
-    .stImage { border-radius: 12px; border: 1px solid #1E293B; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    .stImage { border-radius: 12px; border: 1px solid #1E293B; }
     </style>
     """, unsafe_allow_html=True)
 
