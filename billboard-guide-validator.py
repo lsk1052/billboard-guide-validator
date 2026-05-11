@@ -100,7 +100,7 @@ st.markdown("""
         background-color: #064E3B !important; 
         
         /* 0.5px 두께는 유지하되, 색상 농도를 40%로 낮춰서 가늘어 보이게 만듭니다 */
-        border: 0.5px solid rgba(16, 185, 129, 0.4) !important; 
+        border: 1px solid rgba(16, 185, 129, 0.4) !important; 
         
         border-radius: 8px !important;
         
@@ -115,7 +115,7 @@ st.markdown("""
     div[role="alert"] * {
         color: #FFFFFF !important;
         fill: #FFFFFF !important;
-        font-weight: 300 !important; /* 텍스트 두께도 살짝 줄이면 전체적으로 더 샤프해 보입니다 */
+        font-weight: 400 !important; /* 텍스트 두께도 살짝 줄이면 전체적으로 더 샤프해 보입니다 */
     }
     
     /* 3. 컨테이너 중첩 제거 (혹시 모를 이중 테두리 방지) */
