@@ -12,80 +12,42 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.markdown("""
-    <style>
-    /* 1. 전체 배경 및 기본 글자색 강제 설정 */
-    .stApp { 
-        background-color: #111111 !important; 
-        color: #F8FAFC !important; 
-    }
-
-    /* 2. 사이드바 및 내부 텍스트 복구 */
-    [data-testid="stSidebar"] {
-        background-color: #1A1A1A !important;
-    }
-    /* 사이드바 내 모든 텍스트(라벨, 마크다운, 불렛포인트)를 밝게 */
-    [data-testid="stSidebar"] .stMarkdown, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] li {
-        color: #F8FAFC !important;
-    }
-
-    /* 3. 텍스트 입력창 (Text Area & Input) 어둡게 수정 */
-    /* 입력창 배경색과 글자색 */
-    div[data-baseweb="textarea"] {
-        background-color: #262626 !important;
-    }
-    div[data-baseweb="input"] {
-        background-color: #262626 !important;
-    }
-    
-    /* 실제 타이핑되는 글자와 입력창 내부 스타일 */
-    textarea, input {
-        color: #F8FAFC !important;
-        -webkit-text-fill-color: #F8FAFC !important;
-    }
-
-    /* 4. 파일 업로드 섹션 스타일 전면 수정 */
-    /* 업로드 박스 전체 */
-    [data-testid="stFileUploader"] section {
-        background-color: #1E1E1E !important;
-        border: 1px dashed #444444 !important;
-    }
-    
-    /* 업로드 버튼 (Upload 버튼) */
-    [data-testid="stFileUploader"] button {
-        background-color: #333333 !important;
+<style>
+    /* 1. 사이드바 헤더 및 라벨 색상 (소재 편집 등 제목) */
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, 
+    [data-testid="stSidebar"] label {
         color: #FFFFFF !important;
-        border: 1px solid #555555 !important;
     }
 
-    /* 업로드 버튼 우측 문구 (200MB per file... 등) */
-    [data-testid="stFileUploader"] {
-        color: #94A3B8 !important;
+    /* 2. 입력창(Text Area, Input) 배경 다크하게 + 글자색 흰색 고정 */
+    /* 입력창 박스 자체의 배경 */
+    div[data-baseweb="textarea"], div[data-baseweb="input"] {
+        background-color: #262626 !important;
+        border: 1px solid #444444 !important;
     }
+    
+    /* 입력창 내부 텍스트 및 커서 색상 */
+    textarea, input {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    /* 3. 파일 업로드 안내 문구 (200MB per file...) 색상 밝게 */
+    [data-testid="stFileUploader"] p,
+    [data-testid="stFileUploader"] small,
     [data-testid="stFileUploader"] div[data-testid="stMarkdownContainer"] p {
-        color: #94A3B8 !important;
-    }
-    /* "Browse files" 텍스트와 하단 작은 글씨들 */
-    [data-testid="stFileUploader"] small {
-        color: #94A3B8 !important;
+        color: #CBD5E1 !important; /* 밝은 회색으로 변경하여 시인성 확보 */
     }
 
-    /* 5. UI 고정 및 불필요 요소 제거 (기존 유지) */
-    #MainMenu { visibility: hidden; }
-    header { visibility: hidden; }
-    footer { visibility: hidden; }
+    /* 4. 기타 UI 고정 및 다크 배경 유지 */
+    .stApp { background-color: #111111; color: #F8FAFC; }
+    [data-testid="stSidebar"] { background-color: #1A1A1A !important; }
+    
+    #MainMenu, header, footer { visibility: hidden; }
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] {
         display: none !important;
     }
-    [data-testid="stSidebar"] {
-        min-width: 300px !important;
-        max-width: 300px !important;
-    }
     </style>
-    """, unsafe_allow_html=True)
 
 # 3. 품질 분석 함수
 def evaluate_quality(pil_image):
