@@ -348,7 +348,7 @@ if uploaded_file is not None:
         if file_size_kb <= 500:
             st.success(f"✅ 용량 적정\n현재: {file_size_kb:.1f} KB")
         else:
-            st.error(f"🚨 용량 초과\n현재: {file_size_kb:.1f} KB (제한: 500KB)")
+            st.error(f"🚨 용량 초과\n현재: {file_size_kb:.1f} KB (제한: 400KB)")
             
     with v_col3:
         quality_score = 85 
