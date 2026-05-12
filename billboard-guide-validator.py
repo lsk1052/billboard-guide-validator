@@ -153,51 +153,52 @@ st.markdown("""
 
     /* --- [수정] 상태 박스(st.success) 테두리 다이어트 --- */
     
-    /* --- [최종 수정] 상태별(성공/경고/에러) 색상 완벽 분리 --- */
+    /* --- [최종 해결] 박스 사라짐 방지 및 상태별 색상 강제 적용 --- */
     
-    /* 1. 기본 박스 형태 고정 (배경색은 여기서 선언하지 않음) */
+    /* 1. 모든 박스에 기본 배경색 부여 (사라짐 방지) */
     div[data-testid="stNotification"], 
     div[data-testid="stAlert"], 
     div[role="alert"] {
+        background-color: #1E1E1E !important; /* 기본 어두운 배경 */
+        border: 1px solid #334155 !important;
         border-radius: 8px !important;
         filter: none !important; 
         box-shadow: none !important; 
+        margin-bottom: 1rem !important;
     }
 
-    /* 2. Success: 초록색 (규격 통과 등) */
+    /* 2. Success (초록) - '✅' 아이콘이 포함된 경우 */
     div[data-testid="stNotification"]:has(svg[title="Success"]),
-    div[data-base-alert-kind="success"] {
+    div[role="alert"]:has(svg[title="Success"]) {
         background-color: #064E3B !important; 
-        border: 1px solid rgba(16, 185, 129, 0.4) !important;
+        border-color: rgba(16, 185, 129, 0.4) !important;
     }
 
-    /* 3. Warning: 주황색 (규격 재확인 등) */
-    div[data-testid="stNotification"]:has(svg[title="Warning"]),
-    div[data-base-alert-kind="warning"] {
-        background-color: #451a03 !important; 
-        border: 1px solid rgba(245, 158, 11, 0.4) !important;
-    }
-
-    /* 4. Error: 빨간색 (용량 초과 등) */
+    /* 3. Error (빨강) - '🚨' 아이콘이 포함된 경우 */
     div[data-testid="stNotification"]:has(svg[title="Error"]),
-    div[data-base-alert-kind="error"] {
+    div[role="alert"]:has(svg[title="Error"]) {
         background-color: #450a0a !important; 
-        border: 1px solid rgba(239, 68, 68, 0.4) !important;
+        border-color: rgba(239, 68, 68, 0.4) !important;
+    }
+
+    /* 4. Warning (주황) - '⚠️' 아이콘이 포함된 경우 */
+    div[data-testid="stNotification"]:has(svg[title="Warning"]),
+    div[role="alert"]:has(svg[title="Warning"]) {
+        background-color: #451a03 !important; 
+        border-color: rgba(245, 158, 11, 0.4) !important;
     }
     
-    /* 5. 내부 텍스트 및 아이콘 흰색 고정 */
+    /* 5. 내부 텍스트 및 아이콘 컬러 강제 고정 */
     div[data-testid="stNotification"] *, 
     div[data-testid="stAlert"] *, 
     div[role="alert"] * {
         color: #FFFFFF !important;
         fill: #FFFFFF !important;
-        font-weight: 400 !important;
     }
 
-    /* 6. 컨테이너 중첩 및 잔상 제거 */
+    /* 6. 잔상 제거 (투명화 설정 삭제 또는 조정) */
     div[data-testid="stAlertContainer"] {
         background-color: transparent !important;
-        border: none !important;
     }
 
     /* 3. 일반 모드 크롬에서 배경이 투명하게 비치는 현상 방지 */
