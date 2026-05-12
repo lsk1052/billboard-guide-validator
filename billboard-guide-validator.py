@@ -331,8 +331,7 @@ if uploaded_file is not None:
             st.markdown(f"""
             <div class="status-box status-error">
             🚨 규격 부적합<br>
-            현재: {width}x{height}px<br>
-            기준: 750x1000px
+            현재: {width}x{height}px (기준: 750x1000px)
             </div>
             """, unsafe_allow_html=True)
             
