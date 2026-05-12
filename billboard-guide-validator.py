@@ -14,8 +14,6 @@ st.set_page_config(
 
 # 2. 색상 완전 고정 (시스템 테마 무시 버전)
 st.markdown("""
-    # 2. 색상 및 스타일 완전 고정
-st.markdown("""
     <style>
     /* [1] 전역 배경 및 기본 텍스트 */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
