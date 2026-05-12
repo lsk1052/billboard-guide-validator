@@ -15,6 +15,44 @@ st.set_page_config(
 # 2. 색상 완전 고정 (시스템 테마 무시 버전)
 st.markdown("""
     <style>
+    /* 1. 공통 스타일 (테두리 두께 및 둥글기) */
+    div[data-testid="stNotification"], 
+    div[data-testid="stAlert"], 
+    div[role="alert"] {
+        border-radius: 8px !important;
+        filter: none !important; 
+        box-shadow: none !important; 
+    }
+
+    /* 2. Success (초록색 - 통과) */
+    div[data-testid="stNotification"]:has(svg[title="Success"]),
+    div[data-base-alert-kind="success"] {
+        background-color: #064E3B !important; 
+        border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    }
+
+    /* 3. Warning (노란색/주황색 - 주의) */
+    div[data-testid="stNotification"]:has(svg[title="Warning"]),
+    div[data-base-alert-kind="warning"] {
+        background-color: #451a03 !important; /* 어두운 주황 배경 */
+        border: 1px solid rgba(245, 158, 11, 0.4) !important; /* 주황색 테두리 */
+    }
+
+    /* 4. Error (빨간색 - 반려/초과) */
+    div[data-testid="stNotification"]:has(svg[title="Error"]),
+    div[data-base-alert-kind="error"] {
+        background-color: #450a0a !important; /* 어두운 빨강 배경 */
+        border: 1px solid rgba(239, 68, 68, 0.4) !important; /* 빨간색 테두리 */
+    }
+    
+    /* 5. 내부 텍스트 공통 흰색 고정 */
+    div[data-testid="stNotification"] *, 
+    div[data-testid="stAlert"] *, 
+    div[role="alert"] * {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+    }
+    
     /* [1] 전역 배경 및 텍스트 색상 강제 고정 */
     /* 라이트 모드여도 무조건 배경은 검게, 글자는 하얗게 만듭니다. */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
