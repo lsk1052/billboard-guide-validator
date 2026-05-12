@@ -139,12 +139,6 @@ st.markdown("""
         border-color: rgba(248,113,113,0.35);
     }
     
-    /* WARNING */
-    .status-warning {
-        background-color: #78350F;
-        border-color: rgba(251,191,36,0.35);
-    }
-    
     /* 3. 컨테이너 중첩 제거 (혹시 모를 이중 테두리 방지) */
     div[data-testid="stAlertContainer"] {
         background-color: transparent !important;
