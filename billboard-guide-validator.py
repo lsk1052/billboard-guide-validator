@@ -113,42 +113,36 @@ st.markdown("""
         border: 1px solid #475569 !important;
     }
 
-    /* ============================= */
-    /* SUCCESS / WARNING / ERROR 구분 */
-    /* ============================= */
+    /* ========================= */
+    /* 커스텀 상태 박스 */
+    /* ========================= */
     
-    /* 공통 */
-    div[data-testid="stAlert"] {
-        border-radius: 10px !important;
-        box-shadow: none !important;
-        padding: 14px 16px !important;
-        border: none !important;
+    .status-box {
+        border-radius: 10px;
+        padding: 16px 18px;
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        border: 1px solid transparent;
     }
     
-    /* SUCCESS (초록) */
-    div[data-testid="stAlert"] {
-        background-color: #064E3B !important;
+    /* SUCCESS */
+    .status-success {
+        background-color: #065F46;
+        border-color: rgba(16,185,129,0.35);
     }
     
-    /* WARNING (노랑) */
-    div[data-testid="stAlert"][style*="#ffa421"] {
-        background-color: #78350F !important;
+    /* ERROR */
+    .status-error {
+        background-color: #7F1D1D;
+        border-color: rgba(248,113,113,0.35);
     }
     
-    /* ERROR (빨강) */
-    div[data-testid="stAlert"][style*="#ff2b2b"] {
-        background-color: #7F1D1D !important;
-    }
-    
-    /* INFO (파랑) */
-    div[data-testid="stAlert"][style*="#1c83e1"] {
-        background-color: #1E293B !important;
-    }
-    
-    /* 텍스트 */
-    div[data-testid="stAlert"] * {
-        color: white !important;
-        fill: white !important;
+    /* WARNING */
+    .status-warning {
+        background-color: #78350F;
+        border-color: rgba(251,191,36,0.35);
     }
     
     /* 3. 컨테이너 중첩 제거 (혹시 모를 이중 테두리 방지) */
@@ -331,16 +325,39 @@ if uploaded_file is not None:
     v_col1, v_col2, v_col3 = st.columns(3)
     
     with v_col1:
-        if width == 750 and height == 1000:
-            st.success(f"✅ 규격 통과\n현재: {width}x{height}px")
-        else:
-            st.warning(f"⚠️ 규격 재확인\n권장: 750x1000 (현재: {width}x{height})")
+    if width == 750 and height == 1000:
+        st.markdown(f"""
+        <div class="status-box status-success">
+        ✅ 규격 통과<br>
+        현재: {width}x{height}px
+        </div>
+        """, unsafe_allow_html=True)
+
+    else:
+        st.markdown(f"""
+        <div class="status-box status-warning">
+        ⚠️ 규격 재확인<br>
+        권장: 750x1000<br>
+        현재: {width}x{height}px
+        </div>
+        """, unsafe_allow_html=True)
             
     with v_col2:
-        if file_size_kb <= 500:
-            st.success(f"✅ 용량 적정\n현재: {file_size_kb:.1f} KB")
-        else:
-            st.error(f"🚨 용량 초과\n현재: {file_size_kb:.1f} KB (제한: 400KB)")
+    if file_size_kb <= 500:
+        st.markdown(f"""
+        <div class="status-box status-success">
+        ✅ 용량 적정<br>
+        현재: {file_size_kb:.1f} KB
+        </div>
+        """, unsafe_allow_html=True)
+
+    else:
+        st.markdown(f"""
+        <div class="status-box status-error">
+        🚨 용량 초과<br>
+        현재: {file_size_kb:.1f} KB (제한: 500KB)
+        </div>
+        """, unsafe_allow_html=True)
             
     with v_col3:
         quality_score = 85 
