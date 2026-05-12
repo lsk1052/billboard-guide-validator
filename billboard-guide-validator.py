@@ -139,6 +139,35 @@ st.markdown("""
         fill: #FFFFFF !important;
         font-weight: 400 !important; /* 텍스트 두께도 살짝 줄이면 전체적으로 더 샤프해 보입니다 */
     }
+
+    /* 1. 공통 스타일 */
+    div[data-testid="stNotification"], div[data-testid="stAlert"] {
+        border-radius: 8px !important;
+        filter: none !important; 
+        box-shadow: none !important;
+    }
+
+    /* 2. Success (초록 - 적합) */
+    div[data-testid="stNotification"]:has(svg[aria-label="Success"]),
+    div[role="alert"]:has(svg[aria-label="Success"]) {
+        background-color: #064E3B !important; 
+        border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    }
+
+    /* 3. Error & Warning 통합 (빨강 - 부적합) */
+    /* Warning 아이콘이 나오더라도 시각적으로는 Red로 표시되게 통합합니다 */
+    div[data-testid="stNotification"]:has(svg[aria-label="Error"]),
+    div[data-testid="stNotification"]:has(svg[aria-label="Warning"]),
+    div[role="alert"]:has(svg[aria-label="Error"]),
+    div[role="alert"]:has(svg[aria-label="Warning"]) {
+        background-color: #7F1D1D !important; 
+        border: 1px solid rgba(239, 68, 68, 0.4) !important;
+    }
+    
+    div[data-testid="stNotification"] *, div[role="alert"] * {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+    }
     
     /* 3. 컨테이너 중첩 제거 (혹시 모를 이중 테두리 방지) */
     div[data-testid="stAlertContainer"] {
@@ -307,8 +336,8 @@ with st.sidebar:
 uploaded_file = st.file_uploader("검수할 빌보드 이미지를 업로드하세요", type=["png", "jpg", "jpeg"])
 
 # --- 메인 화면 미리보기 영역 ---
+# --- 메인 화면 검수 로직 (2단계 피드백) ---
 if uploaded_file is not None:
-    # 1. 파일 데이터 로드 및 기본 검수
     file_bytes = uploaded_file.getvalue()
     raw_image = Image.open(uploaded_file)
     width, height = raw_image.size
@@ -316,24 +345,27 @@ if uploaded_file is not None:
 
     st.divider()
     
-    # --- [검수 기능] 상단 상태 박스 (이건 넓게 유지) ---
     v_col1, v_col2, v_col3 = st.columns(3)
     
     with v_col1:
         if width == 750 and height == 1000:
-            st.success(f"✅ 규격 통과\n현재: {width}x{height}px")
+            st.success(f"✅ 규격 적합\n{width}x{height}px")
         else:
-            st.warning(f"⚠️ 규격 재확인\n권장: 750x1000 (현재: {width}x{height})")
+            st.error(f"🚨 규격 부적합\n현재: {width}x{height} (권장: 750x1000)")
             
     with v_col2:
         if file_size_kb <= 500:
-            st.success(f"✅ 용량 적정\n현재: {file_size_kb:.1f} KB")
+            st.success(f"✅ 용량 적합\n{file_size_kb:.1f} KB")
         else:
             st.error(f"🚨 용량 초과\n현재: {file_size_kb:.1f} KB (제한: 500KB)")
             
     with v_col3:
-        quality_score = 85 
-        st.success(f"✅ 화질 양호\n품질 지수: {quality_score}점")
+        final_score = evaluate_quality(raw_image)
+        # 화질도 70점 기준 합격/불합격으로 엄격하게 분리
+        if final_score >= 70:
+            st.success(f"✅ 화질 적합\n품질 지수: {final_score:.1f}점")
+        else:
+            st.error(f"🚨 화질 부적합\n품질 지수: {final_score:.1f}점 (재촬영 권장)")
 
     st.divider()
     
