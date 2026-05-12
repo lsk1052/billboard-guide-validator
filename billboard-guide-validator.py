@@ -327,7 +327,7 @@ if uploaded_file is not None:
             </div>
             """, unsafe_allow_html=True)
 
-    else:
+        else:
             st.markdown(f"""
             <div class="status-box status-error">
             🚨 규격 부적합<br>
