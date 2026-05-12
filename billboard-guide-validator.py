@@ -137,7 +137,7 @@ st.markdown("""
     .status-error {
         background-color: #7F1D1D;
         border-color: rgba(248,113,113,0.35);
-    }
+    }  
     
     /* 3. 컨테이너 중첩 제거 (혹시 모를 이중 테두리 방지) */
     div[data-testid="stAlertContainer"] {
@@ -322,17 +322,17 @@ if uploaded_file is not None:
         if width == 750 and height == 1000:
             st.markdown(f"""
             <div class="status-box status-success">
-            ✅ 규격 통과<br>
+            ✅ 규격 적합<br>
             현재: {width}x{height}px
             </div>
             """, unsafe_allow_html=True)
 
-        else:
+    else:
             st.markdown(f"""
-            <div class="status-box status-warning">
-            ⚠️ 규격 재확인<br>
-            권장: 750x1000<br>
-            현재: {width}x{height}px
+            <div class="status-box status-error">
+            🚨 규격 부적합<br>
+            현재: {width}x{height}px<br>
+            기준: 750x1000px
             </div>
             """, unsafe_allow_html=True)
             
