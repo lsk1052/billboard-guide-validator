@@ -278,7 +278,7 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
 
 # 5. 메인 UI 구성
 st.title("Check Mate : 빌보드 가이드 체크")
-st.caption("광고 빌보드 배너 디자인 품질 및 규격 검수 프로그램")
+st.caption("광고 빌보드 배너 디자인 품질 검수 프로그램")
 
 with st.sidebar:
     
@@ -301,7 +301,7 @@ with st.sidebar:
     
     st.divider()
     st.markdown("### 📋 검수 가이드라인")
-    st.caption("- 규격: 750x1000px\n- 용량: 400KB 이하\n- 필수: 헤더 영역에 모델 얼굴 혹은 주요 제품이 겹치지 않게 해주세요.")
+    st.caption("- 이미지 사이즈: 750x1000px\n- 용량: 400KB 이하\n- 필수: 헤더 영역에 모델 얼굴 혹은 주요 제품이 겹치지 않게 해주세요.")
 
 uploaded_file = st.file_uploader("검수할 빌보드 이미지를 업로드하세요", type=["png", "jpg", "jpeg"])
 
@@ -322,7 +322,7 @@ if uploaded_file is not None:
         if width == 750 and height == 1000:
             st.markdown(f"""
             <div class="status-box status-success">
-            ✅ 규격 적합<br>
+            ✅ 이미지 사이즈 적합<br>
             현재: {width}x{height}px
             </div>
             """, unsafe_allow_html=True)
@@ -330,7 +330,7 @@ if uploaded_file is not None:
         else:
             st.markdown(f"""
             <div class="status-box status-error">
-            🚨 규격 부적합<br>
+            🚨 이미지 사이즈 부적합<br>
             현재: {width}x{height}px (기준: 750x1000px)
             </div>
             """, unsafe_allow_html=True)
