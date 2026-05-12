@@ -153,32 +153,48 @@ st.markdown("""
 
     /* --- [수정] 상태 박스(st.success) 테두리 다이어트 --- */
     
-    /* 1. 상태 박스 배경과 테두리 설정 */
+    /* --- [최종 수정] 상태별(성공/경고/에러) 색상 완벽 분리 --- */
+    
+    /* 1. 기본 박스 형태 고정 (배경색은 여기서 선언하지 않음) */
     div[data-testid="stNotification"], 
     div[data-testid="stAlert"], 
     div[role="alert"] {
-        background-color: #064E3B !important; 
-        
-        /* 0.5px 두께는 유지하되, 색상 농도를 40%로 낮춰서 가늘어 보이게 만듭니다 */
-        border: 1px solid rgba(16, 185, 129, 0.4) !important; 
-        
         border-radius: 8px !important;
-        
-        /* [중요] 테두리를 두꺼워 보이게 만드는 필터와 그림자를 제거합니다 */
         filter: none !important; 
         box-shadow: none !important; 
     }
+
+    /* 2. Success: 초록색 (규격 통과 등) */
+    div[data-testid="stNotification"]:has(svg[title="Success"]),
+    div[data-base-alert-kind="success"] {
+        background-color: #064E3B !important; 
+        border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    }
+
+    /* 3. Warning: 주황색 (규격 재확인 등) */
+    div[data-testid="stNotification"]:has(svg[title="Warning"]),
+    div[data-base-alert-kind="warning"] {
+        background-color: #451a03 !important; 
+        border: 1px solid rgba(245, 158, 11, 0.4) !important;
+    }
+
+    /* 4. Error: 빨간색 (용량 초과 등) */
+    div[data-testid="stNotification"]:has(svg[title="Error"]),
+    div[data-base-alert-kind="error"] {
+        background-color: #450a0a !important; 
+        border: 1px solid rgba(239, 68, 68, 0.4) !important;
+    }
     
-    /* 2. 박스 내부 텍스트 및 아이콘 (기존 유지하되 두께 조절) */
+    /* 5. 내부 텍스트 및 아이콘 흰색 고정 */
     div[data-testid="stNotification"] *, 
     div[data-testid="stAlert"] *, 
     div[role="alert"] * {
         color: #FFFFFF !important;
         fill: #FFFFFF !important;
-        font-weight: 400 !important; /* 텍스트 두께도 살짝 줄이면 전체적으로 더 샤프해 보입니다 */
+        font-weight: 400 !important;
     }
-    
-    /* 3. 컨테이너 중첩 제거 (혹시 모를 이중 테두리 방지) */
+
+    /* 6. 컨테이너 중첩 및 잔상 제거 */
     div[data-testid="stAlertContainer"] {
         background-color: transparent !important;
         border: none !important;
