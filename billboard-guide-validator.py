@@ -325,39 +325,39 @@ if uploaded_file is not None:
     v_col1, v_col2, v_col3 = st.columns(3)
     
     with v_col1:
-    if width == 750 and height == 1000:
-        st.markdown(f"""
-        <div class="status-box status-success">
-        ✅ 규격 통과<br>
-        현재: {width}x{height}px
-        </div>
-        """, unsafe_allow_html=True)
+        if width == 750 and height == 1000:
+            st.markdown(f"""
+            <div class="status-box status-success">
+            ✅ 규격 통과<br>
+            현재: {width}x{height}px
+            </div>
+            """, unsafe_allow_html=True)
 
-    else:
-        st.markdown(f"""
-        <div class="status-box status-warning">
-        ⚠️ 규격 재확인<br>
-        권장: 750x1000<br>
-        현재: {width}x{height}px
-        </div>
-        """, unsafe_allow_html=True)
+        else:
+            st.markdown(f"""
+            <div class="status-box status-warning">
+            ⚠️ 규격 재확인<br>
+            권장: 750x1000<br>
+            현재: {width}x{height}px
+            </div>
+            """, unsafe_allow_html=True)
             
     with v_col2:
-    if file_size_kb <= 500:
-        st.markdown(f"""
-        <div class="status-box status-success">
-        ✅ 용량 적정<br>
-        현재: {file_size_kb:.1f} KB
-        </div>
-        """, unsafe_allow_html=True)
+        if file_size_kb <= 500:
+            st.markdown(f"""
+            <div class="status-box status-success">
+            ✅ 용량 적정<br>
+            현재: {file_size_kb:.1f} KB
+            </div>
+            """, unsafe_allow_html=True)
 
-    else:
-        st.markdown(f"""
-        <div class="status-box status-error">
-        🚨 용량 초과<br>
-        현재: {file_size_kb:.1f} KB (제한: 500KB)
-        </div>
-        """, unsafe_allow_html=True)
+        else:
+            st.markdown(f"""
+            <div class="status-box status-error">
+            🚨 용량 초과<br>
+            현재: {file_size_kb:.1f} KB (제한: 500KB)
+            </div>
+            """, unsafe_allow_html=True)
             
     with v_col3:
         quality_score = 85 
