@@ -14,253 +14,98 @@ st.set_page_config(
 
 # 2. 색상 완전 고정 (시스템 테마 무시 버전)
 st.markdown("""
+    # 2. 색상 및 스타일 완전 고정
+st.markdown("""
     <style>
-    /* 1. 공통 스타일 (테두리 두께 및 둥글기) */
-    div[data-testid="stNotification"], 
-    div[data-testid="stAlert"], 
-    div[role="alert"] {
-        border-radius: 8px !important;
-        filter: none !important; 
-        box-shadow: none !important; 
-    }
-
-    /* 2. Success (초록색 - 통과) */
-    div[data-testid="stNotification"]:has(svg[title="Success"]),
-    div[data-base-alert-kind="success"] {
-        background-color: #064E3B !important; 
-        border: 1px solid rgba(16, 185, 129, 0.4) !important;
-    }
-
-    /* 3. Warning (노란색/주황색 - 주의) */
-    div[data-testid="stNotification"]:has(svg[title="Warning"]),
-    div[data-base-alert-kind="warning"] {
-        background-color: #451a03 !important; /* 어두운 주황 배경 */
-        border: 1px solid rgba(245, 158, 11, 0.4) !important; /* 주황색 테두리 */
-    }
-
-    /* 4. Error (빨간색 - 반려/초과) */
-    div[data-testid="stNotification"]:has(svg[title="Error"]),
-    div[data-base-alert-kind="error"] {
-        background-color: #450a0a !important; /* 어두운 빨강 배경 */
-        border: 1px solid rgba(239, 68, 68, 0.4) !important; /* 빨간색 테두리 */
-    }
-    
-    /* 5. 내부 텍스트 공통 흰색 고정 */
-    div[data-testid="stNotification"] *, 
-    div[data-testid="stAlert"] *, 
-    div[role="alert"] * {
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-    }
-    
-    /* [1] 전역 배경 및 텍스트 색상 강제 고정 */
-    /* 라이트 모드여도 무조건 배경은 검게, 글자는 하얗게 만듭니다. */
+    /* [1] 전역 배경 및 기본 텍스트 */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
         background-color: #111111 !important;
         color: #FFFFFF !important;
     }
-
-    /* 모든 텍스트 요소를 흰색으로 고정 */
     h1, h2, h3, h4, h5, h6, p, label, span, li, small {
         color: #FFFFFF !important;
     }
 
-    /* [2] 사이드바 고정 컬러 */
-    [data-testid="stSidebar"], [data-testid="stSidebar"] > div {
+    /* [2] 사이드바 디자인 */
+    [data-testid="stSidebar"] {
         background-color: #161616 !important;
         border-right: 1px solid #1E293B;
     }
-
-    /* [3] 입력창 스타일 통합 및 테두리 두께 교정 (상단 번짐 해결) */
-
-    /* 1. 모든 기본 껍데기 테두리와 그림자 제거 (겹침 방지) */
-    .stTextArea > div > div, 
-    .stTextInput > div > div,
-    [data-baseweb="base-input"],
-    [data-baseweb="textarea"] > div {
-        border: none !important;
-        box-shadow: none !important;
-        outline: none !important;
-        background-color: transparent !important;
-    }
-
-    /* 2. 실제 박스(BaseWeb) 하나에만 1px 테두리 고정 */
-    [data-baseweb="textarea"], 
-    [data-baseweb="input"] {
-        background-color: #1E1E1E !important;
-        border: 1px solid #334155 !important; /* 기본 남색 */
-        border-radius: 8px !important;
-        box-shadow: none !important;
-        transition: all 0.2s ease;
-    }
-
-    /* 3. 클릭(Focus) 시: 두께 변화 없이 '색상'만 빨간색으로 변경 */
-    /* box-shadow를 제거해야 윗부분이 두껍게 보이는 잔상이 사라집니다. */
-    [data-baseweb="textarea"]:focus-within, 
-    [data-baseweb="input"]:focus-within {
-        border: 1px solid #FF4B4B !important; 
-        box-shadow: none !important; 
-        outline: none !important;
-    }
-
-    /* 4. 내부 텍스트 영역 설정 */
-    .stTextArea textarea, .stTextInput input {
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-        padding: 8px 12px !important;
-    }
-    /* 안내문구(Placeholder) 컬러 */
-    input::placeholder, textarea::placeholder {
-        color: #64748B !important; /* ← 여기서 안내문구 컬러 수정 */
-        opacity: 1 !important;
-    }
-
-    /* [4] 파일 업로더 및 파일 정보 카드 고정 */
-    /* 업로드 영역 */
-    [data-testid="stFileUploader"] section {
-        background-color: #1A1A1A !important;
-        border: 1px dashed #475569 !important;
-    }
-
-    /* 업로드된 파일 카드 (문제의 하얀 박스 완벽 차단) */
-    [data-testid="stFileUploaderFileData"], 
-    [data-testid="stFileUploaderFileData"] *,
-    [data-testid="stFileUploaderFileData"] div {
-        background-color: #1E1E1E !important;
-        color: #FFFFFF !important;
-        border-color: #334155 !important;
-    }
-
-    /* [5] 사이드바 TIP 박스 (st.info) 고정 */
-    [data-testid="stSidebar"] [data-testid="stAlert"] {
-        background-color: #1E293B !important;
-        border: 1px solid #334155 !important;
-    }
-    [data-testid="stSidebar"] [data-testid="stAlert"] * {
-        color: #FFFFFF !important;
-    }
-
-    /* [6] UI 정리 (불필요한 버튼 및 메뉴 숨기기) */
     [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"] { display: none !important; }
     #MainMenu, header, footer { visibility: hidden; }
 
-    /* [7] 버튼 스타일 고정 */
-    button[kind="secondary"] {
+    /* [3] 상태 박스(Success/Error/Warning) 중첩 해결 및 색상 강제 적용 */
+    
+    /* 모든 알림 박스 공통 기본 설정 */
+    div[data-testid="stNotification"] {
+        background-color: #1E1E1E !important; 
+        border-radius: 8px !important;
+        border: 1px solid #334155 !important;
+        padding: 0px !important; /* 내부 여백 초기화로 중첩 느낌 제거 */
+    }
+    
+    /* 내부 실제 컨텐츠 박스 스타일 고정 */
+    div[role="alert"] {
+        background-color: transparent !important;
+        border: none !important;
+        color: #FFFFFF !important;
+    }
+
+    /* 성공(Success) - 초록색 */
+    div[data-testid="stNotification"]:has(svg[title="Success"]) {
+        background-color: #064E3B !important;
+        border-color: rgba(16, 185, 129, 0.5) !important;
+    }
+
+    /* 에러(Error/용량초과) - 빨간색 */
+    div[data-testid="stNotification"]:has(svg[title="Error"]) {
+        background-color: #450a0a !important;
+        border-color: rgba(239, 68, 68, 0.5) !important;
+    }
+
+    /* 경고(Warning/규격미달) - 주황색 */
+    div[data-testid="stNotification"]:has(svg[title="Warning"]) {
+        background-color: #451a03 !important;
+        border-color: rgba(245, 158, 11, 0.5) !important;
+    }
+
+    /* 아이콘 및 텍스트 화이트 고정 */
+    div[data-testid="stNotification"] svg, 
+    div[data-testid="stNotification"] div {
+        fill: #FFFFFF !important;
+        color: #FFFFFF !important;
+    }
+
+    /* [4] 입력창(Input/TextArea) 스타일 */
+    [data-baseweb="textarea"], [data-baseweb="input"] {
+        background-color: #1E1E1E !important;
+        border: 1px solid #334155 !important;
+        border-radius: 8px !important;
+    }
+    [data-baseweb="textarea"]:focus-within, [data-baseweb="input"]:focus-within {
+        border-color: #FF4B4B !important;
+    }
+    input, textarea { color: #FFFFFF !important; }
+    input::placeholder, textarea::placeholder { color: #64748B !important; }
+
+    /* [5] 이미지 및 다운로드 버튼 중앙 정렬 */
+    .stImage, div.stDownloadButton {
+        display: flex;
+        justify-content: center;
+    }
+    div.stDownloadButton > button {
+        width: 750px !important;
         background-color: #262730 !important;
         color: #FFFFFF !important;
         border: 1px solid #475569 !important;
     }
 
-    /* --- [수정] 상태 박스(st.success) 테두리 다이어트 --- */
-    
-    /* --- [최종 해결] 박스 사라짐 방지 및 상태별 색상 강제 적용 --- */
-    
-    /* 1. 모든 박스에 기본 배경색 부여 (사라짐 방지) */
-    div[data-testid="stNotification"], 
-    div[data-testid="stAlert"], 
-    div[role="alert"] {
-        background-color: #1E1E1E !important; /* 기본 어두운 배경 */
-        border: 1px solid #334155 !important;
-        border-radius: 8px !important;
-        filter: none !important; 
-        box-shadow: none !important; 
-        margin-bottom: 1rem !important;
-    }
-
-    /* 2. Success (초록) - '✅' 아이콘이 포함된 경우 */
-    div[data-testid="stNotification"]:has(svg[title="Success"]),
-    div[role="alert"]:has(svg[title="Success"]) {
-        background-color: #064E3B !important; 
-        border-color: rgba(16, 185, 129, 0.4) !important;
-    }
-
-    /* 3. Error (빨강) - '🚨' 아이콘이 포함된 경우 */
-    div[data-testid="stNotification"]:has(svg[title="Error"]),
-    div[role="alert"]:has(svg[title="Error"]) {
-        background-color: #450a0a !important; 
-        border-color: rgba(239, 68, 68, 0.4) !important;
-    }
-
-    /* 4. Warning (주황) - '⚠️' 아이콘이 포함된 경우 */
-    div[data-testid="stNotification"]:has(svg[title="Warning"]),
-    div[role="alert"]:has(svg[title="Warning"]) {
-        background-color: #451a03 !important; 
-        border-color: rgba(245, 158, 11, 0.4) !important;
-    }
-    
-    /* 5. 내부 텍스트 및 아이콘 컬러 강제 고정 */
-    div[data-testid="stNotification"] *, 
-    div[data-testid="stAlert"] *, 
-    div[role="alert"] * {
-        color: #FFFFFF !important;
-        fill: #FFFFFF !important;
-    }
-
-    /* 6. 잔상 제거 (투명화 설정 삭제 또는 조정) */
-    div[data-testid="stAlertContainer"] {
-        background-color: transparent !important;
-    }
-
-    /* 3. 일반 모드 크롬에서 배경이 투명하게 비치는 현상 방지 */
-    div[data-testid="stAlertContainer"] {
-        background-color: transparent !important;
-    }
-
-    /* --- [추가] 이미지 및 버튼 정중앙 정렬 및 너비 고정 --- */
-
-    /* 1. 이미지 컨테이너를 정중앙으로 */
-    .stImage {
-        display: flex;
-        justify-content: center;
-    }
-
-    /* 2. 다운로드 버튼을 750px로 고정하고 중앙 정렬 */
-    div.stDownloadButton {
-        display: flex;
-        justify-content: center;
-    }
-    div.stDownloadButton > button {
-        width: 750px !important; /* 이미지와 동일하게 750px로 고정 */
-        max-width: 750px !important;
-    }
-
-    /* [1] 메인 화면은 기본적으로 보기 편한 위치에 둡니다. */
-    .block-container {
-        padding-top: 4rem !important; /* 상단 여백을 적당히 줍니다 (너무 붙지 않게) */
-    }
-
-    /* [2] 사이드바 컨테이너의 기본 여백을 제거 */
-    [data-testid="stSidebarUserContent"] {
-        padding-top: 0rem !important;
-    }
-
-    /* [4] 사이드바 구분선 컬러 (다시 한번 선명하게 고정) */
+    /* [6] 간격 및 구분선 정리 */
+    .block-container { padding-top: 3rem !important; }
     [data-testid="stSidebar"] hr {
-        border-color: #475569 !important;
-        margin-top: 1.2rem !important;
-        margin-bottom: 1.2rem !important;
+        border-color: #334155 !important;
+        margin: 1.5rem 0 !important;
         opacity: 1 !important;
-    }
-
-    /* [4] 사이드바 구분선 컬러 재강조 (시인성) */
-    [data-testid="stSidebar"] hr {
-        border-color: #475569 !important;
-        margin-top: 1.5rem !important;
-        margin-bottom: 1.5rem !important;
-    }
-
-    /* --- [2] 사이드바 구분선(hr) 컬러 명확하게 변경 --- */
-    /* 사이드바 내의 모든 구분선(st.divider) 색상 및 두께 조절 */
-    [data-testid="stSidebar"] hr {
-        border-color: #475569 !important; /* 훨씬 잘 보이는 밝은 그레이-블루 */
-        margin-top: 1.5rem !important;
-        margin-bottom: 1.5rem !important;
-        opacity: 0.8 !important; /* 투명도를 높여 선명하게 */
-    }
-
-    /* --- [참고] 타이틀 위쪽 간격 미세 조정 --- */
-    h1 {
-        margin-top: -1rem !important; /* 타이틀을 위로 살짝 더 끌어올림 */
     }
     </style>
     """, unsafe_allow_html=True)
