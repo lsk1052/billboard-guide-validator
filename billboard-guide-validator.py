@@ -360,8 +360,23 @@ if uploaded_file is not None:
             """, unsafe_allow_html=True)
             
     with v_col3:
-        quality_score = 85 
-        st.success(f"✅ 화질 양호\n품질 지수: {quality_score}점")
+        quality_score = 85
+    
+        if quality_score >= 60:
+            st.markdown(f"""
+            <div class="status-box status-success">
+            ✅ 화질 적합<br>
+            품질 지수: {quality_score}점
+            </div>
+            """, unsafe_allow_html=True)
+    
+        else:
+            st.markdown(f"""
+            <div class="status-box status-error">
+            🚨 화질 부적합<br>
+            품질 지수: {quality_score}점
+            </div>
+            """, unsafe_allow_html=True)
 
     st.divider()
     
