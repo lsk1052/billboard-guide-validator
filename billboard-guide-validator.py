@@ -113,51 +113,43 @@ st.markdown("""
         border: 1px solid #475569 !important;
     }
 
-    /* --- [수정] 상태 박스(st.success) 테두리 다이어트 --- */
-    
     /* ============================= */
-/* 상태 박스 타입별 스타일 분리 */
-/* ============================= */
-
-/* 공통 스타일 */
-div[data-testid="stAlert"] {
-    border-radius: 8px !important;
-    box-shadow: none !important;
-    filter: none !important;
-    border-width: 1px !important;
-    border-style: solid !important;
-}
-
-/* SUCCESS = 초록 */
-div[data-testid="stAlert"][kind="success"] {
-    background-color: rgba(6, 78, 59, 0.95) !important;
-    border-color: rgba(16, 185, 129, 0.45) !important;
-}
-
-/* WARNING = 노랑 */
-div[data-testid="stAlert"][kind="warning"] {
-    background-color: rgba(120, 53, 15, 0.95) !important;
-    border-color: rgba(251, 191, 36, 0.45) !important;
-}
-
-/* ERROR = 빨강 */
-div[data-testid="stAlert"][kind="error"] {
-    background-color: rgba(127, 29, 29, 0.95) !important;
-    border-color: rgba(248, 113, 113, 0.45) !important;
-}
-
-/* INFO = 파랑 */
-div[data-testid="stAlert"][kind="info"] {
-    background-color: rgba(30, 41, 59, 0.95) !important;
-    border-color: rgba(96, 165, 250, 0.45) !important;
-}
-
-/* 내부 텍스트 */
-div[data-testid="stAlert"] * {
-    color: #FFFFFF !important;
-    fill: #FFFFFF !important;
-    font-weight: 400 !important;
-}
+    /* SUCCESS / WARNING / ERROR 구분 */
+    /* ============================= */
+    
+    /* 공통 */
+    div[data-testid="stAlert"] {
+        border-radius: 10px !important;
+        box-shadow: none !important;
+        padding: 14px 16px !important;
+        border: none !important;
+    }
+    
+    /* SUCCESS (초록) */
+    div[data-testid="stAlert"] {
+        background-color: #064E3B !important;
+    }
+    
+    /* WARNING (노랑) */
+    div[data-testid="stAlert"][style*="#ffa421"] {
+        background-color: #78350F !important;
+    }
+    
+    /* ERROR (빨강) */
+    div[data-testid="stAlert"][style*="#ff2b2b"] {
+        background-color: #7F1D1D !important;
+    }
+    
+    /* INFO (파랑) */
+    div[data-testid="stAlert"][style*="#1c83e1"] {
+        background-color: #1E293B !important;
+    }
+    
+    /* 텍스트 */
+    div[data-testid="stAlert"] * {
+        color: white !important;
+        fill: white !important;
+    }
     
     /* 3. 컨테이너 중첩 제거 (혹시 모를 이중 테두리 방지) */
     div[data-testid="stAlertContainer"] {
