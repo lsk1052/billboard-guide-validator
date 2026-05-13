@@ -219,17 +219,6 @@ st.markdown("""
     .stCheckbox label {
         margin-bottom: 0 !important;
     }
-
-    /* 토글 위치 미세 조정 */
-    [data-testid="stHorizontalBlock"] {
-        align-items: center;
-    }
-
-    /* 토글을 이미지 우측 끝 느낌으로 */
-    div[data-testid="stToggle"] {
-        margin-top: 18px;
-        margin-right: -8px;
-    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -515,17 +504,18 @@ if uploaded_file is not None:
     m_col1, m_col2, m_col3 = st.columns([1.2, 3, 1.2])
 
     with m_col2:
+
+        title_col, toggle_col = st.columns([6, 1])
     
-        top_left, top_right = st.columns([7, 1])
+        with title_col:
+            st.subheader(f"🔍 {view_mode} 미리보기")
     
-        with top_right:
+        with toggle_col:
             show_guide = st.toggle(
                 "가이드",
                 value=False,
                 key="guide_toggle"
             )
-    
-        st.subheader(f"🔍 {view_mode} 미리보기")
         
         if view_mode == "홈 빌보드":
             preview_home = apply_billboard_overlay(
