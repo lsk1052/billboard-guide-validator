@@ -434,9 +434,8 @@ if uploaded_file is not None:
             file_name = "billboard_vertical_preview.png"
             cap_txt = "Vertical Header 적용 결과 (750x1000)"
 
-        # C. 이미지 출력
-        # use_container_width=True를 쓰면 center_area 폭에 맞춰 중앙에 꽉 찹니다.
-        st.image(preview_img, use_container_width=True, caption=cap_txt)
+        # C. 이미지 출력 (width=750으로 고정하여 뻥튀기 방지)
+        st.image(preview_img, width=750, caption=cap_txt)
         
         # D. 다운로드 버튼 출력
         buf = io.BytesIO()
