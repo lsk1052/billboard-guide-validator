@@ -404,8 +404,6 @@ if uploaded_file is not None:
 
     st.divider()
 
-st.divider()
-
     # --- [수정] 그림과 동일한 배치 구현 (타이틀 중앙, 토글 우측) ---
     
     # 상단 헤더 구역 (3개의 컬럼으로 나누어 중앙은 타이틀, 우측은 토글 배치)
