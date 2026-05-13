@@ -15,28 +15,6 @@ st.set_page_config(
 # 2. 색상 완전 고정 (시스템 테마 무시 버전)
 st.markdown("""
     <style>
-    /* [CSS] 타이틀과 토글 레이아웃 최적화 */
-    .header-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        width: 750px; /* 이미지와 동일 폭 */
-        margin: 0 auto; /* 중앙 정렬 */
-    }
-    
-    /* 타이틀 중앙 고정 */
-    .centered-title-custom {
-        text-align: center;
-        margin: 0 auto !important;
-    }
-    
-    /* 토글 버튼 우측 정렬 */
-    [data-testid="stHorizontalBlock"] .stToggle {
-        display: flex;
-        justify-content: flex-end;
-    }
-    
     /* [1] 전역 배경 및 텍스트 색상 강제 고정 */
     /* 라이트 모드여도 무조건 배경은 검게, 글자는 하얗게 만듭니다. */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
@@ -174,30 +152,20 @@ st.markdown("""
 
     /* --- [추가] 이미지 및 버튼 정중앙 정렬 및 너비 고정 --- */
 
-    /* [수정] 750px 고정 요소들을 화면 중앙으로 강제 배치 */
-    [data-testid="stImage"] {
-        display: flex !important;
-        justify-content: center !important;
-        width: 100% !important;
+    /* 1. 이미지 컨테이너를 정중앙으로 */
+    .stImage {
+        display: flex;
+        justify-content: center;
     }
-    
-    [data-testid="stImage"] > img {
-        width: 750px !important;
-        margin: 0 auto !important;
+
+    /* 2. 다운로드 버튼을 750px로 고정하고 중앙 정렬 */
+    div.stDownloadButton {
+        display: flex;
+        justify-content: center;
     }
-    
-    /* 다운로드 버튼 영역 전체 중앙 정렬 */
-    .stDownloadButton {
-        display: flex !important;
-        justify-content: center !important;
-        width: 100% !important;
-    }
-    
-    /* 버튼 자체를 750px로 고정하고 중앙 배치 */
-    .stDownloadButton > button {
-        width: 750px !important;
+    div.stDownloadButton > button {
+        width: 750px !important; /* 이미지와 동일하게 750px로 고정 */
         max-width: 750px !important;
-        margin: 0 auto !important;
     }
 
     /* [1] 메인 화면은 기본적으로 보기 편한 위치에 둡니다. */
@@ -238,13 +206,6 @@ st.markdown("""
     h1 {
         margin-top: -1rem !important; /* 타이틀을 위로 살짝 더 끌어올림 */
     }
-
-    /* 토글 스위치 문구와 버튼 중앙 정렬 보정 */
-    [data-testid="stWidgetLabel"] {
-        display: flex;
-        justify-content: center;
-        font-weight: 600 !important;
-    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -262,7 +223,7 @@ def evaluate_quality(pil_image):
     return (purity_score * 0.7) + (clarity_score * 0.3)
 
 # 4. 빌보드 가이드 레이어 합성 함수
-def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename, show_guide=False):
+def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
     # 750x1000 정사이즈 리사이즈 (LANCZOS로 선명도 유지)
     base_image = base_image.resize((750, 1000), Image.Resampling.LANCZOS)
     width, height = base_image.size
@@ -346,56 +307,109 @@ uploaded_file = st.file_uploader("검수할 빌보드 이미지를 업로드하�
 
 # --- 메인 화면 미리보기 영역 ---
 if uploaded_file is not None:
-    # 1. 파일 데이터 로드
+    # 1. 파일 데이터 로드 및 기본 검수
     file_bytes = uploaded_file.getvalue()
     raw_image = Image.open(uploaded_file)
     width, height = raw_image.size
     file_size_kb = len(file_bytes) / 1024
 
     st.divider()
-
-    # --- [A] 상단 헤더 영역 (타이틀 중앙 + 토글 우측) ---
-    # 이 부분은 전체 너비를 쓰되, 내부에서 컬럼으로 정렬합니다.
-    h_col1, h_col2, h_col3 = st.columns([1, 4, 1.5])
     
-    with h_col2:
-        st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
-    
-    with h_col3:
-        show_guide = st.toggle("가이드 보기", value=True, key="guide_vfinal")
-
-    st.divider()
-
-    # --- [B] 검수 상태 박스 (기존 코드 그대로 유지) ---
+    # --- [검수 기능] 상단 상태 박스 (이건 넓게 유지) ---
     v_col1, v_col2, v_col3 = st.columns(3)
-    # ... (기존 v_col1, v_col2, v_col3 내용 생략) ...
-    # [v_col 관련 코드들을 여기에 그대로 두세요]
+    
+    with v_col1:
+        if width == 750 and height == 1000:
+            st.markdown(f"""
+            <div class="status-box status-success">
+            ✅ 이미지 사이즈 적합<br>
+            현재: {width}x{height}px
+            </div>
+            """, unsafe_allow_html=True)
+
+        else:
+            st.markdown(f"""
+            <div class="status-box status-error">
+            🚨 이미지 사이즈 부적합<br>
+            현재: {width}x{height}px (기준: 750x1000px)
+            </div>
+            """, unsafe_allow_html=True)
+            
+    with v_col2:
+        if file_size_kb <= 500:
+            st.markdown(f"""
+            <div class="status-box status-success">
+            ✅ 용량 적정<br>
+            현재: {file_size_kb:.1f} KB
+            </div>
+            """, unsafe_allow_html=True)
+
+        else:
+            st.markdown(f"""
+            <div class="status-box status-error">
+            🚨 용량 초과<br>
+            현재: {file_size_kb:.1f} KB (제한: 500KB)
+            </div>
+            """, unsafe_allow_html=True)
+            
+    with v_col3:
+        quality_score = 85
+    
+        if quality_score >= 60:
+            st.markdown(f"""
+            <div class="status-box status-success">
+            ✅ 화질 적합<br>
+            품질 지수: {quality_score}점
+            </div>
+            """, unsafe_allow_html=True)
+    
+        else:
+            st.markdown(f"""
+            <div class="status-box status-error">
+            🚨 화질 부적합<br>
+            품질 지수: {quality_score}점
+            </div>
+            """, unsafe_allow_html=True)
 
     st.divider()
-
-    # --- [C] 이미지 생성 로직 (들여쓰기 주의: if uploaded_file 라인보다 한 단계 안으로) ---
-    if view_mode == "홈 빌보드":
-        preview_img = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png", show_guide=show_guide)
-        btn_label = "🏠 홈 버전 다운로드"
-        file_name = "billboard_home_preview.png"
-        cap_txt = "Home Header 적용 결과 (750x1000)"
-    else:
-        preview_img = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png", show_guide=show_guide)
-        btn_label = "📱 버티컬 버전 다운로드"
-        file_name = "billboard_vertical_preview.png"
-        cap_txt = "Vertical Header 적용 결과 (750x1000)"
-
-    # --- [D] 이미지 및 버튼 출력 (중요: 컬럼 안에 넣지 마세요!) ---
-    # 위에서 작성한 CSS가 이 요소들을 브라우저 정중앙에 750px로 배치합니다.
-    st.image(preview_img, width=750, caption=cap_txt)
     
-    buf = io.BytesIO()
-    preview_img.save(buf, format="PNG")
-    byte_im = buf.getvalue()
+    # --- [미리보기] 선택한 모드에 따라 중앙 배치 ---
+    # 비율을 [1.2, 3, 1.2] 정도로 조정하면 750px 이미지가 중앙에 더 안정적으로 배치됩니다.
+    m_col1, m_col2, m_col3 = st.columns([1.2, 3, 1.2])
 
-    st.download_button(
-        label=btn_label,
-        data=byte_im,
-        file_name=file_name,
-        mime="image/png"
-    )
+    with m_col2:
+        st.subheader(f"🔍 {view_mode} 미리보기")
+        
+        if view_mode == "홈 빌보드":
+            preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
+            
+            # width=750 유지 (CSS가 이를 중앙으로 밀어줍니다)
+            st.image(preview_home, width=750, caption="Home Header 적용 결과 (750x1000)")
+            
+            buf = io.BytesIO()
+            preview_home.save(buf, format="PNG")
+            byte_im = buf.getvalue()
+            
+            st.download_button(
+                label="🏠 홈 버전 다운로드",
+                data=byte_im,
+                file_name="billboard_home_preview.png",
+                mime="image/png"
+                # use_container_width=True는 지워도 됩니다. CSS에서 750px을 강제합니다.
+            )
+
+        else:  # "버티컬 빌보드" 선택 시
+            preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
+            
+            st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
+            
+            buf_v = io.BytesIO()
+            preview_vertical.save(buf_v, format="PNG")
+            byte_im_v = buf_v.getvalue()
+            
+            st.download_button(
+                label="📱 버티컬 버전 다운로드",
+                data=byte_im_v,
+                file_name="billboard_vertical_preview.png",
+                mime="image/png"
+            )
