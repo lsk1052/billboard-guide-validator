@@ -410,17 +410,17 @@ if uploaded_file is not None:
 
     with m_col2:
 
-    title_col, toggle_col = st.columns([6, 1])
-
-    with title_col:
-        st.subheader(f"🔍 {view_mode} 미리보기")
-
-    with toggle_col:
-        show_guide = st.toggle(
-            "가이드",
-            value=False,
-            key="guide_toggle"
-        )
+        title_col, toggle_col = st.columns([6, 1])
+    
+        with title_col:
+            st.subheader(f"🔍 {view_mode} 미리보기")
+    
+        with toggle_col:
+            show_guide = st.toggle(
+                "가이드",
+                value=False,
+                key="guide_toggle"
+            )
         
         if view_mode == "홈 빌보드":
             preview_home = apply_billboard_overlay(
