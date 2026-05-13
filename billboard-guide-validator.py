@@ -208,6 +208,13 @@ st.markdown("""
     h1 {
         margin-top: -1rem !important; /* 타이틀을 위로 살짝 더 끌어올림 */
     }
+
+    /* 토글 스위치 문구와 버튼 중앙 정렬 보정 */
+    [data-testid="stWidgetLabel"] {
+        display: flex;
+        justify-content: center;
+        font-weight: 600 !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -225,7 +232,7 @@ def evaluate_quality(pil_image):
     return (purity_score * 0.7) + (clarity_score * 0.3)
 
 # 4. 빌보드 가이드 레이어 합성 함수
-def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
+def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename, show_guide=False):
     # 750x1000 정사이즈 리사이즈 (LANCZOS로 선명도 유지)
     base_image = base_image.resize((750, 1000), Image.Resampling.LANCZOS)
     width, height = base_image.size
@@ -375,30 +382,55 @@ if uploaded_file is not None:
 
     st.divider()
     
-    # --- [미리보기] 선택한 모드에 따라 중앙 배치 ---
-    # 비율을 [1.2, 3, 1.2] 정도로 조정하면 750px 이미지가 중앙에 더 안정적으로 배치됩니다.
-    m_col1, m_col2, m_col3 = st.columns([1.2, 3, 1.2])
+    # --- [수정] 미리보기 제목 바로 아래에 토글 배치 ---
+    st.markdown(f'<h3 class="centered-text">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
+    
+    # 750px 너비 안에서 중앙 정렬 느낌을 주기 위해 컬럼 사용
+    _, guide_col, _ = st.columns([1.5, 1, 1.5])
+    with guide_col:
+        show_guide = st.toggle("📏 가이드 레이어 보기", value=True)
+    
+    st.divider() # 토글과 이미지 사이 구분선 (선택 사항)
 
-    with m_col2:
-        st.subheader(f"🔍 {view_mode} 미리보기")
-        
-        if view_mode == "홈 빌보드":
-            preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
-            
-            # width=750 유지 (CSS가 이를 중앙으로 밀어줍니다)
-            st.image(preview_home, width=750, caption="Home Header 적용 결과 (750x1000)")
-            
-            buf = io.BytesIO()
-            preview_home.save(buf, format="PNG")
-            byte_im = buf.getvalue()
-            
-            st.download_button(
-                label="🏠 홈 버전 다운로드",
-                data=byte_im,
-                file_name="billboard_home_preview.png",
-                mime="image/png"
-                # use_container_width=True는 지워도 됩니다. CSS에서 750px을 강제합니다.
-            )
+    
+    st.markdown(f'<h3 class="centered-text">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
+
+    # 1. 토글 스위치 배치 (제목과 이미지 사이)
+    _, guide_col, _ = st.columns([1.5, 1, 1.5])
+    with guide_col:
+        show_guide = st.toggle("📏 가이드 레이어 보기", value=True)
+    
+    st.divider()
+    
+    # 2. 이미지 생성 (질문하신 if-else 구문)
+    if view_mode == "홈 빌보드":
+        preview_img = apply_billboard_overlay(
+            raw_image, input_main, input_sub, "header-home.png", 
+            show_guide=show_guide
+        )
+        btn_label = "🏠 홈 버전 다운로드"
+        file_name = "billboard_home_preview.png"
+    else:
+        preview_img = apply_billboard_overlay(
+            raw_image, input_main, input_sub, "header-vertical.png", 
+            show_guide=show_guide
+        )
+        btn_label = "📱 버티컬 버전 다운로드"
+        file_name = "billboard_vertical_preview.png"
+    
+    # 3. 결과 출력 (중앙 정렬 CSS가 적용됨)
+    st.image(preview_img, width=750)
+    
+    buf = io.BytesIO()
+    preview_img.save(buf, format="PNG")
+    byte_im = buf.getvalue()
+    
+    st.download_button(
+        label=btn_label,
+        data=byte_im,
+        file_name=file_name,
+        mime="image/png"
+    )
 
         else:  # "버티컬 빌보드" 선택 시
             preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
