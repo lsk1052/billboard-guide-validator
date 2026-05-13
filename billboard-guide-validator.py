@@ -237,34 +237,125 @@ def evaluate_quality(pil_image):
 
 # 4. 빌보드 가이드 레이어 합성 함수
 def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
-    # 750x1000 정사이즈 리사이즈 (LANCZOS로 선명도 유지)
+
+    # 750x1000 리사이즈
     base_image = base_image.resize((750, 1000), Image.Resampling.LANCZOS)
+
     width, height = base_image.size
-    
+
     canvas = base_image.convert("RGBA")
+
     overlay = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+
     draw = ImageDraw.Draw(overlay)
 
-# 4-1. 새 함수 추가
+    # 헤더 로드
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    header_path = os.path.join(current_dir, header_filename)
+
+    if os.path.exists(header_path):
+
+        header_img = Image.open(header_path).convert("RGBA")
+
+        h_ratio = width / header_img.width
+
+        new_h_size = (
+            width,
+            int(header_img.height * h_ratio)
+        )
+
+        header_resized = header_img.resize(
+            new_h_size,
+            Image.Resampling.LANCZOS
+        )
+
+        canvas.paste(
+            header_resized,
+            (0, 0),
+            header_resized
+        )
+
+    # 폰트
+    try:
+
+        font_main = ImageFont.truetype(
+            os.path.join(current_dir, "Pretendard-SemiBold.otf"),
+            44
+        )
+
+        font_sub = ImageFont.truetype(
+            os.path.join(current_dir, "Pretendard-Medium.otf"),
+            28
+        )
+
+    except:
+
+        font_main = ImageFont.load_default()
+        font_sub = ImageFont.load_default()
+
+    # 텍스트 설정
+    margin_x = 48
+    line_height_main = 55
+    gap_main_sub = 30
+    main_y_anchor = 787
+
+    # 메인 카피
+    lines = main_txt.split('\n')
+
+    current_y = main_y_anchor - (
+        (len(lines) - 1) * line_height_main
+    )
+
+    for line in lines:
+
+        draw.text(
+            (margin_x, current_y),
+            line,
+            font=font_main,
+            fill=(255, 255, 255, 255)
+        )
+
+        current_y += line_height_main
+
+    # 서브 카피
+    sub_y = current_y - line_height_main + gap_main_sub + 40
+
+    draw.text(
+        (margin_x, sub_y),
+        sub_txt,
+        font=font_sub,
+        fill=(255, 255, 255, 230)
+    )
+
+    # 최종 합성
+    result = Image.alpha_composite(canvas, overlay)
+
+    return result.convert("RGB")
+
+
+# 4-1. 가이드 레이어 함수
 def apply_guide_overlay(base_image, guide_filename):
 
     base = base_image.convert("RGBA")
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    guide_path = os.path.join(current_dir, guide_filename)
 
-    # 가이드 이미지가 존재할 때만 합성
+    guide_path = os.path.join(
+        current_dir,
+        guide_filename
+    )
+
     if os.path.exists(guide_path):
 
         guide = Image.open(guide_path).convert("RGBA")
 
-        # 크기 맞춤
-        guide = guide.resize(base.size, Image.Resampling.LANCZOS)
+        guide = guide.resize(
+            base.size,
+            Image.Resampling.LANCZOS
+        )
 
-        # 레이어 합성
         base = Image.alpha_composite(base, guide)
 
-    # 항상 PIL Image 반환
     return base.convert("RGB")
     
     # A. 헤더 로드
