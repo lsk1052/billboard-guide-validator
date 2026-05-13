@@ -435,15 +435,15 @@ if uploaded_file is not None:
     else:  # "버티컬 빌보드" 선택 시
         preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
         
-        st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
-        
-        buf_v = io.BytesIO()
-        preview_vertical.save(buf_v, format="PNG")
-        byte_im_v = buf_v.getvalue()
-        
-        st.download_button(
-            label="📱 버티컬 버전 다운로드",
-            data=byte_im_v,
-            file_name="billboard_vertical_preview.png",
-            mime="image/png"
-        )
+    st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
+    
+    buf_v = io.BytesIO()
+    preview_vertical.save(buf_v, format="PNG")
+    byte_im_v = buf_v.getvalue()
+    
+    st.download_button(
+        label="📱 버티컬 버전 다운로드",
+        data=byte_im_v,
+        file_name="billboard_vertical_preview.png",
+        mime="image/png"
+    )
