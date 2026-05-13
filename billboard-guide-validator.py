@@ -16,13 +16,46 @@ st.set_page_config(
 st.markdown("""
     <style>
     /* [CSS] 타이틀과 토글 레이아웃 최적화 */
-    .header-container {
+    /* ========================= */
+    /* Preview Header Layout */
+    /* ========================= */
+    
+    .preview-wrapper {
+        width: 750px;
+        margin: 0 auto;
+    }
+    
+    .preview-header {
+        position: relative;
+        width: 750px;
         display: flex;
         justify-content: center;
         align-items: center;
-        position: relative;
-        width: 750px; /* 이미지와 동일 폭 */
-        margin: 0 auto; /* 중앙 정렬 */
+        margin-bottom: 18px;
+    }
+    
+    .preview-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+    }
+    
+    .preview-toggle {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    /* toggle label alignment */
+    .preview-toggle [data-testid="stWidgetLabel"] {
+        margin-bottom: 0 !important;
+    }
+    
+    /* divider width alignment */
+    .preview-wrapper hr {
+        border-color: #475569 !important;
     }
     
     /* 타이틀 중앙 고정 */
@@ -35,6 +68,12 @@ st.markdown("""
     [data-testid="stHorizontalBlock"] .stToggle {
         display: flex;
         justify-content: flex-end;
+    }
+
+    .stToggle {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     }
     
     /* [1] 전역 배경 및 텍스트 색상 강제 고정 */
@@ -354,17 +393,38 @@ if uploaded_file is not None:
 
     st.divider()
 
-    # --- [A] 상단 헤더 영역 (타이틀 중앙 + 토글 우측) ---
-    # 이 부분은 전체 너비를 쓰되, 내부에서 컬럼으로 정렬합니다.
-    h_col1, h_col2, h_col3 = st.columns([1, 4, 1.5])
+    # =========================
+    # Preview Header
+    # =========================
     
-    with h_col2:
-        st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
+    st.markdown('<div class="preview-wrapper">', unsafe_allow_html=True)
     
-    with h_col3:
-        show_guide = st.toggle("가이드 보기", value=True, key="guide_vfinal")
+    header_left, header_center, header_right = st.columns([1, 4, 1])
+    
+    with header_center:
+        st.markdown(
+            f"""
+            <div class="preview-header">
+                <div class="preview-title">
+                    🔍 {view_mode} 미리보기
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    
+    with header_right:
+        st.markdown('<div class="preview-toggle">', unsafe_allow_html=True)
+    
+        show_guide = st.toggle(
+            "가이드 레이어 보기",
+            value=True,
+            key="guide_vfinal"
+        )
+    
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
+st.markdown("</div>", unsafe_allow_html=True)
 
     # --- [B] 검수 상태 박스 (기존 코드 그대로 유지) ---
     v_col1, v_col2, v_col3 = st.columns(3)
