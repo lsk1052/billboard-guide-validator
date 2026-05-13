@@ -15,42 +15,17 @@ st.set_page_config(
 # 2. 색상 완전 고정 (시스템 테마 무시 버전)
 st.markdown("""
     <style>
-    /* [CSS] 타이틀과 토글 레이아웃 최적화 */
     /* ========================= */
     /* Preview Header Layout */
     /* ========================= */
-    
-    .preview-wrapper {
-        width: 750px;
-        margin: 0 auto;
+
+    [data-testid="column"] {
+    display: flex;
+    align-items: center;
     }
-    
-    .preview-header {
-        position: relative;
-        width: 750px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 18px;
-    }
-    
-    .preview-title {
-        font-size: 28px;
-        font-weight: 700;
-        color: white;
-        text-align: center;
-    }
-    
-    .preview-toggle {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-    
-    /* toggle label alignment */
-    .preview-toggle [data-testid="stWidgetLabel"] {
-        margin-bottom: 0 !important;
+
+    .stToggle {
+    justify-content: flex-end !important;
     }
     
     /* divider width alignment */
@@ -397,34 +372,34 @@ if uploaded_file is not None:
     # Preview Header
     # =========================
     
-    st.markdown('<div class="preview-wrapper">', unsafe_allow_html=True)
+    col_left, col_center, col_right = st.columns([1, 750, 1])
     
-    header_left, header_center, header_right = st.columns([1, 4, 1])
+    with col_center:
     
-    with header_center:
-        st.markdown(
-            f"""
-            <div class="preview-header">
-                <div class="preview-title">
+        title_col, toggle_col = st.columns([6, 2])
+    
+        with title_col:
+            st.markdown(
+                f"""
+                <div style="
+                    text-align:center;
+                    font-size:28px;
+                    font-weight:700;
+                    color:white;
+                    margin-top:10px;
+                ">
                     🔍 {view_mode} 미리보기
                 </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                """,
+                unsafe_allow_html=True
+            )
     
-    with header_right:
-        st.markdown('<div class="preview-toggle">', unsafe_allow_html=True)
-    
-        show_guide = st.toggle(
-            "가이드 레이어 보기",
-            value=True,
-            key="guide_vfinal"
-        )
-    
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
+        with toggle_col:
+            show_guide = st.toggle(
+                "가이드 레이어 보기",
+                value=True,
+                key="guide_vfinal"
+            )
     
     v_col1, v_col2, v_col3 = st.columns(3)
 
