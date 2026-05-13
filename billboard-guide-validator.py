@@ -526,35 +526,35 @@ if uploaded_file is not None:
     # 비율을 [1.2, 3, 1.2] 정도로 조정하면 750px 이미지가 중앙에 더 안정적으로 배치됩니다.
     m_col1, m_col2, m_col3 = st.columns([1.2, 3, 1.2])
 
-        with m_col2:
+    with m_col2:
+    
+        st.markdown("""
+        <div class="preview-header">
+            <div class="preview-title">🔍 미리보기</div>
+        """, unsafe_allow_html=True)
+    
+        show_guide = st.toggle(
+            "가이드",
+            value=False,
+            key="guide_toggle"
+        )
+    
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+    if view_mode == "홈 빌보드":
+        preview_home = apply_billboard_overlay(
+            raw_image,
+            input_main,
+            input_sub,
+            "header-home.png"
+        )
         
-            st.markdown("""
-            <div class="preview-header">
-                <div class="preview-title">🔍 미리보기</div>
-            """, unsafe_allow_html=True)
-        
-            show_guide = st.toggle(
-                "가이드",
-                value=False,
-                key="guide_toggle"
+        # 가이드 ON 시 레이어 추가
+        if show_guide:
+            preview_home = apply_guide_overlay(
+                preview_home,
+                "guide-home.png"
             )
-        
-            st.markdown("</div>", unsafe_allow_html=True)
-        
-        if view_mode == "홈 빌보드":
-            preview_home = apply_billboard_overlay(
-                raw_image,
-                input_main,
-                input_sub,
-                "header-home.png"
-            )
-            
-            # 가이드 ON 시 레이어 추가
-            if show_guide:
-                preview_home = apply_guide_overlay(
-                    preview_home,
-                    "guide-home.png"
-                )
             
             # width=750 유지 (CSS가 이를 중앙으로 밀어줍니다)
             st.image(preview_home, width=750, caption="Home Header 적용 결과 (750x1000)")
