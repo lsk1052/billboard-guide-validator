@@ -391,6 +391,14 @@ if uploaded_file is not None:
         show_guide = st.toggle("📏 가이드 레이어 보기", value=True)
     
     st.divider()
+
+    # 1. 타이틀을 중앙 정렬 (HTML 태그로 직접 감싸기)
+    st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
+
+    # 2. 토글 스위치 중앙 배치 (컬럼 비율을 1:1:1로 맞추면 정확히 가운데에 옵니다)
+    _, guide_col, _ = st.columns([1, 1, 1])
+    with guide_col:
+        show_guide = st.toggle("📏 가이드 레이어 보기", value=True, key="guide_layer_toggle")
     
    # 2. 이미지 생성 (if와 else가 한 쌍으로 묶여야 합니다)
     if view_mode == "홈 빌보드":
