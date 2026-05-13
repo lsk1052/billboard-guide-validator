@@ -153,18 +153,20 @@ st.markdown("""
     /* --- [추가] 이미지 및 버튼 정중앙 정렬 및 너비 고정 --- */
 
     /* 1. 이미지 컨테이너를 정중앙으로 */
-    .stImage {
-        display: flex;
-        justify-content: center;
+    [data-testid="stImage"] {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
     }
 
-    /* 2. 다운로드 버튼을 750px로 고정하고 중앙 정렬 */
-    div.stDownloadButton {
-        display: flex;
-        justify-content: center;
+    .stDownloadButton {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
     }
-    div.stDownloadButton > button {
-        width: 750px !important; /* 이미지와 동일하게 750px로 고정 */
+    
+    .stDownloadButton > button {
+        width: 750px !important; /* 이미지와 동일한 폭 */
         max-width: 750px !important;
     }
 
