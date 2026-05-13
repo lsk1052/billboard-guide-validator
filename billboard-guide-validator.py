@@ -15,22 +15,14 @@ st.set_page_config(
 # 2. 색상 완전 고정 (시스템 테마 무시 버전)
 st.markdown("""
     <style>
-    /* ========================= */
-    /* Preview Header Layout */
-    /* ========================= */
-
-    [data-testid="column"] {
-    display: flex;
-    align-items: center;
-    }
-
-    .stToggle {
-    justify-content: flex-end !important;
-    }
-    
-    /* divider width alignment */
-    .preview-wrapper hr {
-        border-color: #475569 !important;
+    /* [CSS] 타이틀과 토글 레이아웃 최적화 */
+    .header-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 750px; /* 이미지와 동일 폭 */
+        margin: 0 auto; /* 중앙 정렬 */
     }
     
     /* 타이틀 중앙 고정 */
@@ -43,12 +35,6 @@ st.markdown("""
     [data-testid="stHorizontalBlock"] .stToggle {
         display: flex;
         justify-content: flex-end;
-    }
-
-    .stToggle {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
     }
     
     /* [1] 전역 배경 및 텍스트 색상 강제 고정 */
@@ -368,40 +354,22 @@ if uploaded_file is not None:
 
     st.divider()
 
-    # =========================
-    # Preview Header
-    # =========================
+    # --- [A] 상단 헤더 영역 (타이틀 중앙 + 토글 우측) ---
+    # 이 부분은 전체 너비를 쓰되, 내부에서 컬럼으로 정렬합니다.
+    h_col1, h_col2, h_col3 = st.columns([1, 4, 1.5])
     
-    col_left, col_center, col_right = st.columns([1, 750, 1])
+    with h_col2:
+        st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
     
-    with col_center:
-    
-        title_col, toggle_col = st.columns([6, 2])
-    
-        with title_col:
-            st.markdown(
-                f"""
-                <div style="
-                    text-align:center;
-                    font-size:28px;
-                    font-weight:700;
-                    color:white;
-                    margin-top:10px;
-                ">
-                    🔍 {view_mode} 미리보기
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-    
-        with toggle_col:
-            show_guide = st.toggle(
-                "가이드 레이어 보기",
-                value=True,
-                key="guide_vfinal"
-            )
-    
+    with h_col3:
+        show_guide = st.toggle("가이드 보기", value=True, key="guide_vfinal")
+
+    st.divider()
+
+    # --- [B] 검수 상태 박스 (기존 코드 그대로 유지) ---
     v_col1, v_col2, v_col3 = st.columns(3)
+    # ... (기존 v_col1, v_col2, v_col3 내용 생략) ...
+    # [v_col 관련 코드들을 여기에 그대로 두세요]
 
     st.divider()
 
