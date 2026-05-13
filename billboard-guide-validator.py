@@ -424,12 +424,9 @@ if uploaded_file is not None:
     
         st.markdown('</div>', unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
-
-    # --- [B] 검수 상태 박스 (기존 코드 그대로 유지) ---
+    st.markdown("</div>", unsafe_allow_html=True)
+    
     v_col1, v_col2, v_col3 = st.columns(3)
-    # ... (기존 v_col1, v_col2, v_col3 내용 생략) ...
-    # [v_col 관련 코드들을 여기에 그대로 두세요]
 
     st.divider()
 
