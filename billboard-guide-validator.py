@@ -394,11 +394,7 @@ if uploaded_file is not None:
 
     
     st.markdown(f'<h3 class="centered-text">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
-
-    # 1. 토글 스위치 배치 (제목과 이미지 사이)
-    _, guide_col, _ = st.columns([1.5, 1, 1.5])
-    with guide_col:
-        show_guide = st.toggle("📏 가이드 레이어 보기", value=True)
+    
     
     st.divider()
     
