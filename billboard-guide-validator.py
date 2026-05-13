@@ -219,6 +219,29 @@ st.markdown("""
     .stCheckbox label {
         margin-bottom: 0 !important;
     }
+
+    /* ===== 미리보기 헤더 정렬 ===== */
+
+    .preview-header {
+        width: 750px;
+        margin: 0 auto 10px auto;
+    
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    /* 제목 */
+    .preview-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: white;
+    }
+    
+    /* toggle wrapper */
+    div[data-testid="stToggle"] {
+        margin-bottom: 0 !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -503,19 +526,20 @@ if uploaded_file is not None:
     # 비율을 [1.2, 3, 1.2] 정도로 조정하면 750px 이미지가 중앙에 더 안정적으로 배치됩니다.
     m_col1, m_col2, m_col3 = st.columns([1.2, 3, 1.2])
 
-    with m_col2:
-
-        title_col, toggle_col = st.columns([6, 1])
-    
-        with title_col:
-            st.subheader(f"🔍 {view_mode} 미리보기")
-    
-        with toggle_col:
+        with m_col2:
+        
+            st.markdown("""
+            <div class="preview-header">
+                <div class="preview-title">🔍 미리보기</div>
+            """, unsafe_allow_html=True)
+        
             show_guide = st.toggle(
                 "가이드",
                 value=False,
                 key="guide_toggle"
             )
+        
+            st.markdown("</div>", unsafe_allow_html=True)
         
         if view_mode == "홈 빌보드":
             preview_home = apply_billboard_overlay(
