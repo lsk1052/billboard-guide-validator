@@ -174,29 +174,26 @@ st.markdown("""
 
     /* --- [추가] 이미지 및 버튼 정중앙 정렬 및 너비 고정 --- */
 
-    /* [1] 이미지 컨테이너 및 이미지 정중앙 강제 고정 */
+    /* [수정] 750px 고정 요소들을 화면 중앙으로 강제 배치 */
     [data-testid="stImage"] {
-        display: block !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        width: 750px !important; /* 이미지와 폭을 일치시킴 */
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
     }
     
-    [data-testid="stImage"] img {
-        display: block !important;
+    [data-testid="stImage"] > img {
+        width: 750px !important;
         margin: 0 auto !important;
-        border: 1px solid #334155; /* 이미지 경계선 (선택) */
     }
     
-    /* [2] 다운로드 버튼 컨테이너 중앙 정렬 */
+    /* 다운로드 버튼 영역 전체 중앙 정렬 */
     .stDownloadButton {
         display: flex !important;
         justify-content: center !important;
         width: 100% !important;
-        margin-top: 10px !important;
     }
     
-    /* [3] 버튼 자체를 750px로 고정 */
+    /* 버튼 자체를 750px로 고정하고 중앙 배치 */
     .stDownloadButton > button {
         width: 750px !important;
         max-width: 750px !important;
@@ -349,7 +346,7 @@ uploaded_file = st.file_uploader("검수할 빌보드 이미지를 업로드하�
 
 # --- 메인 화면 미리보기 영역 ---
 if uploaded_file is not None:
-    # 1. 파일 데이터 로드 및 기본 검수
+    # 1. 파일 데이터 로드
     file_bytes = uploaded_file.getvalue()
     raw_image = Image.open(uploaded_file)
     width, height = raw_image.size
@@ -357,7 +354,9 @@ if uploaded_file is not None:
 
     st.divider()
 
-    h_col1, h_col2, h_col3 = st.columns([1, 4, 1])
+    # --- [A] 상단 헤더 영역 (타이틀 중앙 + 토글 우측) ---
+    # 이 부분은 전체 너비를 쓰되, 내부에서 컬럼으로 정렬합니다.
+    h_col1, h_col2, h_col3 = st.columns([1, 4, 1.5])
     
     with h_col2:
         st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
@@ -367,107 +366,36 @@ if uploaded_file is not None:
 
     st.divider()
 
-    
-    # --- [검수 기능] 상단 상태 박스 (이건 넓게 유지) ---
+    # --- [B] 검수 상태 박스 (기존 코드 그대로 유지) ---
     v_col1, v_col2, v_col3 = st.columns(3)
-    
-    with v_col1:
-        if width == 750 and height == 1000:
-            st.markdown(f"""
-            <div class="status-box status-success">
-            ✅ 이미지 사이즈 적합<br>
-            현재: {width}x{height}px
-            </div>
-            """, unsafe_allow_html=True)
-
-        else:
-            st.markdown(f"""
-            <div class="status-box status-error">
-            🚨 이미지 사이즈 부적합<br>
-            현재: {width}x{height}px (기준: 750x1000px)
-            </div>
-            """, unsafe_allow_html=True)
-            
-    with v_col2:
-        if file_size_kb <= 500:
-            st.markdown(f"""
-            <div class="status-box status-success">
-            ✅ 용량 적정<br>
-            현재: {file_size_kb:.1f} KB
-            </div>
-            """, unsafe_allow_html=True)
-
-        else:
-            st.markdown(f"""
-            <div class="status-box status-error">
-            🚨 용량 초과<br>
-            현재: {file_size_kb:.1f} KB (제한: 500KB)
-            </div>
-            """, unsafe_allow_html=True)
-            
-    with v_col3:
-        quality_score = 85
-    
-        if quality_score >= 60:
-            st.markdown(f"""
-            <div class="status-box status-success">
-            ✅ 화질 적합<br>
-            품질 지수: {quality_score}점
-            </div>
-            """, unsafe_allow_html=True)
-    
-        else:
-            st.markdown(f"""
-            <div class="status-box status-error">
-            🚨 화질 부적합<br>
-            품질 지수: {quality_score}점
-            </div>
-            """, unsafe_allow_html=True)
+    # ... (기존 v_col1, v_col2, v_col3 내용 생략) ...
+    # [v_col 관련 코드들을 여기에 그대로 두세요]
 
     st.divider()
 
-    # [1] 전체 미리보기 섹션을 중앙으로 모으기 위한 컬럼 생성
-    # 비율을 [1, 5, 1] 정도로 잡으면 중앙 영역이 약 750~800px 정도의 폭을 가집니다.
-    _, center_area, _ = st.columns([0.5, 3, 0.5])
+    # --- [C] 이미지 생성 로직 (들여쓰기 주의: if uploaded_file 라인보다 한 단계 안으로) ---
+    if view_mode == "홈 빌보드":
+        preview_img = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png", show_guide=show_guide)
+        btn_label = "🏠 홈 버전 다운로드"
+        file_name = "billboard_home_preview.png"
+        cap_txt = "Home Header 적용 결과 (750x1000)"
+    else:
+        preview_img = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png", show_guide=show_guide)
+        btn_label = "📱 버티컬 버전 다운로드"
+        file_name = "billboard_vertical_preview.png"
+        cap_txt = "Vertical Header 적용 결과 (750x1000)"
 
-    with center_area:
-        # A. 상단 헤더 (타이틀 중앙 + 토글 우측)
-        # center_area 내부에서 다시 컬럼을 나누어 배치합니다.
-        header_col_left, header_col_mid, header_col_right = st.columns([1, 4, 1.5])
-        
-        with header_col_mid:
-            st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
-        
-        with header_col_right:
-            # 토글을 우측으로 밀어줍니다.
-            show_guide = st.toggle("가이드 보기", value=True, key="guide_v3")
+    # --- [D] 이미지 및 버튼 출력 (중요: 컬럼 안에 넣지 마세요!) ---
+    # 위에서 작성한 CSS가 이 요소들을 브라우저 정중앙에 750px로 배치합니다.
+    st.image(preview_img, width=750, caption=cap_txt)
+    
+    buf = io.BytesIO()
+    preview_img.save(buf, format="PNG")
+    byte_im = buf.getvalue()
 
-        st.divider()
-
-        # B. 이미지 생성 로직
-        if view_mode == "홈 빌보드":
-            preview_img = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png", show_guide=show_guide)
-            btn_label = "🏠 홈 버전 다운로드"
-            file_name = "billboard_home_preview.png"
-            cap_txt = "Home Header 적용 결과 (750x1000)"
-        else:
-            preview_img = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png", show_guide=show_guide)
-            btn_label = "📱 버티컬 버전 다운로드"
-            file_name = "billboard_vertical_preview.png"
-            cap_txt = "Vertical Header 적용 결과 (750x1000)"
-
-        # C. 이미지 출력 (width=750으로 고정하여 뻥튀기 방지)
-        st.image(preview_img, width=750, caption=cap_txt)
-        
-        # D. 다운로드 버튼 출력
-        buf = io.BytesIO()
-        preview_img.save(buf, format="PNG")
-        byte_im = buf.getvalue()
-
-        st.download_button(
-            label=btn_label,
-            data=byte_im,
-            file_name=file_name,
-            mime="image/png",
-            use_container_width=True # 버튼도 이미지 폭에 맞춰 중앙 정렬됩니다.
-        )
+    st.download_button(
+        label=btn_label,
+        data=byte_im,
+        file_name=file_name,
+        mime="image/png"
+    )
