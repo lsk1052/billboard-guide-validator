@@ -174,22 +174,33 @@ st.markdown("""
 
     /* --- [추가] 이미지 및 버튼 정중앙 정렬 및 너비 고정 --- */
 
-    /* 1. 이미지 컨테이너를 정중앙으로 */
+    /* [1] 이미지 컨테이너 및 이미지 정중앙 강제 고정 */
     [data-testid="stImage"] {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: 750px !important; /* 이미지와 폭을 일치시킴 */
     }
-
+    
+    [data-testid="stImage"] img {
+        display: block !important;
+        margin: 0 auto !important;
+        border: 1px solid #334155; /* 이미지 경계선 (선택) */
+    }
+    
+    /* [2] 다운로드 버튼 컨테이너 중앙 정렬 */
     .stDownloadButton {
         display: flex !important;
         justify-content: center !important;
         width: 100% !important;
+        margin-top: 10px !important;
     }
     
+    /* [3] 버튼 자체를 750px로 고정 */
     .stDownloadButton > button {
-        width: 750px !important; /* 이미지와 동일한 폭 */
+        width: 750px !important;
         max-width: 750px !important;
+        margin: 0 auto !important;
     }
 
     /* [1] 메인 화면은 기본적으로 보기 편한 위치에 둡니다. */
@@ -345,6 +356,17 @@ if uploaded_file is not None:
     file_size_kb = len(file_bytes) / 1024
 
     st.divider()
+
+    h_col1, h_col2, h_col3 = st.columns([1, 4, 1])
+    
+    with h_col2:
+        st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
+    
+    with h_col3:
+        show_guide = st.toggle("가이드 보기", value=True, key="guide_vfinal")
+
+    st.divider()
+
     
     # --- [검수 기능] 상단 상태 박스 (이건 넓게 유지) ---
     v_col1, v_col2, v_col3 = st.columns(3)
