@@ -404,50 +404,49 @@ if uploaded_file is not None:
 
     st.divider()
 
-    # --- [수정] 그림과 동일한 배치 구현 (타이틀 중앙, 토글 우측) ---
-    
-    # 상단 헤더 구역 (3개의 컬럼으로 나누어 중앙은 타이틀, 우측은 토글 배치)
-    col_left, col_mid, col_right = st.columns([1, 4, 1])
-    
-    with col_mid:
-        # 중앙 타이틀
-        st.markdown(f'<h3 class="centered-title-custom">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
-    
-    with col_right:
-        # 우측 토글 (수직 위치를 타이틀과 맞춤)
-        show_guide = st.toggle("가이드 보기", value=True, key="guide_layer_toggle_final")
+    # [1] 전체 미리보기 섹션을 중앙으로 모으기 위한 컬럼 생성
+    # 비율을 [1, 5, 1] 정도로 잡으면 중앙 영역이 약 750~800px 정도의 폭을 가집니다.
+    _, center_area, _ = st.columns([0.5, 3, 0.5])
 
-    st.divider()
-    
-   # 2. 이미지 생성 (if와 else가 한 쌍으로 묶여야 합니다)
-    if view_mode == "홈 빌보드":
-        preview_img = apply_billboard_overlay(
-            raw_image, input_main, input_sub, "header-home.png", 
-            show_guide=show_guide
+    with center_area:
+        # A. 상단 헤더 (타이틀 중앙 + 토글 우측)
+        # center_area 내부에서 다시 컬럼을 나누어 배치합니다.
+        header_col_left, header_col_mid, header_col_right = st.columns([1, 4, 1.5])
+        
+        with header_col_mid:
+            st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
+        
+        with header_col_right:
+            # 토글을 우측으로 밀어줍니다.
+            show_guide = st.toggle("가이드 보기", value=True, key="guide_v3")
+
+        st.divider()
+
+        # B. 이미지 생성 로직
+        if view_mode == "홈 빌보드":
+            preview_img = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png", show_guide=show_guide)
+            btn_label = "🏠 홈 버전 다운로드"
+            file_name = "billboard_home_preview.png"
+            cap_txt = "Home Header 적용 결과 (750x1000)"
+        else:
+            preview_img = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png", show_guide=show_guide)
+            btn_label = "📱 버티컬 버전 다운로드"
+            file_name = "billboard_vertical_preview.png"
+            cap_txt = "Vertical Header 적용 결과 (750x1000)"
+
+        # C. 이미지 출력
+        # use_container_width=True를 쓰면 center_area 폭에 맞춰 중앙에 꽉 찹니다.
+        st.image(preview_img, use_container_width=True, caption=cap_txt)
+        
+        # D. 다운로드 버튼 출력
+        buf = io.BytesIO()
+        preview_img.save(buf, format="PNG")
+        byte_im = buf.getvalue()
+
+        st.download_button(
+            label=btn_label,
+            data=byte_im,
+            file_name=file_name,
+            mime="image/png",
+            use_container_width=True # 버튼도 이미지 폭에 맞춰 중앙 정렬됩니다.
         )
-        btn_label = "🏠 홈 버전 다운로드"
-        file_name = "billboard_home_preview.png"
-        caption_text = "Home Header 적용 결과 (750x1000)"
-
-    else:  # "버티컬 빌보드" 선택 시
-        preview_img = apply_billboard_overlay(
-            raw_image, input_main, input_sub, "header-vertical.png", 
-            show_guide=show_guide
-        )
-        btn_label = "📱 버티컬 버전 다운로드"
-        file_name = "billboard_vertical_preview.png"
-        caption_text = "Vertical Header 적용 결과 (750x1000)"
-
-    # 3. 결과 출력 (if/else 블록이 완전히 끝난 뒤에 한 번만 실행)
-    st.image(preview_img, width=750, caption=caption_text)
-    
-    buf = io.BytesIO()
-    preview_img.save(buf, format="PNG")
-    byte_im = buf.getvalue()
-    
-    st.download_button(
-        label=btn_label,
-        data=byte_im,
-        file_name=file_name,
-        mime="image/png"
-    )
