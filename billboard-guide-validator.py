@@ -390,12 +390,6 @@ if uploaded_file is not None:
     with guide_col:
         show_guide = st.toggle("📏 가이드 레이어 보기", value=True)
     
-    st.divider() # 토글과 이미지 사이 구분선 (선택 사항)
-
-    
-    st.markdown(f'<h3 class="centered-text">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
-    
-    
     st.divider()
     
    # 2. 이미지 생성 (if와 else가 한 쌍으로 묶여야 합니다)
