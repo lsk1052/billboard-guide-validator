@@ -172,49 +172,33 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* [최종] 750px 고정 레이아웃 및 중앙 정렬 */
+    /* --- [추가] 이미지 및 버튼 정중앙 정렬 및 너비 고정 --- */
 
-/* 1. 이미지와 버튼이 들어가는 메인 컨테이너 폭 제한 및 중앙 배치 */
-.block-container {
-    max-width: 850px !important; /* 이미지 750px + 여유 공간 */
-    margin: 0 auto !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-}
-
-/* 2. 이미지 중앙 정렬 및 750px 고정 */
-[data-testid="stImage"] {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-}
-[data-testid="stImage"] > img {
-    width: 750px !important;
-    height: auto !important;
-    border-radius: 8px;
-    border: 1px solid #334155;
-}
-
-/* 3. 다운로드 버튼 750px 고정 및 중앙 정렬 */
-div.stDownloadButton {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-}
-div.stDownloadButton > button {
-    width: 750px !important;
-    max-width: 750px !important;
-    margin: 0 auto !important;
-}
-
-/* 4. 토글 스위치 우측 끝으로 밀기 */
-[data-testid="stHorizontalBlock"] div[data-testid="column"]:last-child {
-    display: flex;
-    justify-content: flex-end;
-}
-[data-testid="stWidgetLabel"] {
-    justify-content: flex-end !important; /* 토글 문구 우측 정렬 */
-}
+    /* [수정] 750px 고정 요소들을 화면 중앙으로 강제 배치 */
+    [data-testid="stImage"] {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+    
+    [data-testid="stImage"] > img {
+        width: 750px !important;
+        margin: 0 auto !important;
+    }
+    
+    /* 다운로드 버튼 영역 전체 중앙 정렬 */
+    .stDownloadButton {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+    
+    /* 버튼 자체를 750px로 고정하고 중앙 배치 */
+    .stDownloadButton > button {
+        width: 750px !important;
+        max-width: 750px !important;
+        margin: 0 auto !important;
+    }
 
     /* [1] 메인 화면은 기본적으로 보기 편한 위치에 둡니다. */
     .block-container {
