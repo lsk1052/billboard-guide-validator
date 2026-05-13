@@ -206,6 +206,19 @@ st.markdown("""
     h1 {
         margin-top: -1rem !important; /* 타이틀을 위로 살짝 더 끌어올림 */
     }
+
+        /* --- 가이드 토글 우측 정렬 --- */
+    .guide-toggle-wrap {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 8px;
+        margin-right: 6px;
+    }
+
+    /* 토글 라벨 간격 제거 */
+    .stCheckbox label {
+        margin-bottom: 0 !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -231,6 +244,24 @@ def apply_billboard_overlay(base_image, main_txt, sub_txt, header_filename):
     canvas = base_image.convert("RGBA")
     overlay = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
+
+# 4-1. 새 함수 추가
+def apply_guide_overlay(base_image, guide_filename):
+
+    base = base_image.convert("RGBA")
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    guide_path = os.path.join(current_dir, guide_filename)
+
+    if os.path.exists(guide_path):
+
+        guide = Image.open(guide_path).convert("RGBA")
+
+        guide = guide.resize(base.size, Image.Resampling.LANCZOS)
+
+        base = Image.alpha_composite(base, guide)
+
+    return base.convert("RGB")
     
     # A. 헤더 로드
     if os.path.exists(header_filename):
@@ -378,10 +409,33 @@ if uploaded_file is not None:
     m_col1, m_col2, m_col3 = st.columns([1.2, 3, 1.2])
 
     with m_col2:
+
+    title_col, toggle_col = st.columns([6, 1])
+
+    with title_col:
         st.subheader(f"🔍 {view_mode} 미리보기")
+
+    with toggle_col:
+        show_guide = st.toggle(
+            "가이드",
+            value=False,
+            key="guide_toggle"
+        )
         
         if view_mode == "홈 빌보드":
-            preview_home = apply_billboard_overlay(raw_image, input_main, input_sub, "header-home.png")
+            preview_home = apply_billboard_overlay(
+                raw_image,
+                input_main,
+                input_sub,
+                "header-home.png"
+            )
+            
+            # 가이드 ON 시 레이어 추가
+            if show_guide:
+                preview_home = apply_guide_overlay(
+                    preview_home,
+                    "guide-home.png"
+                )
             
             # width=750 유지 (CSS가 이를 중앙으로 밀어줍니다)
             st.image(preview_home, width=750, caption="Home Header 적용 결과 (750x1000)")
@@ -399,7 +453,19 @@ if uploaded_file is not None:
             )
 
         else:  # "버티컬 빌보드" 선택 시
-            preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
+            preview_vertical = apply_billboard_overlay(
+                raw_image,
+                input_main,
+                input_sub,
+                "header-vertical.png"
+            )
+            
+            # 가이드 ON 시 레이어 추가
+            if show_guide:
+                preview_vertical = apply_guide_overlay(
+                    preview_vertical,
+                    "guide-vertical.png"
+                )
             
             st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
             
