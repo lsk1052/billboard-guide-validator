@@ -15,6 +15,28 @@ st.set_page_config(
 # 2. 색상 완전 고정 (시스템 테마 무시 버전)
 st.markdown("""
     <style>
+    /* [CSS] 타이틀과 토글 레이아웃 최적화 */
+    .header-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 750px; /* 이미지와 동일 폭 */
+        margin: 0 auto; /* 중앙 정렬 */
+    }
+    
+    /* 타이틀 중앙 고정 */
+    .centered-title-custom {
+        text-align: center;
+        margin: 0 auto !important;
+    }
+    
+    /* 토글 버튼 우측 정렬 */
+    [data-testid="stHorizontalBlock"] .stToggle {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
     /* [1] 전역 배경 및 텍스트 색상 강제 고정 */
     /* 라이트 모드여도 무조건 배경은 검게, 글자는 하얗게 만듭니다. */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
@@ -382,13 +404,22 @@ if uploaded_file is not None:
 
     st.divider()
 
-    # 1. 타이틀을 중앙 정렬 (HTML 태그로 직접 감싸기)
-    st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
+st.divider()
 
-    # 2. 토글 스위치 중앙 배치 (컬럼 비율을 1:1:1로 맞추면 정확히 가운데에 옵니다)
-    _, guide_col, _ = st.columns([1, 1, 1])
-    with guide_col:
-        show_guide = st.toggle("📏 가이드 레이어 보기", value=True, key="guide_layer_toggle")
+    # --- [수정] 그림과 동일한 배치 구현 (타이틀 중앙, 토글 우측) ---
+    
+    # 상단 헤더 구역 (3개의 컬럼으로 나누어 중앙은 타이틀, 우측은 토글 배치)
+    col_left, col_mid, col_right = st.columns([1, 4, 1])
+    
+    with col_mid:
+        # 중앙 타이틀
+        st.markdown(f'<h3 class="centered-title-custom">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
+    
+    with col_right:
+        # 우측 토글 (수직 위치를 타이틀과 맞춤)
+        show_guide = st.toggle("가이드 보기", value=True, key="guide_layer_toggle_final")
+
+    st.divider()
     
    # 2. 이미지 생성 (if와 else가 한 쌍으로 묶여야 합니다)
     if view_mode == "홈 빌보드":
