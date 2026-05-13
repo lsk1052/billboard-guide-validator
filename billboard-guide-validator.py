@@ -519,8 +519,6 @@ if uploaded_file is not None:
             caption="Home Header 적용 결과 (750x1000)"
         )
             
-            # width=750 유지 (CSS가 이를 중앙으로 밀어줍니다)
-            st.image(preview_home, width=750, caption="Home Header 적용 결과 (750x1000)")
             
             buf = io.BytesIO()
             preview_home.save(buf, format="PNG")
