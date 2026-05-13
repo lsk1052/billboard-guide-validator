@@ -432,9 +432,14 @@ if uploaded_file is not None:
         mime="image/png"
     )
 
-    else:  # "버티컬 빌보드" 선택 시
-        preview_vertical = apply_billboard_overlay(raw_image, input_main, input_sub, "header-vertical.png")
+    # (위의 if view_mode == "홈 빌보드" 블록이 끝난 바로 다음 줄부터)
+    else:  # "버티컬 빌보드" 선택 시 (435번 줄)
+        preview_vertical = apply_billboard_overlay(
+            raw_image, input_main, input_sub, "header-vertical.png", 
+            show_guide=show_guide
+        )
         
+        # 아래 코드들을 반드시 이 위치(else 내부)로 들여쓰기 해야 합니다.
         st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
         
         buf_v = io.BytesIO()
