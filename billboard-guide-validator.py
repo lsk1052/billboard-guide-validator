@@ -381,6 +381,49 @@ def apply_guide_overlay(base_image, guide_filename):
 
     return base.convert("RGB")
     
+    # A. 헤더 로드
+    if os.path.exists(header_filename):
+        header_img = Image.open(header_filename).convert("RGBA")
+        h_ratio = width / header_img.width
+        new_h_size = (width, int(header_img.height * h_ratio))
+        header_resized = header_img.resize(new_h_size, Image.Resampling.LANCZOS)
+        canvas.paste(header_resized, (0, 0), header_resized)
+    
+    # B. 폰트 설정
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        font_main = ImageFont.truetype(os.path.join(current_dir, "Pretendard-SemiBold.otf"), 44)
+        font_sub = ImageFont.truetype(os.path.join(current_dir, "Pretendard-Medium.otf"), 28)
+    except:
+        font_main = font_sub = ImageFont.load_default()
+
+    # --- 레이아웃 설정 변수 (수치 조정) ---
+    margin_x = 48         
+    line_height_main = 55 # 행간
+    gap_main_sub = 30     # 메인 마지막 줄과 서브 카피 사이 간격
+    
+    # [핵심] 메인 카피의 '마지막 줄'이 위치할 Y 좌표를 고정합니다.
+    # 기존에 두 줄일 때 두 번째 줄이 찍히던 위치인 787 (732 + 55) 정도로 설정합니다.
+    main_y_anchor = 787   
+    # ----------------------------------
+
+    # D. 가변 텍스트 그리기
+    lines = main_txt.split('\n')
+    
+    # 메인 카피의 시작 위치를 줄 수에 따라 역산합니다.
+    # 1줄이면 anchor 위치에서 시작, 2줄이면 anchor에서 한 줄 위(anchor - 55)에서 시작
+    current_y = main_y_bottom = main_y_anchor - (len(lines) - 1) * line_height_main
+    
+    for line in lines:
+        draw.text((margin_x, current_y), line, font=font_main, fill=(255, 255, 255, 255))
+        current_y += line_height_main 
+    
+    # 서브 카피 위치 계산
+    # 이제 current_y는 항상 메인 카피 마지막 줄 아래에 위치하게 됩니다.
+    sub_y = current_y - line_height_main + gap_main_sub + 40 
+    draw.text((margin_x, sub_y), sub_txt, font=font_sub, fill=(255, 255, 255, 230))
+    
+    return Image.alpha_composite(canvas, overlay).convert("RGB")
 
 # 5. 메인 UI 구성
 st.title("Check Mate : 빌보드 가이드 체크")
@@ -512,13 +555,9 @@ if uploaded_file is not None:
                 preview_home,
                 "guide-home.png"
             )
-
-        st.image(
-            preview_home,
-            width=750,
-            caption="Home Header 적용 결과 (750x1000)"
-        )
             
+            # width=750 유지 (CSS가 이를 중앙으로 밀어줍니다)
+            st.image(preview_home, width=750, caption="Home Header 적용 결과 (750x1000)")
             
             buf = io.BytesIO()
             preview_home.save(buf, format="PNG")
