@@ -253,14 +253,18 @@ def apply_guide_overlay(base_image, guide_filename):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     guide_path = os.path.join(current_dir, guide_filename)
 
+    # 가이드 이미지가 존재할 때만 합성
     if os.path.exists(guide_path):
 
         guide = Image.open(guide_path).convert("RGBA")
 
+        # 크기 맞춤
         guide = guide.resize(base.size, Image.Resampling.LANCZOS)
 
+        # 레이어 합성
         base = Image.alpha_composite(base, guide)
 
+    # 항상 PIL Image 반환
     return base.convert("RGB")
     
     # A. 헤더 로드
