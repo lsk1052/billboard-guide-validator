@@ -402,7 +402,7 @@ if uploaded_file is not None:
     
     st.divider()
     
-    # 2. 이미지 생성 (질문하신 if-else 구문)
+   # 2. 이미지 생성 (if와 else가 한 쌍으로 묶여야 합니다)
     if view_mode == "홈 빌보드":
         preview_img = apply_billboard_overlay(
             raw_image, input_main, input_sub, "header-home.png", 
@@ -410,16 +410,19 @@ if uploaded_file is not None:
         )
         btn_label = "🏠 홈 버전 다운로드"
         file_name = "billboard_home_preview.png"
-    else:
+        caption_text = "Home Header 적용 결과 (750x1000)"
+
+    else:  # "버티컬 빌보드" 선택 시
         preview_img = apply_billboard_overlay(
             raw_image, input_main, input_sub, "header-vertical.png", 
             show_guide=show_guide
         )
         btn_label = "📱 버티컬 버전 다운로드"
         file_name = "billboard_vertical_preview.png"
-    
-    # 3. 결과 출력 (중앙 정렬 CSS가 적용됨)
-    st.image(preview_img, width=750)
+        caption_text = "Vertical Header 적용 결과 (750x1000)"
+
+    # 3. 결과 출력 (if/else 블록이 완전히 끝난 뒤에 한 번만 실행)
+    st.image(preview_img, width=750, caption=caption_text)
     
     buf = io.BytesIO()
     preview_img.save(buf, format="PNG")
@@ -431,24 +434,3 @@ if uploaded_file is not None:
         file_name=file_name,
         mime="image/png"
     )
-
-    # (위의 if view_mode == "홈 빌보드" 블록이 끝난 바로 다음 줄부터)
-    else:  # "버티컬 빌보드" 선택 시 (435번 줄)
-        preview_vertical = apply_billboard_overlay(
-            raw_image, input_main, input_sub, "header-vertical.png", 
-            show_guide=show_guide
-        )
-        
-        # 아래 코드들을 반드시 이 위치(else 내부)로 들여쓰기 해야 합니다.
-        st.image(preview_vertical, width=750, caption="Vertical Header 적용 결과 (750x1000)")
-        
-        buf_v = io.BytesIO()
-        preview_vertical.save(buf_v, format="PNG")
-        byte_im_v = buf_v.getvalue()
-        
-        st.download_button(
-            label="📱 버티컬 버전 다운로드",
-            data=byte_im_v,
-            file_name="billboard_vertical_preview.png",
-            mime="image/png"
-        )
