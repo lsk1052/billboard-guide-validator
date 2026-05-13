@@ -381,16 +381,6 @@ if uploaded_file is not None:
             """, unsafe_allow_html=True)
 
     st.divider()
-    
-    # --- [수정] 미리보기 제목 바로 아래에 토글 배치 ---
-    st.markdown(f'<h3 class="centered-text">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
-    
-    # 750px 너비 안에서 중앙 정렬 느낌을 주기 위해 컬럼 사용
-    _, guide_col, _ = st.columns([1.5, 1, 1.5])
-    with guide_col:
-        show_guide = st.toggle("📏 가이드 레이어 보기", value=True)
-    
-    st.divider()
 
     # 1. 타이틀을 중앙 정렬 (HTML 태그로 직접 감싸기)
     st.markdown(f'<h3 style="text-align: center; margin-bottom: 0;">🔍 {view_mode} 미리보기</h3>', unsafe_allow_html=True)
